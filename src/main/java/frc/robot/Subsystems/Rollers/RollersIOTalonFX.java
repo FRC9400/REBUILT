@@ -16,8 +16,7 @@ import frc.robot.Constants.rollersConstants;
 
 public class RollersIOTalonFX implements RollersIO{
     // Motor + Configs
-    private TalonFX leftRoller = new TalonFX(1, "rio");
-    private TalonFX rightRoller = new TalonFX(1, "rio");
+    private TalonFX roller = new TalonFX(1, "rio");
 
     private TalonFXConfiguration rollerConfigs = new TalonFXConfiguration();
 
@@ -28,14 +27,10 @@ public class RollersIOTalonFX implements RollersIO{
     private double setpointVolts = 0;
 
     // Status Signals
-    private StatusSignal<Current> leftRollCurrent = leftRoller.getStatorCurrent();
-    private StatusSignal<Current> rightRollCurrent = rightRoller.getStatorCurrent();
-    private StatusSignal<Temperature> leftRollTemp = leftRoller.getDeviceTemp();
-    private StatusSignal<Temperature> rightRollTemp = rightRoller.getDeviceTemp();
-    private StatusSignal<AngularVelocity> leftRollRPS = leftRoller.getRotorVelocity();
-    private StatusSignal<AngularVelocity> rightRollRPS = rightRoller.getRotorVelocity();
-    private StatusSignal<Voltage> leftRollVoltage = leftRoller.getMotorVoltage();
-    private StatusSignal<Voltage> rightRollVoltage = rightRoller.getMotorVoltage();
+    private StatusSignal<Current> rollCurrent = roller.getStatorCurrent();
+    private StatusSignal<Temperature> rollTemp = roller.getDeviceTemp();
+    private StatusSignal<AngularVelocity> rollRPS = roller.getRotorVelocity();
+    private StatusSignal<Voltage> rollVoltage = roller.getMotorVoltage();
 
     public RollersIOTalonFX(){
         // Configs: Current Limit, Neutral Mode, Invert
@@ -56,56 +51,41 @@ public class RollersIOTalonFX implements RollersIO{
         rollerConfigs.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
 
         // Apply Configs
-        leftRoller.getConfigurator().apply(rollerConfigs);
-        rightRoller.getConfigurator().apply(rollerConfigs);
+        roller.getConfigurator().apply(rollerConfigs);
 
         // Freq Updates
         BaseStatusSignal.setUpdateFrequencyForAll(
             50,
-            leftRollCurrent,
-            rightRollCurrent,
-            leftRollTemp,
-            rightRollTemp,
-            leftRollRPS,
-            rightRollRPS,
-            leftRollVoltage,
-            rightRollVoltage);
+            rollCurrent,
+            rollTemp,
+            rollRPS,
+            rollVoltage,
 
         // Bus Util
-        leftRoller.optimizeBusUtilization();
-        rightRoller.optimizeBusUtilization();
+        roller.optimizeBusUtilization();
     }
 
     public void updateInputs(RollersIOInputs inputs){
         // Refresh Static Signals
         BaseStatusSignal.setUpdateFrequencyForAll(
             50,
-            leftRollCurrent,
-            rightRollCurrent,
-            leftRollTemp,
-            rightRollTemp,
-            leftRollRPS,
-            rightRollRPS,
-            leftRollVoltage,
-            rightRollVoltage);
+            rollCurrent,
+            rollTemp,
+            rollRPS,
+            rollVoltage);
 
         // Refresh Inputs
         inputs.appliedVolts = voltageRequest.Output;
         inputs.setpointVolts = setpointVolts;
 
-        inputs.leftRollerCurrent = leftRollCurrent.getValueAsDouble();
-        inputs.leftRollerTemp = leftRollTemp.getValueAsDouble();
-        inputs.leftRollerRPS = leftRollRPS.getValueAsDouble();
-
-        inputs.rightRollerCurrent = rightRollCurrent.getValueAsDouble();
-        inputs.rightRollerTemp = rightRollTemp.getValueAsDouble();
-        inputs.rightRollerRPS = rightRollRPS.getValueAsDouble();
+        inputs.rollerCurrent = rollCurrent.getValueAsDouble();
+        inputs.rollerTemp = rollTemp.getValueAsDouble();
+        inputs.rollerRPS = rollRPS.getValueAsDouble();
     }
 
     // Voltage Req
     public void requestVoltage(double volts){
         setpointVolts = volts;
-        leftRoller.setControl(voltageRequest.withOutput(volts));
-        rightRoller.setControl(voltageRequest.withOutput(volts));
+        roller.setControl(voltageRequest.withOutput(volts));
     }
 }

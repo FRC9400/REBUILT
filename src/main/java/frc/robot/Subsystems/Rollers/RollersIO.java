@@ -8,12 +8,9 @@ public interface RollersIO {
         public double setpointVolts = 0;
         public double appliedVolts = 0;
         
-        public double leftRollerCurrent = 0;
-        public double rightRollerCurrent = 0;
-        public double leftRollerTemp = 0;
-        public double rightRollerTemp = 0;
-        public double leftRollerRPS = 0;
-        public double rightRollerRPS = 0;
+        public double rollerCurrent = 0;
+        public double rollerTemp = 0;
+        public double rollerRPS = 0;
     }
 
     public default void updateInputs(RollersIOInputs rollersIOinputs){}
