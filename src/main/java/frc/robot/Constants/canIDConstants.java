@@ -27,4 +27,8 @@ public class canIDConstants {
   public static final int leftPivotMotor2 = 4;
   public static final int rightPivotMotor1 = 2;
   public static final int rightPivotMotor2 = 14;
+
+  /* Shooter */
+  public static final int leftShooterMotor = 0; // TODO: Set correct CAN ID
+  public static final int rightShooterMotor = 0; // TODO: Set correct CAN ID
 }
