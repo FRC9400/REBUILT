@@ -7,6 +7,6 @@ public class rollersConstants {
     public static final InvertedValue rollersInvert = InvertedValue.Clockwise_Positive;
 
     /* Current Limits */
-    public static final double rollersCurrentLimit = 50;
+    public static final double rollersCurrentLimit = 70;
     
 }

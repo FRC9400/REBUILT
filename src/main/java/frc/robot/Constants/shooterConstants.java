@@ -9,12 +9,12 @@ public class shooterConstants {
     public static final InvertedValue shooterInvert = InvertedValue.Clockwise_Positive;
 
     /* Current Limits */
-    public static final double shooterCurrentLimit = 50;
+    public static final double shooterCurrentLimit = 70;
 
     /* Circumference */
     public static double wheelCircumferenceMeters = Units.inchesToMeters(4) * Math.PI; 
     
     /* Gear Ratios */
-    public static double shooterGearRatio = 0.5;
+    public static double shooterGearRatio = 1;
     
 }
