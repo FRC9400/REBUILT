@@ -100,6 +100,8 @@ public class ModuleIOTalonFX implements ModuleIO {
 
     var steerFeedbackConfigs = steerConfigs.Feedback;
     steerFeedbackConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+    steerFeedbackConfigs.SensorToMechanismRatio = swerveConstants.moduleConstants.steerGearRatio;
+    steerConfigs.ClosedLoopGeneral.ContinuousWrap = true;
 
     var steerSlot0Configs = steerConfigs.Slot0;
     steerSlot0Configs.kP = 6;
@@ -133,7 +135,7 @@ public class ModuleIOTalonFX implements ModuleIO {
     absolutePositionRotations = angleEncoder.getAbsolutePosition();
 
     BaseStatusSignal.setUpdateFrequencyForAll(
-        100, steerPos, drivePos, driveVelRPS, driveTemp, steerTemp, driveAmps, steerAmps);
+        100, steerPos, drivePos, driveVelRPS, driveTemp, steerTemp, driveAmps, steerAmps, absolutePositionRotations);
 
     driveMotor.optimizeBusUtilization();
     steerMotor.optimizeBusUtilization();
@@ -141,7 +143,7 @@ public class ModuleIOTalonFX implements ModuleIO {
 
   public void updateInputs(ModuleIOInputs inputs) {
     BaseStatusSignal.refreshAll(
-        steerPos, drivePos, driveVelRPS, driveTemp, steerTemp, driveAmps, steerAmps);
+        steerPos, drivePos, driveVelRPS, driveTemp, steerTemp, driveAmps, steerAmps, absolutePositionRotations);
 
     inputs.driveVelocityMetersPerSec =
         Conversions.RPStoMPS(
@@ -201,8 +203,7 @@ public class ModuleIOTalonFX implements ModuleIO {
   public void setTurnAngle(double angleDeg) {
     steerMotor.setControl(
         steerRequest.withPosition(
-            Conversions.DegreesToRotations(
-                angleDeg, swerveConstants.moduleConstants.steerGearRatio)));
+            angleDeg/360));
   }
 
   public void resetToAbsolute() {
@@ -210,7 +211,7 @@ public class ModuleIOTalonFX implements ModuleIO {
         angleEncoder.getAbsolutePosition().getValueAsDouble() - CANcoderOffset;
     double absolutePositionSteerRotations =
         absolutePositionRotations * moduleConstants.steerGearRatio;
-    steerMotor.setPosition(absolutePositionSteerRotations);
+    steerMotor.setPosition(absolutePositionRotations);
   }
 
   public void setDriveVelocity(double velocityMetersPerSecond, boolean auto) {

@@ -220,7 +220,7 @@ public class Swerve extends SubsystemBase {
     poseEstimator.update(lastGyroYaw, getSwerveModulePositions());
 
     LimelightHelpers.SetRobotOrientation(
-        "limelight-shrek",
+        "Weasel",
         poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
         0,
         0,
@@ -228,13 +228,13 @@ public class Swerve extends SubsystemBase {
         0,
         0);
     LimelightHelpers.PoseEstimate mt2 =
-        LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-shrek");
+        LimelightHelpers.getBotPoseEstimate_wpiBlue("Weasel");
     if (mt2.tagCount != 0) {
       poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 10));
       poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
     }
 
-    LimelightHelpers.SetRobotOrientation(
+    /*LimelightHelpers.SetRobotOrientation(
         "limelight",
         poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
         0,
@@ -246,7 +246,7 @@ public class Swerve extends SubsystemBase {
     if (mt1.tagCount != 0) {
       poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 10));
       poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
-    }
+    }*/
 
     poseRaw = poseEstimator.getEstimatedPosition();
     odometry.update(getRotation2d(), getSwerveModulePositions());
