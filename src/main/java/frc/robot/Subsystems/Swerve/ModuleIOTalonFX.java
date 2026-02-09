@@ -120,6 +120,7 @@ public class ModuleIOTalonFX implements ModuleIO {
     var angleEncoderConfig = new CANcoderConfiguration();
     angleEncoderConfig.MagnetSensor.SensorDirection =
         SensorDirectionValue.CounterClockwise_Positive;
+    //angleEncoderConfig.MagnetSensor.
 
     driveMotor.getConfigurator().apply(driveConfigs);
     steerMotor.getConfigurator().apply(steerConfigs);

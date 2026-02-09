@@ -27,7 +27,7 @@ public final class swerveConstants {
       SensorDirectionValue.CounterClockwise_Positive
     };
     /* CANcoder Offset FL, FR, BL, BR */
-    public static final double[] CANcoderOffsets = {0.262207, -0.075439, 0.363770, -0.073730};
+    public static final double[] CANcoderOffsets = {0.121582, 0.182373, -0.254395, -0.296875};
 
     /* Gear Ratios */
     public static final double driveGearRatio = 6.12;
