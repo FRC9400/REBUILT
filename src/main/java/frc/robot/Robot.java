@@ -82,13 +82,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void autonomousInit() {
 
-    if(selector.get() == modes.DO_NOTHING){
-      m_autonomousCommand = doNothing;
-    }
-
-    if(selector.get() == modes.TUNE){
-      m_autonomousCommand = tune;
-    }
+    m_autonomousCommand = tune;
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

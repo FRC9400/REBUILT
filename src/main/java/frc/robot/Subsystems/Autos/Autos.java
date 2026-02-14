@@ -32,7 +32,7 @@ public class Autos {
 
     public Command tune(){
         final AutoRoutine routine = autoFactory.newRoutine("Tune");
-        final AutoTrajectory trajectory = routine.trajectory("INPUT");
+        final AutoTrajectory trajectory = routine.trajectory("NewPath");
         routine.active().whileTrue(Commands.sequence(
             trajectory.resetOdometry(),
             trajectory.cmd()
