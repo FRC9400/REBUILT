@@ -144,7 +144,7 @@ public class Swerve extends SubsystemBase {
       Logger.processInputs("Swerve/Module/ModuleNum[" + i + "]", moduleInputs[i]);
     }
 
-    // updateOdometry();
+    updateOdometry();
     logModuleStates("SwerveModuleStates/setpointStates", getSetpointStates());
     // logModuleStates("SwerveModuleStates/optimizedSetpointStates", getOptimizedSetPointStates());
     logModuleStates("SwerveModuleStates/MeasuredStates", getMeasuredStates());
@@ -228,9 +228,9 @@ public class Swerve extends SubsystemBase {
         0,
         0);
     LimelightHelpers.PoseEstimate mt2 =
-        LimelightHelpers.getBotPoseEstimate_wpiBlue("Weasel");
-    if (mt2.tagCount != 0) {
-      poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 10));
+        LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+    if (mt2.tagCount >= 1) {
+      poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(1.7, 1.7, 20));
       poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
     }
 

@@ -104,9 +104,9 @@ public class ModuleIOTalonFX implements ModuleIO {
     steerConfigs.ClosedLoopGeneral.ContinuousWrap = true;
 
     var steerSlot0Configs = steerConfigs.Slot0;
-    steerSlot0Configs.kP = 6;
+    steerSlot0Configs.kP = 16;
     steerSlot0Configs.kI = 0;
-    steerSlot0Configs.kD = 0.002;
+    steerSlot0Configs.kD = 0.004;
     steerSlot0Configs.kS = 0.24;
     steerSlot0Configs.kV = 0.001;
     steerSlot0Configs.kA = 0.16;
