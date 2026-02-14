@@ -8,6 +8,10 @@ import com.ctre.phoenix6.SignalLogger;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Subsystems.Autos.Autos;
+import frc.robot.Subsystems.Autos.AutonomousSelector;
+import frc.robot.Subsystems.Autos.AutonomousSelector.modes;
+
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -21,6 +25,12 @@ public class Robot extends LoggedRobot {
   private RobotContainer m_robotContainer;
 
   private boolean built = false;
+
+  private Autos autos;
+  private AutonomousSelector selector;
+
+  Command doNothing;
+  Command tune;
 
   @Override
   public void robotInit() {
@@ -45,6 +55,8 @@ public class Robot extends LoggedRobot {
     Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may
     // be added.
     m_robotContainer = new RobotContainer();
+    selector = new AutonomousSelector(m_robotContainer.getSwerve(), autos);
+    autos = new Autos(m_robotContainer.getSwerve());
   }
 
   @Override
@@ -58,6 +70,8 @@ public class Robot extends LoggedRobot {
   @Override
   public void disabledPeriodic() {
     if (DriverStation.getAlliance().isPresent() && !built) {
+      doNothing = autos.none();
+      tune = autos.tune();
       built = true;
     }
   }
@@ -67,6 +81,14 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void autonomousInit() {
+
+    if(selector.get() == modes.DO_NOTHING){
+      m_autonomousCommand = doNothing;
+    }
+
+    if(selector.get() == modes.TUNE){
+      m_autonomousCommand = tune;
+    }
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
