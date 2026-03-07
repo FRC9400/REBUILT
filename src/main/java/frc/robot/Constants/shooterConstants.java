@@ -23,5 +23,12 @@ public class shooterConstants {
     public static final double kS = 0.16488;
     public static final double kV = 0.11167;
     public static final double kA = 0.0077173;
+
+    /* Shooter Velocity (MPS) — tune these */
+    public static final double shootVelocityMPS = 10.0;  // TODO: set shoot velocity
+    public static final double shootRatio = 1.0;          // TODO: set top/bottom ratio
+
+    /* Current threshold — when stator drops below this, algae has left */
+    public static final double shootCurrentThresholdAmps = 10.0; // TODO: tune threshold
     
 }

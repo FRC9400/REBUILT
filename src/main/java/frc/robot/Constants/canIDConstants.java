@@ -31,4 +31,7 @@ public class canIDConstants {
   /* Shooter */
   public static final int leftShooterMotor = 0; // TODO: Set correct CAN ID
   public static final int rightShooterMotor = 0; // TODO: Set correct CAN ID
+
+  /* Rollers */
+  public static final int rollersMotor = 0; // TODO: Set correct CAN ID
 }

@@ -8,5 +8,8 @@ public class rollersConstants {
 
     /* Current Limits */
     public static final double rollersCurrentLimit = 50;
+
+    /* Voltages */
+    public static final double processVoltage = 6.0; // TODO: tune process voltage
     
 }
