@@ -7,10 +7,10 @@ import frc.robot.Constants.shooterConstants;
 public class Shooter extends SubsystemBase {
     private final ShooterIO shooterIO;
     private ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
-    private ShooterStates shooterState = ShooterStates.ZERO;
+    private ShooterStates shooterState = ShooterStates.IDLE;
 
     public enum ShooterStates {
-        ZERO,   // Stop flywheels
+        IDLE,   // Stop flywheels
         PREP,   // Flywheels off — hood/rollers handled externally
         SHOOT   // Flywheels spin — auto-transitions to ZERO when current drops
     }
@@ -25,7 +25,7 @@ public class Shooter extends SubsystemBase {
         Logger.recordOutput("ShooterState", this.shooterState);
 
         switch (shooterState) {
-            case ZERO:
+            case IDLE:
                 shooterIO.zeroVelocity();
                 break;
 
@@ -39,7 +39,7 @@ public class Shooter extends SubsystemBase {
                 // When both stator currents drop below threshold, algae has left the shooter
                 if (inputs.currentAmps[0] < shooterConstants.shootCurrentThresholdAmps
                         && inputs.currentAmps[1] < shooterConstants.shootCurrentThresholdAmps) {
-                    setState(ShooterStates.ZERO);
+                    setState(ShooterStates.IDLE);
                 }
                 break;
 
@@ -48,8 +48,8 @@ public class Shooter extends SubsystemBase {
         }
     }
 
-    public void requestZero() {
-        setState(ShooterStates.ZERO);
+    public void requestIdle() {
+        setState(ShooterStates.IDLE);
     }
 
     public void requestPrep() {
@@ -68,9 +68,4 @@ public class Shooter extends SubsystemBase {
         return shooterState;
     }
 
-    @Override
-    public void periodic() {
-        shooterIO.updateInputs(inputs);
-        Logger.processInputs("Shooter", inputs);
-    }
 }

@@ -11,7 +11,7 @@ public class Rollers extends SubsystemBase {
 
     public enum RollersStates {
         IDLE,    // Rollers stopped
-        PROCESS  // Hopper rollers running to move algae through
+        PROCESS  // Hopper rollers running to move fuel through
     }
 
     public Rollers(RollersIO rollersIO) {
@@ -53,9 +53,5 @@ public class Rollers extends SubsystemBase {
         return rollersState;
     }
 
-    @Override
-    public void periodic() {
-        rollersIO.updateInputs(inputs);
-        Logger.processInputs("Rollers", inputs);
-    }
+
 }
