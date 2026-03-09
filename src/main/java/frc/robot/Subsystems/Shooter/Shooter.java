@@ -45,7 +45,7 @@ public class Shooter {
     }
 
     public boolean atSetpoint(){
-        return Math.abs(inputs.shooterVelMPS[0] - setpointVelocity) < 1;
+        return Math.abs(inputs.shooterVelMPS[0] - setpointVelocity) < 0.2;
     }
 
     public void requestIdle(){

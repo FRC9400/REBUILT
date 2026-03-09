@@ -25,8 +25,6 @@ public class Superstructure extends SubsystemBase {
 
     private final DoubleSupplier distanceSupplier;
 
-    private double interpolatedHood = 0.0;
-    private double interpolatedVelocity = 0.0;
 
     private double stateStartTime = 0;
     private SuperstructureStates systemState = SuperstructureStates.IDLE;
@@ -142,21 +140,19 @@ public class Superstructure extends SubsystemBase {
                 s_shooter.requestVelocity(shooterVelocity.getAsDouble());
                 break;
             case AUTO_SPIN_UP:
-                interpolatedHood = ShootingInterpolator.getHoodAngle(distance);
-                interpolatedVelocity = ShootingInterpolator.getShooterVelocity(distance);
-                s_hood.requestSetpoint(interpolatedHood);
+                s_hood.requestSetpoint(ShootingInterpolator.getHoodAngle(distance));
                 s_intake.requestLowered();
                 s_rollers.requestIdle();
-                s_shooter.requestVelocity(interpolatedVelocity);
-                if (s_shooter.atSetpoint() && s_hood.atSetpoint()) {
+                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance)+0.1);
+                if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 1){
                     setState(SuperstructureStates.AUTO_SHOOT);
                 }
                 break;
             case AUTO_SHOOT:
-                s_hood.requestSetpoint(interpolatedHood);
+                s_hood.requestSetpoint(ShootingInterpolator.getHoodAngle(distance));
                 s_intake.requestLowered();
                 s_rollers.requestVoltage(SHOOTRollersVelocity.getAsDouble());
-                s_shooter.requestVelocity(interpolatedVelocity);
+                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance)+0.1);
                 break;
             default:
                 break;

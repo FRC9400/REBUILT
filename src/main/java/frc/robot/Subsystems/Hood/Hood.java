@@ -38,7 +38,7 @@ public class Hood {
     }
 
     public boolean atSetpoint(){
-        return Math.abs(hoodInputs.hoodPosDeg - setpointDegrees) < 0.5;
+        return Math.abs(hoodInputs.hoodPosDeg - setpointDegrees) < 0.2;
     }
 
     public void requestIdle(){
