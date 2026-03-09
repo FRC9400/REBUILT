@@ -22,6 +22,7 @@ import frc.robot.Subsystems.Rollers.RollersIOTalonFX;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.ShooterIO;
 import frc.robot.Subsystems.Shooter.ShooterIOTalonFX;
+import frc.robot.Subsystems.Swerve.SnapToHubCommand;
 import frc.robot.Subsystems.Swerve.Swerve;
 
 public class RobotContainer {
@@ -54,7 +55,7 @@ public class RobotContainer {
     driver.x().onTrue(new InstantCommand(() -> superstructure.requestIntake()));
     driver.leftBumper().onTrue(new InstantCommand(() -> superstructure.requestOuttake()));
     driver.rightBumper().onTrue(new InstantCommand(() -> superstructure.requestUnJam()));
-    driver.leftTrigger().onTrue(new InstantCommand(() -> superstructure.requestSpinUpToShoot()));
+    driver.leftTrigger().whileTrue(new SnapToHubCommand(swerve));
     driver.rightTrigger().onTrue(new InstantCommand(() -> superstructure.requestAUTOSpinUp()));
   }
 
