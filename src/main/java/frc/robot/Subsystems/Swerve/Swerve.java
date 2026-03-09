@@ -5,25 +5,34 @@ import static edu.wpi.first.units.Units.Volts;
 
 import choreo.trajectory.SwerveSample;
 import com.ctre.phoenix6.SignalLogger;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.canIDConstants;
+import frc.robot.Constants.fieldConstants;
 import frc.robot.Constants.swerveConstants;
 import frc.robot.Constants.swerveConstants.kinematicsConstants;
+import frc.commons.LoggedTunableNumber;
 import frc.robot.LimelightHelpers;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +40,12 @@ import org.littletonrobotics.junction.Logger;
 
 public class Swerve extends SubsystemBase {
 
-  private final PIDController xController = new PIDController(4.6, 0, 0.023);
-  private final PIDController yController = new PIDController(4.205, 0, 0.015);
-  private final PIDController thetaController = new PIDController(3.57, 0, 0.005);
+  LoggedTunableNumber xkP = new LoggedTunableNumber("Swerve/X Controller kP", 4.6);
+  LoggedTunableNumber xkD = new LoggedTunableNumber("Swerve/X Controller kD", 0.023);
+  LoggedTunableNumber ykP = new LoggedTunableNumber("Swerve/Y Controller kP", 4.205);
+  LoggedTunableNumber ykD = new LoggedTunableNumber("Swerve/Y Controller kD", 0.015);
+
+  RobotConfig config;
 
   private boolean feedLeft = false;
   private final GyroIO gyroIO = new GyroIOPigeon2(canIDConstants.pigeon);
@@ -84,6 +96,12 @@ public class Swerve extends SubsystemBase {
 
   public Swerve() {
 
+    try{
+      config = RobotConfig.fromGUISettings();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
     moduleIOs[0] =
         new ModuleIOTalonFX(
             canIDConstants.driveMotor[0],
@@ -129,10 +147,33 @@ public class Swerve extends SubsystemBase {
       moduleIOs[i].setTurnBrakeMode(false);
     }
     this.fieldRelatve = true;
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     poseEstimator =
         new SwerveDrivePoseEstimator(kinematics, lastGyroYaw, getSwerveModulePositions(), poseRaw);
+
+      AutoBuilder.configure(
+            this::getPoseRaw, // Robot pose supplier
+            this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+            this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+                    new PIDConstants(xkP.getAsDouble(), 0, xkD.getAsDouble()), // Translation PID constants
+                    new PIDConstants(ykP.getAsDouble(), 0, xkD.getAsDouble()) // Rotation PID constants
+            ),
+            config, // The robot configuration
+            () -> {
+              // Boolean supplier that controls when the path will be mirrored for the red alliance
+              // This will flip the path being followed to the red side of the field.
+              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+              var alliance = DriverStation.getAlliance();
+              if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+              }
+              return false;
+            },
+            this // Reference to this subsystem to set requirements
+    );
   }
 
   @Override
@@ -151,6 +192,7 @@ public class Swerve extends SubsystemBase {
     Logger.recordOutput("Odometry/EstimatedPose", poseRaw);
     Logger.recordOutput("Odometry/PoseRaw", odometry.getPoseMeters());
     Logger.recordOutput("FeedLeft", feedLeft);
+    Logger.recordOutput("Swerve/DistanceToHub", getDistanceToHub());
   }
 
   public void requestDesiredState(
@@ -194,6 +236,8 @@ public class Swerve extends SubsystemBase {
         moduleIOs[i].setDesiredState(setpointModuleStates[i], false);
       }
     }
+
+
   }
 
   public void zeroWheels() {
@@ -347,6 +391,19 @@ public class Swerve extends SubsystemBase {
     gyroIO.setPosition(yawDegrees);
   }
 
+  public double getDistanceToHub() {
+    var alliance = DriverStation.getAlliance();
+    Translation2d hubPosition;
+    
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+        hubPosition = fieldConstants.RED_HUB_POS.getTranslation();
+    } else {
+        hubPosition = fieldConstants.BLUE_HUB_POS.getTranslation();
+    }
+    
+    return getPoseRaw().getTranslation().getDistance(hubPosition);
+}
+
   private void logModuleStates(String key, SwerveModuleState[] states) {
     List<Double> dataArray = new ArrayList<Double>();
     for (int i = 0; i < 4; i++) {
@@ -354,21 +411,5 @@ public class Swerve extends SubsystemBase {
       dataArray.add(states[i].speedMetersPerSecond);
     }
     Logger.recordOutput(key, dataArray.stream().mapToDouble(Double::doubleValue).toArray());
-  }
-
-  public void followChoreoTraj(SwerveSample sample) {
-    ChassisSpeeds speeds =
-        ChassisSpeeds.fromFieldRelativeSpeeds(
-            new ChassisSpeeds(
-                sample.vx
-                    + xController.calculate(poseEstimator.getEstimatedPosition().getX(), sample.x),
-                sample.vy
-                    + yController.calculate(poseEstimator.getEstimatedPosition().getY(), sample.y),
-                sample.omega
-                    + thetaController.calculate(
-                        poseEstimator.getEstimatedPosition().getRotation().getRadians(),
-                        sample.heading)),
-            poseEstimator.getEstimatedPosition().getRotation());
-    driveRobotRelative(speeds);
   }
 }
