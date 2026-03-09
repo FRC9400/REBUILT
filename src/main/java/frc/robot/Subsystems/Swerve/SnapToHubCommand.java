@@ -11,7 +11,7 @@ import frc.robot.Constants.fieldConstants;
 
 public class SnapToHubCommand extends Command {
     private final Swerve swerve;
-    private final PIDController thetaController = new PIDController(4, 0, 0.25);
+    private final PIDController thetaController = new PIDController(4, 0, 0.15);
 
     public SnapToHubCommand(Swerve swerve) {
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
@@ -29,7 +29,7 @@ public class SnapToHubCommand extends Command {
             : fieldConstants.RED_HUB_POS.getTranslation();
 
         Translation2d toHub = hubPosition.minus(swerve.getPoseRaw().getTranslation());
-        double targetAngle = Math.atan2(toHub.getY(), toHub.getX());
+        double targetAngle = Math.atan2(toHub.getY(), toHub.getX()) + Math.PI;
 
         double thetaFeedback = thetaController.calculate(
             swerve.getGyroPositionRadians(),
@@ -37,7 +37,7 @@ public class SnapToHubCommand extends Command {
         );
         thetaFeedback = MathUtil.clamp(thetaFeedback, -5, 5);
 
-        swerve.requestDesiredState(x * 2, y * 2, thetaFeedback, true, false);
+        swerve.requestDesiredState(x * 4.72, y * 4.72, thetaFeedback, true, false);
     }
 
     @Override
