@@ -11,6 +11,7 @@ public interface RollersIO {
         public double rollerCurrent = 0;
         public double rollerTemp = 0;
         public double rollerRPS = 0;
+        public double rollerVoltage = 0;
     }
 
     public default void updateInputs(RollersIOInputs rollersIOinputs){}

@@ -47,7 +47,7 @@ public class RobotContainer {
     driver.y().onTrue(new RunCommand(() -> swerve.zeroGyro()));
     driver.rightBumper().whileTrue(new RunCommand(() -> intake.requestIntakeVoltage(4)));
     driver.rightBumper().whileFalse(new RunCommand(() -> intake.requestIntakeVoltage(0)));
-    driver.leftBumper().whileTrue(new RunCommand(() -> shooter.requestVoltage(7)));
+    driver.leftBumper().whileTrue(new RunCommand(() -> shooter.requestVoltage(7.2)));
     driver.leftBumper().whileFalse(new RunCommand(() -> shooter.requestVoltage(0)));
     driver.leftBumper().whileTrue(new RunCommand(() -> rollers.requestVoltage(4.5)));
     driver.a().whileTrue(new RunCommand(() -> rollers.requestVoltage(-2)));

@@ -14,7 +14,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Temperature;
-
+import edu.wpi.first.units.measure.Voltage;
 import frc.commons.Conversions;
 import frc.robot.Constants.intakeConstants;
 import frc.robot.Subsystems.Intake.IntakeIO.IntakeIOInputs;
@@ -38,10 +38,12 @@ public class IntakeIOTalonFX implements IntakeIO{
     private final StatusSignal<Temperature> pivotTemp = pivot.getDeviceTemp();
     private final StatusSignal<AngularVelocity> pivotRPS = pivot.getRotorVelocity();
     private final StatusSignal<Angle> pivotPos = pivot.getRotorPosition();
+    private final StatusSignal<Voltage> pivotVoltage = pivot.getMotorVoltage();
 
     private final StatusSignal<Current> intakeCurrent = intake.getStatorCurrent();
-    private final StatusSignal<Temperature> intakeTemp = pivot.getDeviceTemp();
-    private final StatusSignal<AngularVelocity> intakeRPS = pivot.getRotorVelocity();
+    private final StatusSignal<Temperature> intakeTemp = intake.getDeviceTemp();
+    private final StatusSignal<Voltage> intakeVoltage = intake.getMotorVoltage();
+    private final StatusSignal<AngularVelocity> intakeRPS = intake.getRotorVelocity();
 
     public IntakeIOTalonFX() {
         var pivotMotorOutputConfigs = pivotConfigs.MotorOutput;
@@ -49,7 +51,7 @@ public class IntakeIOTalonFX implements IntakeIO{
         pivotMotorOutputConfigs.Inverted = intakeConstants.pivotInvert;
 
         var pivotCurrentLimitConfigs = pivotConfigs.CurrentLimits;
-        pivotCurrentLimitConfigs.StatorCurrentLimit =intakeConstants.pivotCurrentLimit;
+        pivotCurrentLimitConfigs.StatorCurrentLimit = intakeConstants.pivotCurrentLimit;
         pivotCurrentLimitConfigs.StatorCurrentLimitEnable = true;
 
         var slot0Configs = pivotConfigs.Slot0;
@@ -75,18 +77,19 @@ public class IntakeIOTalonFX implements IntakeIO{
 
         var feedbackConfigs = pivotConfigs.Feedback;
         feedbackConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-        pivot.setPosition(0);
 
         var intakeMotorOutputConfigs = intakeConfigs.MotorOutput;
         intakeMotorOutputConfigs.NeutralMode = NeutralModeValue.Coast;
         intakeMotorOutputConfigs.Inverted = intakeConstants.intakeInvert;
 
-        var intakeCurrentLimitConfigs = pivotConfigs.CurrentLimits;
-        intakeCurrentLimitConfigs.StatorCurrentLimit =intakeConstants.intakeCurrentLimit;
+        var intakeCurrentLimitConfigs = intakeConfigs.CurrentLimits;
+        intakeCurrentLimitConfigs.StatorCurrentLimit = intakeConstants.intakeCurrentLimit;
         intakeCurrentLimitConfigs.StatorCurrentLimitEnable = true;
 
         pivot.getConfigurator().apply(pivotConfigs);
         intake.getConfigurator().apply(intakeConfigs);
+
+        pivot.setPosition(0);
 
         BaseStatusSignal.setUpdateFrequencyForAll (
             50,
@@ -99,6 +102,7 @@ public class IntakeIOTalonFX implements IntakeIO{
             intakeRPS
         );
         intake.optimizeBusUtilization();
+        pivot.optimizeBusUtilization();
         
     }
 
@@ -120,12 +124,14 @@ public class IntakeIOTalonFX implements IntakeIO{
         intakeInputs.pivotSetpointRot = Conversions.DegreesToRotations(pivotSetpoint, intakeConstants.gearRatio);
         intakeInputs.pivotTemperature = pivotTemp.getValueAsDouble();
         intakeInputs.pivotRPS = pivotRPS.getValueAsDouble();
+        intakeInputs.pivotVoltage = pivotVoltage.getValueAsDouble();
 
         intakeInputs.intakeTemperature = intakeTemp.getValueAsDouble();
         intakeInputs.intakeAppliedVolts = intakeVoltageRequest.Output;
         intakeInputs.intakeCurrent = intakeCurrent.getValueAsDouble();
         intakeInputs.intakeRPS = intakeRPS.getValueAsDouble();
         intakeInputs.intakeSetpointVolts = this.intakeSetpointVolts;
+        intakeInputs.intakeVoltage = intakeVoltage.getValueAsDouble();
 
     }
 

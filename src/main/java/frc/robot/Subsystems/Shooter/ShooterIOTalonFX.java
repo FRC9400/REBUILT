@@ -13,7 +13,7 @@ import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Temperature;
-
+import edu.wpi.first.units.measure.Voltage;
 import frc.commons.Conversions;
 import frc.robot.Constants.canIDConstants;
 import frc.robot.Constants.shooterConstants;
@@ -22,11 +22,9 @@ public class ShooterIOTalonFX implements ShooterIO{
     private final TalonFX leftMotor = new TalonFX(canIDConstants.leftShooterMotor, "rio");
     private final TalonFX rightMotor = new TalonFX(canIDConstants.rightShooterMotor, "rio");
     private TalonFXConfiguration leftMotorConfigs = new TalonFXConfiguration();
-    private TalonFXConfiguration rightMotorConfigs = new TalonFXConfiguration();
 
     private VoltageOut shootRequestVoltage = new VoltageOut(0).withEnableFOC(true);
     private VelocityVoltage leftShootRequestVelocity = new VelocityVoltage(0).withEnableFOC(true);
-    private VelocityVoltage rightShootRequestVelocity = new VelocityVoltage(0).withEnableFOC(true);
 
     private final StatusSignal<Current> leftShooterCurrent = leftMotor.getStatorCurrent();
     private final StatusSignal<Current> rightShooterCurrent = rightMotor.getStatorCurrent();
@@ -34,9 +32,10 @@ public class ShooterIOTalonFX implements ShooterIO{
     private final StatusSignal<Temperature> rightShooterTemp = rightMotor.getDeviceTemp();
     private final StatusSignal<AngularVelocity> leftShooterSpeedRPS = leftMotor.getRotorVelocity();
     private final StatusSignal<AngularVelocity> rightShooterSpeedRPS = rightMotor.getRotorVelocity();
+    private final StatusSignal<Voltage> leftVoltage = leftMotor.getMotorVoltage();
+    private final StatusSignal<Voltage> rightVoltage = rightMotor.getMotorVoltage();
     
     private double leftShooterSetpointMPS;
-    private double rightShooterSetpointMPS;
 
     public ShooterIOTalonFX() {
 
@@ -49,17 +48,7 @@ public class ShooterIOTalonFX implements ShooterIO{
         leftMotorConfigs.Slot0.kV = 0;
         leftMotorConfigs.Slot0.kA = 0;
 
-        rightMotorConfigs.CurrentLimits.StatorCurrentLimit = shooterConstants.shooterCurrentLimit;
-        rightMotorConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
-        rightMotorConfigs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        rightMotorConfigs.Slot0.kP = 0;
-        rightMotorConfigs.Slot0.kD = 0;
-        rightMotorConfigs.Slot0.kS = 0;
-        rightMotorConfigs.Slot0.kV = 0;
-        rightMotorConfigs.Slot0.kA = 0;
-
         leftMotor.getConfigurator().apply(leftMotorConfigs);
-        rightMotor.getConfigurator().apply(rightMotorConfigs);
 
         rightMotor.setControl(new Follower(leftMotor.getDeviceID(), MotorAlignmentValue.Opposed));
 
@@ -70,14 +59,15 @@ public class ShooterIOTalonFX implements ShooterIO{
             leftShooterTemp,
             rightShooterTemp,
             leftShooterSpeedRPS,
-            rightShooterSpeedRPS
+            rightShooterSpeedRPS,
+            leftVoltage,
+            rightVoltage
         );
 
         leftMotor.optimizeBusUtilization();
         rightMotor.optimizeBusUtilization();
 
         leftShooterSetpointMPS = 0;
-        rightShooterSetpointMPS = 0;
     }   
 
     public void updateInputs(ShooterIOInputs inputs) {
@@ -87,29 +77,29 @@ public class ShooterIOTalonFX implements ShooterIO{
             leftShooterTemp,
             rightShooterTemp,
             leftShooterSpeedRPS,
-            rightShooterSpeedRPS
+            rightShooterSpeedRPS,
+            leftVoltage,
+            rightVoltage
         );
 
         inputs.appliedVolts = shootRequestVoltage.Output;
+        inputs.appliedVelocity = leftShootRequestVelocity.Velocity;
         inputs.currentAmps = new double[] { leftShooterCurrent.getValueAsDouble(),
                 rightShooterCurrent.getValueAsDouble() };
-        inputs.tempF = new double[] { leftShooterTemp.getValueAsDouble(),
+        inputs.temp = new double[] { leftShooterTemp.getValueAsDouble(),
                 rightShooterTemp.getValueAsDouble() };
         inputs.shooterVelMPS = new double[] {Conversions.RPStoMPS(leftShooterSpeedRPS.getValueAsDouble(), shooterConstants.wheelCircumferenceMeters, 1), Conversions.RPStoMPS(rightShooterSpeedRPS.getValueAsDouble(), shooterConstants.wheelCircumferenceMeters, 1)};
-        inputs.shooterSetpointsMPS = new double[] {leftShooterSetpointMPS, rightShooterSetpointMPS};
+        inputs.shooterSetpointMPS = leftShooterSetpointMPS;
+        inputs.shooterVoltage = new double[] {leftVoltage.getValueAsDouble(), rightVoltage.getValueAsDouble()};
     }
 
-    public void setVelocity(double velocity, double ratio) {
+    public void setVelocity(double velocity) {
         this.leftShooterSetpointMPS = velocity;
-        this.rightShooterSetpointMPS = velocity * ratio;
-        // Control both motors with left as master velocity reference
         leftMotor.setControl(leftShootRequestVelocity.withVelocity(Conversions.MPStoRPS(velocity, shooterConstants.wheelCircumferenceMeters, 1)));
     }
 
     public void zeroVelocity(){
         this.leftShooterSetpointMPS = 0;
-        this.rightShooterSetpointMPS = 0;
-        // Stop both motors
         leftMotor.setControl(leftShootRequestVelocity.withVelocity(0));
     }
 

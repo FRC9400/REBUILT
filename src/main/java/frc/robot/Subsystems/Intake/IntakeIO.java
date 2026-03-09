@@ -12,12 +12,14 @@ public interface IntakeIO {
         public double pivotPosDeg = 0;
         public double pivotPosRot = 0;
         public double pivotTemperature = 0;
+        public double pivotVoltage = 0;
         public double pivotRPS = 0;
 
         public double intakeTemperature = 0;
         public double intakeAppliedVolts = 0;
         public double intakeCurrent = 0;
         public double intakeRPS = 0;
+        public double intakeVoltage = 0;
         public double intakeSetpointVolts = 0;
     }
 

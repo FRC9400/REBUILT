@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Rollers extends SubsystemBase{
     private final RollersIO rollersIO;
     private final RollersIOInputsAutoLogged inputs = new RollersIOInputsAutoLogged();
-    private double setpointVolts = 0;
 
     public Rollers(RollersIO rollersIO){
         this.rollersIO = rollersIO;

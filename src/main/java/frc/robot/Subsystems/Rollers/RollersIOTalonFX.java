@@ -71,6 +71,7 @@ public class RollersIOTalonFX implements RollersIO{
 
         inputs.rollerCurrent = rollCurrent.getValueAsDouble();
         inputs.rollerTemp = rollTemp.getValueAsDouble();
+        inputs.rollerVoltage = rollVoltage.getValueAsDouble();
         inputs.rollerRPS = rollRPS.getValueAsDouble();
     }
 

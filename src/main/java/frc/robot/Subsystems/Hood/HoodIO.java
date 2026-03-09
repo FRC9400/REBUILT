@@ -12,6 +12,7 @@ public interface HoodIO {
         public double hoodAppliedDeg = 0;
         public double hoodCurrent = 0;
         public double hoodRPS = 0;
+        public double hoodVolts = 0;
         public double hoodTemp = 0;
         public double hoodPosDeg = 0;
         public double hoodPosRot = 0;

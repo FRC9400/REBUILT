@@ -47,7 +47,7 @@ public class Intake extends SubsystemBase {
 
             pivotRoutine
                     .dynamic(Direction.kReverse)
-                    .until(() -> inputs.pivotPosDeg < 5), //Keep in mind the max height is around 0.6
+                    .until(() -> inputs.pivotPosDeg < 5),
             this.runOnce(() -> intakeIO.requestPivotVoltage(0)),
             Commands.waitSeconds(1),
             this.runOnce(() -> SignalLogger.stop()));

@@ -21,7 +21,6 @@ public class Shooter extends SubsystemBase{
 
     public Shooter(ShooterIO shooterIO){
         this.shooterIO = shooterIO;
-        setpointVelocity = 0.0;
         
         shooterRoutine = new SysIdRoutine(
             new SysIdRoutine.Config(null, Volts.of(4), null,
@@ -61,13 +60,11 @@ public class Shooter extends SubsystemBase{
         Logger.processInputs("Shooter", inputs);
     }
 
-    public void setVelocity(double velocity, double ratio) {
-        setpointVelocity = velocity;
-        shooterIO.setVelocity(setpointVelocity, ratio);
+    public void setVelocity(double velocity) {
+        shooterIO.setVelocity(setpointVelocity);
     }
 
     public void zeroVelocity() {
-        setpointVelocity = 0;
         shooterIO.zeroVelocity();
     }
 

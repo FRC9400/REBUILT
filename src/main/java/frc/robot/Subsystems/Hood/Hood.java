@@ -14,8 +14,6 @@ import static edu.wpi.first.units.Units.Volts;
 public class Hood extends SubsystemBase{
     private final HoodIO hoodIO;
     private HoodIOInputsAutoLogged hoodInputs = new HoodIOInputsAutoLogged();
-    private double setpointDeg = 0;
-    private double setpointVolts = 0;
     private final SysIdRoutine hoodRoutine;
 
     public Hood(HoodIO hoodIO){
@@ -43,13 +41,13 @@ public class Hood extends SubsystemBase{
 
             hoodRoutine
                     .dynamic(Direction.kForward)
-                    .until(() -> Math.abs(hoodInputs.appliedDeg) > 13),
+                    .until(() -> Math.abs(hoodInputs.hoodPosDeg) > 13),
             this.runOnce(() -> hoodIO.requestVoltage(0)),
             Commands.waitSeconds(1),
 
             hoodRoutine
                     .dynamic(Direction.kReverse)
-                    .until(() -> hoodInputs.appliedDeg < 4),
+                    .until(() -> hoodInputs.hoodPosDeg < 2),
             this.runOnce(() -> hoodIO.requestVoltage(0)),
             Commands.waitSeconds(1),
             this.runOnce(() -> SignalLogger.stop()));

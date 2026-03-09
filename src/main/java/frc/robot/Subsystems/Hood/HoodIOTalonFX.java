@@ -61,10 +61,10 @@ public class HoodIOTalonFX implements HoodIO {
         motionMagicConfigs.MotionMagicAcceleration = 0.0;
         motionMagicConfigs.MotionMagicJerk = 0.0;
 
-        hoodMotor.setPosition(0);
-
         // Apply Configs
         hoodMotor.getConfigurator().apply(hoodConfigs);
+
+        hoodMotor.setPosition(0);
 
         // Updates
         BaseStatusSignal.setUpdateFrequencyForAll(
@@ -103,6 +103,7 @@ public class HoodIOTalonFX implements HoodIO {
         hoodInputs.hoodCurrent = hoodCurrent.getValueAsDouble();
         hoodInputs.hoodTemp = hoodTemp.getValueAsDouble();
         hoodInputs.hoodRPS = hoodAngularVelocity.getValueAsDouble();
+        hoodInputs.hoodVolts = hoodVoltage.getValueAsDouble();
     }
 
     // Voltage Request
