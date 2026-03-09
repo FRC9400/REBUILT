@@ -40,8 +40,8 @@ public class RobotContainer {
     swerve.setDefaultCommand(
         new TeleopSwerve(
             swerve,
-            () -> -driver.getRawAxis(XboxController.Axis.kLeftY.value),
-            () -> -driver.getRawAxis(XboxController.Axis.kLeftX.value),
+            () -> driver.getRawAxis(XboxController.Axis.kLeftY.value),
+            () -> driver.getRawAxis(XboxController.Axis.kLeftX.value),
             () -> -driver.getRawAxis(XboxController.Axis.kRightX.value)));
 
     configureBindings();

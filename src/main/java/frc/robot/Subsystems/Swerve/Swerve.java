@@ -211,7 +211,7 @@ public class Swerve extends SubsystemBase {
   }
 
   public void zeroGyro() {
-    gyroIO.reset();
+    gyroIO.setPosition(0.0);
   }
 
   public void updateOdometry() {
@@ -220,17 +220,17 @@ public class Swerve extends SubsystemBase {
     poseEstimator.update(lastGyroYaw, getSwerveModulePositions());
 
     LimelightHelpers.SetRobotOrientation(
-    "SugarGlider2",
+    "limelight",
     poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
     0, 0, 0, 0, 0);
 
-LimelightHelpers.PoseEstimate mt2 = 
-    LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("SugarGlider2");
+    LimelightHelpers.PoseEstimate mt1 = 
+        LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
 
-if (mt2 != null && mt2.tagCount != 0) {
-    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
-    poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
-}
+    if (mt1 != null && mt1.tagCount != 0) {
+        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 0.7));
+        poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
+    }
 
     poseRaw = poseEstimator.getEstimatedPosition();
     odometry.update(getRotation2d(), getSwerveModulePositions());
