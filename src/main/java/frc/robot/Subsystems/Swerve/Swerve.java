@@ -220,19 +220,17 @@ public class Swerve extends SubsystemBase {
     poseEstimator.update(lastGyroYaw, getSwerveModulePositions());
 
     LimelightHelpers.SetRobotOrientation(
-        "SugarGlider2",
-        poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
-        0,
-        0,
-        0,
-        0,
-        0);
-    LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("SugarGlider2");
+    "SugarGlider2",
+    poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
+    0, 0, 0, 0, 0);
 
-    if (mt1 != null && mt1.tagCount != 0) {
-      poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 10));
-      poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
-    }
+LimelightHelpers.PoseEstimate mt2 = 
+    LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("SugarGlider2");
+
+if (mt2 != null && mt2.tagCount != 0) {
+    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
+    poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
+}
 
     poseRaw = poseEstimator.getEstimatedPosition();
     odometry.update(getRotation2d(), getSwerveModulePositions());
