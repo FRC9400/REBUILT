@@ -1,0 +1,145 @@
+package frc.robot.Subsystems;
+
+import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.commons.LoggedTunableNumber;
+import frc.robot.Subsystems.Hood.Hood;
+import frc.robot.Subsystems.Hood.HoodIO;
+import frc.robot.Subsystems.Intake.Intake;
+import frc.robot.Subsystems.Intake.IntakeIO;
+import frc.robot.Subsystems.Rollers.Rollers;
+import frc.robot.Subsystems.Rollers.RollersIO;
+import frc.robot.Subsystems.Shooter.Shooter;
+import frc.robot.Subsystems.Shooter.ShooterIO;
+
+public class Superstructure extends SubsystemBase {
+    private Hood s_hood;
+    private Intake s_intake;
+    private Rollers s_rollers;
+    private Shooter s_shooter;
+
+    private double stateStartTime = 0;
+    private SuperstructureStates systemState = SuperstructureStates.IDLE;
+
+    LoggedTunableNumber INTAKEintakeVoltage = new LoggedTunableNumber("Superstructure/INTAKE Intake Voltage", 3);
+    LoggedTunableNumber INTAKErollersVoltage = new LoggedTunableNumber("Superstructure/INTAKE Rollers Voltage", 3);
+
+    LoggedTunableNumber UNJAMrollersVoltage = new LoggedTunableNumber("Superstructure/UNJAM Rollers Voltage", -3);
+    LoggedTunableNumber UNJAMshooterVoltage = new LoggedTunableNumber("Superstructure/UNJAM Shooter Voltage", -4);
+
+    LoggedTunableNumber hoodsetpoint = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Hood Setpoint Deg", 7);
+    LoggedTunableNumber shooterVelocity = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Shooter Velocity", 20);
+    LoggedTunableNumber SHOOTRollersVelocity = new LoggedTunableNumber("Superstructure/SHOOT Rollers Velocity", 5);
+
+    public Superstructure(HoodIO hoodIO, IntakeIO intakeIO, RollersIO rollersIO, ShooterIO shooterIO){
+        this.s_hood = new Hood(hoodIO);
+        this.s_intake = new Intake(intakeIO);
+        this.s_rollers = new Rollers(rollersIO);
+        this.s_shooter = new Shooter(shooterIO);        
+    }
+
+    public enum SuperstructureStates {
+        IDLE,
+        BUMP,
+        INTAKE,
+        OUTTAKE,
+        UN_JAM,
+        SPIN_UP,
+        SHOOT,
+        PIVOT_SHAKING
+    }
+
+    @Override
+    public void periodic(){
+        s_hood.Loop();
+        s_intake.Loop();
+        s_rollers.Loop();
+        s_shooter.Loop();
+        Logger.recordOutput("SuperstructureState", this.systemState);
+        Logger.recordOutput("State start time", stateStartTime);
+        switch(systemState){
+            case IDLE:
+                s_hood.requestIdle();
+                s_intake.requestIdle();
+                s_rollers.requestIdle();
+                s_shooter.requestIdle();
+                break;
+            case BUMP:
+                s_hood.requestIdle();
+                s_intake.requestRaised();
+                s_rollers.requestIdle();
+                s_shooter.requestIdle();
+                break;
+            case INTAKE:
+                s_hood.requestIdle();
+                s_intake.requestIntake(INTAKEintakeVoltage.getAsDouble());
+                s_rollers.requestVoltage(INTAKErollersVoltage.getAsDouble());
+                s_shooter.requestIdle();
+                break;
+            case OUTTAKE:
+                s_hood.requestIdle();
+                s_intake.requestIntake(-INTAKEintakeVoltage.getAsDouble());
+                s_rollers.requestVoltage(-INTAKErollersVoltage.getAsDouble());
+                s_shooter.requestIdle();
+                break;
+            case UN_JAM:
+                s_hood.requestIdle();
+                s_intake.requestLowered();
+                s_rollers.requestVoltage(UNJAMrollersVoltage.getAsDouble());
+                s_shooter.requestVoltage(UNJAMshooterVoltage.getAsDouble());
+                break;
+            case SPIN_UP:
+                s_hood.requestSetpoint(hoodsetpoint.getAsDouble());
+                s_intake.requestLowered();
+                s_rollers.requestIdle();
+                s_shooter.requestVelocity(shooterVelocity.getAsDouble());
+                if (s_shooter.atSetpoint() && s_hood.atSetpoint()){
+                    setState(SuperstructureStates.SHOOT);
+                }
+                break;
+            case SHOOT:
+                s_hood.requestSetpoint(hoodsetpoint.getAsDouble());
+                s_intake.requestLowered();
+                s_rollers.requestVoltage(SHOOTRollersVelocity.getAsDouble());
+                s_shooter.requestVelocity(shooterVelocity.getAsDouble());
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void requestIdle(){
+        setState(SuperstructureStates.IDLE);
+    }
+
+    public void requestBump(){
+        setState(SuperstructureStates.BUMP);
+    }
+
+    public void requestIntake(){
+        setState(SuperstructureStates.INTAKE);
+    }
+
+    public void requestOuttake(){
+        setState(SuperstructureStates.OUTTAKE);
+    }
+
+    public void requestUnJam(){
+        setState(SuperstructureStates.UN_JAM);
+    }
+
+    public void requestSpinUpToShoot(){
+        setState(SuperstructureStates.SPIN_UP);
+    }
+
+    public void setState(SuperstructureStates nextState){
+        systemState = nextState;
+        stateStartTime = RobotController.getFPGATime() / 1E6;
+    }
+
+    public SuperstructureStates getState(){
+        return systemState;
+    }
+}

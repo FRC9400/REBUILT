@@ -47,19 +47,19 @@ public class HoodIOTalonFX implements HoodIO {
         hoodConfigs.MotorOutput.Inverted = hoodConstants.hoodInvert;
 
         // PIDF Values (Slot 0)
-        hoodConfigs.Slot0.kP = 0;
+        hoodConfigs.Slot0.kP = 12;
         hoodConfigs.Slot0.kI = 0;
         hoodConfigs.Slot0.kD = 0;
-        hoodConfigs.Slot0.kS = 0;
-        hoodConfigs.Slot0.kV = 0;
-        hoodConfigs.Slot0.kA = 0;
+        hoodConfigs.Slot0.kS = 0.7;
+        hoodConfigs.Slot0.kV = 0.015;
+        hoodConfigs.Slot0.kA = 0.0015;
         hoodConfigs.Slot0.kG = 0;
         hoodConfigs.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
 
         var motionMagicConfigs = hoodConfigs.MotionMagic;
-        motionMagicConfigs.MotionMagicCruiseVelocity = 0.0;
-        motionMagicConfigs.MotionMagicAcceleration = 0.0;
-        motionMagicConfigs.MotionMagicJerk = 0.0;
+        motionMagicConfigs.MotionMagicCruiseVelocity = 30.0;
+        motionMagicConfigs.MotionMagicAcceleration = 60.0;
+        motionMagicConfigs.MotionMagicJerk = 10000.0;
 
         // Apply Configs
         hoodMotor.getConfigurator().apply(hoodConfigs);

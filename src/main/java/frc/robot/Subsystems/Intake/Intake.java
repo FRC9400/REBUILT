@@ -2,73 +2,82 @@ package frc.robot.Subsystems.Intake;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.ctre.phoenix6.SignalLogger;
+import frc.robot.Constants.intakeConstants;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
-import static edu.wpi.first.units.Units.Volts;
-
-public class Intake extends SubsystemBase {
+public class Intake {
     private final IntakeIO intakeIO;
     private IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
-    private final SysIdRoutine pivotRoutine;
+    private IntakeStates intakeState = IntakeStates.IDLE;
+    private double voltageSetpoint = 0;
+    private double setpointDeg = 0;
 
     public Intake(IntakeIO intakeIO) {
         this.intakeIO = intakeIO;
-        pivotRoutine = new SysIdRoutine(
-            new SysIdRoutine.Config(null, Volts.of(4), null,
-                    (state) -> SignalLogger.writeString("state", state.toString())),
-            new SysIdRoutine.Mechanism((volts) -> intakeIO.requestPivotVoltage(volts.in(Volts)), null, this));
     }
 
-    public Command intakeSysIdCmd(){
-        return Commands.sequence(
-            this.runOnce(() -> SignalLogger.start()),
-            pivotRoutine
-                    .quasistatic(Direction.kForward)
-                    .until(() -> Math.abs(inputs.pivotPosDeg) > 90), 
-            this.runOnce(() -> intakeIO.requestPivotVoltage(0)),
-            Commands.waitSeconds(1),
-            pivotRoutine
-                    .quasistatic(Direction.kReverse)
-                    .until(() -> inputs.pivotPosDeg < 5), 
-            this.runOnce(() -> intakeIO.requestPivotVoltage(0)),
-            Commands.waitSeconds(1),
-
-            pivotRoutine
-                    .dynamic(Direction.kForward)
-                    .until(() -> Math.abs(inputs.pivotPosDeg) > 90),
-            this.runOnce(() -> intakeIO.requestPivotVoltage(0)),
-            Commands.waitSeconds(1),
-
-            pivotRoutine
-                    .dynamic(Direction.kReverse)
-                    .until(() -> inputs.pivotPosDeg < 5),
-            this.runOnce(() -> intakeIO.requestPivotVoltage(0)),
-            Commands.waitSeconds(1),
-            this.runOnce(() -> SignalLogger.stop()));
+    public enum IntakeStates{
+        IDLE,
+        LOWERED,
+        RAISED,
+        SETPOINT,
+        INTAKE
     }
 
-    @Override
-    public void periodic(){
+    public void Loop(){
         intakeIO.updateInputs(inputs);
         Logger.processInputs("Intake", inputs);
+        Logger.recordOutput("Intake", this.intakeState);
+        switch(intakeState){
+            case IDLE:
+                intakeIO.requestIntakeVoltage(0);
+                intakeIO.requestPivotVoltage(0);
+                break;
+            case LOWERED:
+                intakeIO.requestIntakeVoltage(0);
+                intakeIO.requestSetpoint(intakeConstants.maxDeg);
+                break;
+            case RAISED:
+                intakeIO.requestIntakeVoltage(0);
+                intakeIO.requestSetpoint(intakeConstants.minDeg);
+                break;
+            case INTAKE:
+                intakeIO.requestIntakeVoltage(voltageSetpoint);
+                intakeIO.requestSetpoint(intakeConstants.maxDeg);
+                break;
+            case SETPOINT:
+                intakeIO.requestIntakeVoltage(0);
+                intakeIO.requestSetpoint(setpointDeg);
+                break;
+            default:
+                break;
+        }
+
     }
 
-    public void requestIntakeVoltage(double volts){
-        intakeIO.requestIntakeVoltage(volts);
+    public void requestIdle(){
+        setState(IntakeStates.IDLE);
     }
 
-    public void requestPivotVoltage(double volts){
-        intakeIO.requestPivotVoltage(volts);
+    public void requestLowered(){
+        setState(IntakeStates.LOWERED);
     }
 
-    public void requestSetpoint(double setpointDeg){
-        intakeIO.requestSetpoint(setpointDeg);
+    public void requestRaised(){
+        setState(IntakeStates.RAISED);
     }
     
+    public void requestIntake(double volts){
+        voltageSetpoint = volts;
+        setState(IntakeStates.INTAKE);
+    }
+
+    public void requestSetpoint(double deg){
+        setpointDeg = deg;
+        setState(IntakeStates.SETPOINT);
+    }
+
+    public void setState(IntakeStates nextState){
+        this.intakeState = nextState;
+    }
+
 }

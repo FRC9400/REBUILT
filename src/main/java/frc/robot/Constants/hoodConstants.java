@@ -6,7 +6,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 public class hoodConstants {
 
     /* Motor Inverts */
-    public static final InvertedValue hoodInvert = InvertedValue.CounterClockwise_Positive;
+    public static final InvertedValue hoodInvert = InvertedValue.Clockwise_Positive;
 
     /* Current Limits */
     public static final double hoodCurrentLimit = 70;

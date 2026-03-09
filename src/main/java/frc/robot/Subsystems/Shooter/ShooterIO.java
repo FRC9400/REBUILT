@@ -10,6 +10,7 @@ public interface ShooterIO {
         public double shooterSetpointMPS = 0.0;
         public double appliedVelocity;
         public double[] shooterVelMPS = new double[] {};
+        public double[] shooterVelRPS = new double[] {};
         public double[] currentAmps = new double[] {};
         public double[] shooterVoltage = new double[] {};
         public double[] temp = new double[] {};
@@ -19,7 +20,7 @@ public interface ShooterIO {
     public default void updateInputs(ShooterIOInputs inputs) {
     }
 
-    public default void setVelocity(double velocity) {
+    public default void requestVelocity(double velocity) {
     }
 
     public default void zeroVelocity() {

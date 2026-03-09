@@ -56,19 +56,19 @@ public class IntakeIOTalonFX implements IntakeIO{
 
         var slot0Configs = pivotConfigs.Slot0;
         //Sys IDs set to 0 for now
-        slot0Configs.kP = 0.0;
+        slot0Configs.kP = 0.8;
         slot0Configs.kI = 0.0;
-        slot0Configs.kD = 0.0;
-        slot0Configs.kS = 0.0;
-        slot0Configs.kV = 0.0;
-        slot0Configs.kA = 0.0;
-        slot0Configs.kG = 0.0;
+        slot0Configs.kD = 0.03;
+        slot0Configs.kS = 0.20835;
+        slot0Configs.kV = 0.0084435;
+        slot0Configs.kA = 0.01;
+        slot0Configs.kG = 0.68633;
         slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
 
         var motionMagicConfigs = pivotConfigs.MotionMagic;
-        motionMagicConfigs.MotionMagicCruiseVelocity = 0.0;
-        motionMagicConfigs.MotionMagicAcceleration = 0.0;
-        motionMagicConfigs.MotionMagicJerk = 0.0;
+        motionMagicConfigs.MotionMagicCruiseVelocity = 60.0;
+        motionMagicConfigs.MotionMagicAcceleration = 120.0;
+        motionMagicConfigs.MotionMagicJerk = 10000.0;
 
         pivotMotionMagicRequest = new MotionMagicVoltage(0).withSlot(0).withEnableFOC(true);
         pivotVoltageRequest = new VoltageOut(0).withEnableFOC(true);

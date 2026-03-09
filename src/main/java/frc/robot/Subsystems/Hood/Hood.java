@@ -2,69 +2,60 @@ package frc.robot.Subsystems.Hood;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.ctre.phoenix6.SignalLogger;
-
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import static edu.wpi.first.units.Units.Volts;
-
-public class Hood extends SubsystemBase{
+public class Hood {
     private final HoodIO hoodIO;
     private HoodIOInputsAutoLogged hoodInputs = new HoodIOInputsAutoLogged();
-    private final SysIdRoutine hoodRoutine;
+    private HoodStates hoodState = HoodStates.IDLE;
+    private double setpointDegrees = 0;
 
     public Hood(HoodIO hoodIO){
         this.hoodIO = hoodIO;
-        hoodRoutine = new SysIdRoutine(
-            new SysIdRoutine.Config(null, Volts.of(4), null,
-                    (state) -> SignalLogger.writeString("state", state.toString())),
-            new SysIdRoutine.Mechanism((volts) -> hoodIO.requestVoltage(volts.in(Volts)), null, this));
     
     }
 
-    public Command hoodSysIdCmd(){
-        return Commands.sequence(
-            this.runOnce(() -> SignalLogger.start()),
-            hoodRoutine
-                    .quasistatic(Direction.kForward)
-                    .until(() -> Math.abs(hoodInputs.hoodPosDeg) > 13), 
-            this.runOnce(() -> hoodIO.requestVoltage(0)),
-            Commands.waitSeconds(1),
-            hoodRoutine
-                    .quasistatic(Direction.kReverse)
-                    .until(() -> hoodInputs.hoodPosDeg < 2), 
-            this.runOnce(() -> hoodIO.requestVoltage(0)),
-            Commands.waitSeconds(1),
-
-            hoodRoutine
-                    .dynamic(Direction.kForward)
-                    .until(() -> Math.abs(hoodInputs.hoodPosDeg) > 13),
-            this.runOnce(() -> hoodIO.requestVoltage(0)),
-            Commands.waitSeconds(1),
-
-            hoodRoutine
-                    .dynamic(Direction.kReverse)
-                    .until(() -> hoodInputs.hoodPosDeg < 2),
-            this.runOnce(() -> hoodIO.requestVoltage(0)),
-            Commands.waitSeconds(1),
-            this.runOnce(() -> SignalLogger.stop()));
+    public enum HoodStates{
+        IDLE,
+        ZERO,
+        SETPOINT;
     }
 
-    @Override
-    public void periodic(){
+    public void Loop(){
         hoodIO.updateInputs(hoodInputs);
         Logger.processInputs("Hood", hoodInputs);
+        Logger.recordOutput("Hood", this.hoodState);
+        switch(hoodState){
+            case IDLE:
+                hoodIO.requestVoltage(0);
+                break;
+            case ZERO:
+                hoodIO.requestMotionMagic(0);
+                break;
+            case SETPOINT:
+                hoodIO.requestMotionMagic(setpointDegrees);
+            default:
+                break;
+        }
     }
 
-    public void requestMotionMagic(double setpointDeg){
-        hoodIO.requestMotionMagic(setpointDeg);
+    public boolean atSetpoint(){
+        return Math.abs(hoodInputs.hoodPosDeg - setpointDegrees) < 0.5;
     }
 
-    public void requestVoltage(double setpointVolts){
-        hoodIO.requestVoltage(setpointVolts);
+    public void requestIdle(){
+        setState(HoodStates.IDLE);
+    }
+    
+    public void requestZero(){
+        setState(HoodStates.ZERO);
+    }
+
+    public void requestSetpoint(double setpointDeg){
+        setpointDegrees = setpointDeg;
+        setState(HoodStates.SETPOINT);
+    }
+
+    public void setState(HoodStates nextState){
+        this.hoodState = nextState;
     }
 
 }
