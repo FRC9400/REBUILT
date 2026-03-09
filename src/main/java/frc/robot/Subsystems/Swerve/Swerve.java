@@ -96,12 +96,6 @@ public class Swerve extends SubsystemBase {
 
   public Swerve() {
 
-    try{
-      config = RobotConfig.fromGUISettings();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
     moduleIOs[0] =
         new ModuleIOTalonFX(
             canIDConstants.driveMotor[0],
@@ -151,14 +145,16 @@ public class Swerve extends SubsystemBase {
     poseEstimator =
         new SwerveDrivePoseEstimator(kinematics, lastGyroYaw, getSwerveModulePositions(), poseRaw);
 
-      AutoBuilder.configure(
+      try{
+      config = RobotConfig.fromGUISettings();
+        AutoBuilder.configure(
             this::getPoseRaw, // Robot pose supplier
             this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
             this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
                     new PIDConstants(xkP.getAsDouble(), 0, xkD.getAsDouble()), // Translation PID constants
-                    new PIDConstants(ykP.getAsDouble(), 0, xkD.getAsDouble()) // Rotation PID constants
+                    new PIDConstants(ykP.getAsDouble(), 0, ykD.getAsDouble()) // Rotation PID constants
             ),
             config, // The robot configuration
             () -> {
@@ -174,6 +170,10 @@ public class Swerve extends SubsystemBase {
             },
             this // Reference to this subsystem to set requirements
     );
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+      
   }
 
   @Override
