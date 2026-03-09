@@ -24,13 +24,17 @@ public class Superstructure extends SubsystemBase {
     private SuperstructureStates systemState = SuperstructureStates.IDLE;
 
     LoggedTunableNumber INTAKEintakeVoltage = new LoggedTunableNumber("Superstructure/INTAKE Intake Voltage", 3);
-    LoggedTunableNumber INTAKErollersVoltage = new LoggedTunableNumber("Superstructure/INTAKE Rollers Voltage", 3);
+    LoggedTunableNumber OUTTAKErollersVoltage = new LoggedTunableNumber("Superstructure/OUTTAKE Rollers Voltage", -3);
+
+    LoggedTunableNumber INTAKE2rollersVoltage = new LoggedTunableNumber("Superstructure/INTAKE 2 Rollers Voltage", 3);
+    LoggedTunableNumber INTAKE2intakeVoltage = new LoggedTunableNumber("Superstructure/INTAKE 2 Intake Voltage", 3);
+    LoggedTunableNumber INTAKE2shooterVoltage = new LoggedTunableNumber("Superstructure/INTAKE 2 Shooter Voltage", -2);
 
     LoggedTunableNumber UNJAMrollersVoltage = new LoggedTunableNumber("Superstructure/UNJAM Rollers Voltage", -3);
     LoggedTunableNumber UNJAMshooterVoltage = new LoggedTunableNumber("Superstructure/UNJAM Shooter Voltage", -4);
 
-    LoggedTunableNumber hoodsetpoint = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Hood Setpoint Deg", 7);
-    LoggedTunableNumber shooterVelocity = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Shooter Velocity", 20);
+    LoggedTunableNumber hoodsetpoint = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Hood Setpoint Deg", 4);
+    LoggedTunableNumber shooterVelocity = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Shooter Velocity", 17.5);
     LoggedTunableNumber SHOOTRollersVelocity = new LoggedTunableNumber("Superstructure/SHOOT Rollers Velocity", 5);
 
     public Superstructure(HoodIO hoodIO, IntakeIO intakeIO, RollersIO rollersIO, ShooterIO shooterIO){
@@ -44,6 +48,8 @@ public class Superstructure extends SubsystemBase {
         IDLE,
         BUMP,
         INTAKE,
+        INTAKE_2A,
+        INTAKE_2B,
         OUTTAKE,
         UN_JAM,
         SPIN_UP,
@@ -75,13 +81,28 @@ public class Superstructure extends SubsystemBase {
             case INTAKE:
                 s_hood.requestIdle();
                 s_intake.requestIntake(INTAKEintakeVoltage.getAsDouble());
-                s_rollers.requestVoltage(INTAKErollersVoltage.getAsDouble());
+                s_rollers.requestVoltage(0);
                 s_shooter.requestIdle();
+                break;
+            case INTAKE_2A:
+                s_hood.requestIdle();
+                s_intake.requestIntake(INTAKE2intakeVoltage.getAsDouble());
+                s_rollers.requestVoltage(INTAKE2rollersVoltage.getAsDouble());
+                s_shooter.requestVoltage(INTAKE2shooterVoltage.getAsDouble());
+                break;
+            case INTAKE_2B:
+                s_hood.requestIdle();
+                s_intake.requestLowered();
+                s_rollers.requestIdle();
+                s_shooter.requestVoltage(INTAKE2shooterVoltage.getAsDouble());
+                if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 1){
+                    setState(SuperstructureStates.IDLE);
+                }
                 break;
             case OUTTAKE:
                 s_hood.requestIdle();
                 s_intake.requestIntake(-INTAKEintakeVoltage.getAsDouble());
-                s_rollers.requestVoltage(-INTAKErollersVoltage.getAsDouble());
+                s_rollers.requestVoltage(OUTTAKErollersVoltage.getAsDouble());
                 s_shooter.requestIdle();
                 break;
             case UN_JAM:

@@ -144,7 +144,7 @@ public class Swerve extends SubsystemBase {
       Logger.processInputs("Swerve/Module/ModuleNum[" + i + "]", moduleInputs[i]);
     }
 
-    // updateOdometry();
+    updateOdometry();
     logModuleStates("SwerveModuleStates/setpointStates", getSetpointStates());
     // logModuleStates("SwerveModuleStates/optimizedSetpointStates", getOptimizedSetPointStates());
     logModuleStates("SwerveModuleStates/MeasuredStates", getMeasuredStates());
@@ -220,30 +220,16 @@ public class Swerve extends SubsystemBase {
     poseEstimator.update(lastGyroYaw, getSwerveModulePositions());
 
     LimelightHelpers.SetRobotOrientation(
-        "limelight-shrek",
+        "SugarGlider2",
         poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
         0,
         0,
         0,
         0,
         0);
-    LimelightHelpers.PoseEstimate mt2 =
-        LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-shrek");
-    if (mt2.tagCount != 0) {
-      poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 10));
-      poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
-    }
+    LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("SugarGlider2");
 
-    LimelightHelpers.SetRobotOrientation(
-        "limelight",
-        poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
-        0,
-        0,
-        0,
-        0,
-        0);
-    LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-    if (mt1.tagCount != 0) {
+    if (mt1 != null && mt1.tagCount != 0) {
       poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 10));
       poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
     }
