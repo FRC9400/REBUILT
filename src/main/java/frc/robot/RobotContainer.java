@@ -32,7 +32,7 @@ public class RobotContainer {
   private final IntakeIO s_intake = new IntakeIOTalonFX();
   private final RollersIO s_rollers = new RollersIOTalonFX();
   private final ShooterIO s_shooter = new ShooterIOTalonFX();
-  private final Superstructure superstructure = new Superstructure(s_hood, s_intake, s_rollers, s_shooter);
+  private final Superstructure superstructure = new Superstructure(s_hood, s_intake, s_rollers, s_shooter, swerve::getDistanceToHub);
 
   public RobotContainer() {
     swerve.zeroGyro();
@@ -55,6 +55,7 @@ public class RobotContainer {
     driver.leftBumper().onTrue(new InstantCommand(() -> superstructure.requestOuttake()));
     driver.rightBumper().onTrue(new InstantCommand(() -> superstructure.requestUnJam()));
     driver.leftTrigger().onTrue(new InstantCommand(() -> superstructure.requestSpinUpToShoot()));
+    driver.rightTrigger().onTrue(new InstantCommand(() -> superstructure.requestAUTOSpinUp()));
   }
 
   public Swerve getSwerve() {

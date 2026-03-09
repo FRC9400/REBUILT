@@ -1,10 +1,13 @@
 package frc.robot.Subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.commons.LoggedTunableNumber;
+import frc.commons.ShootingInterpolator;
 import frc.robot.Subsystems.Hood.Hood;
 import frc.robot.Subsystems.Hood.HoodIO;
 import frc.robot.Subsystems.Intake.Intake;
@@ -19,6 +22,11 @@ public class Superstructure extends SubsystemBase {
     private Intake s_intake;
     private Rollers s_rollers;
     private Shooter s_shooter;
+
+    private final DoubleSupplier distanceSupplier;
+
+    private double interpolatedHood = 0.0;
+    private double interpolatedVelocity = 0.0;
 
     private double stateStartTime = 0;
     private SuperstructureStates systemState = SuperstructureStates.IDLE;
@@ -37,11 +45,12 @@ public class Superstructure extends SubsystemBase {
     LoggedTunableNumber shooterVelocity = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Shooter Velocity", 17.5);
     LoggedTunableNumber SHOOTRollersVelocity = new LoggedTunableNumber("Superstructure/SHOOT Rollers Velocity", 5);
 
-    public Superstructure(HoodIO hoodIO, IntakeIO intakeIO, RollersIO rollersIO, ShooterIO shooterIO){
+    public Superstructure(HoodIO hoodIO, IntakeIO intakeIO, RollersIO rollersIO, ShooterIO shooterIO, DoubleSupplier distanceSupplier){
         this.s_hood = new Hood(hoodIO);
         this.s_intake = new Intake(intakeIO);
         this.s_rollers = new Rollers(rollersIO);
-        this.s_shooter = new Shooter(shooterIO);        
+        this.s_shooter = new Shooter(shooterIO);   
+        this.distanceSupplier = distanceSupplier;     
     }
 
     public enum SuperstructureStates {
@@ -54,6 +63,8 @@ public class Superstructure extends SubsystemBase {
         UN_JAM,
         SPIN_UP,
         SHOOT,
+        AUTO_SPIN_UP,
+        AUTO_SHOOT,
         PIVOT_SHAKING
     }
 
@@ -63,8 +74,12 @@ public class Superstructure extends SubsystemBase {
         s_intake.Loop();
         s_rollers.Loop();
         s_shooter.Loop();
+        double distance = distanceSupplier.getAsDouble();
         Logger.recordOutput("SuperstructureState", this.systemState);
         Logger.recordOutput("State start time", stateStartTime);
+        Logger.recordOutput("Superstructure/DistanceToHub", distance);
+        Logger.recordOutput("Superstructure/InterpolatedHoodAngle", ShootingInterpolator.getHoodAngle(distance));
+        Logger.recordOutput("Superstructure/InterpolatedShooterVelocity", ShootingInterpolator.getShooterVelocity(distance));
         switch(systemState){
             case IDLE:
                 s_hood.requestIdle();
@@ -126,6 +141,23 @@ public class Superstructure extends SubsystemBase {
                 s_rollers.requestVoltage(SHOOTRollersVelocity.getAsDouble());
                 s_shooter.requestVelocity(shooterVelocity.getAsDouble());
                 break;
+            case AUTO_SPIN_UP:
+                interpolatedHood = ShootingInterpolator.getHoodAngle(distance);
+                interpolatedVelocity = ShootingInterpolator.getShooterVelocity(distance);
+                s_hood.requestSetpoint(interpolatedHood);
+                s_intake.requestLowered();
+                s_rollers.requestIdle();
+                s_shooter.requestVelocity(interpolatedVelocity);
+                if (s_shooter.atSetpoint() && s_hood.atSetpoint()) {
+                    setState(SuperstructureStates.AUTO_SHOOT);
+                }
+                break;
+            case AUTO_SHOOT:
+                s_hood.requestSetpoint(interpolatedHood);
+                s_intake.requestLowered();
+                s_rollers.requestVoltage(SHOOTRollersVelocity.getAsDouble());
+                s_shooter.requestVelocity(interpolatedVelocity);
+                break;
             default:
                 break;
         }
@@ -153,6 +185,10 @@ public class Superstructure extends SubsystemBase {
 
     public void requestSpinUpToShoot(){
         setState(SuperstructureStates.SPIN_UP);
+    }
+
+    public void requestAUTOSpinUp(){
+        setState(SuperstructureStates.AUTO_SPIN_UP);
     }
 
     public void setState(SuperstructureStates nextState){
