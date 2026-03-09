@@ -18,7 +18,7 @@ import frc.commons.Conversions;
 import frc.robot.Constants.canIDConstants;
 import frc.robot.Constants.hoodConstants;
 
-public class HoodIOTalonFX implements HoodIO{
+public class HoodIOTalonFX implements HoodIO {
     // Motor + Configs
     private final TalonFX hoodMotor = new TalonFX(canIDConstants.hoodMotor, "rio"); // need update id and canbus
     private final TalonFXConfiguration hoodConfigs = new TalonFXConfiguration();
@@ -90,16 +90,19 @@ public class HoodIOTalonFX implements HoodIO{
         );
 
         // Refresh Inputs
-        hoodInputs.appliedDeg = motionMagicRequest.Position;
-        hoodInputs.appliedVolts = voltageRequest.Output;
+        hoodInputs.hoodAppliedDeg = Conversions.RotationsToDegrees(motionMagicRequest.Position, hoodConstants.gearRatio);
+        hoodInputs.hoodAppliedVolts = voltageRequest.Output;
 
-        hoodInputs.setpointVolts = setpointVolts;
-        hoodInputs.setpointDeg = setpointDeg;
-        hoodInputs.setpointRot = Conversions.DegreesToRotations(setpointDeg, hoodConstants.gearRatio);
+        hoodInputs.hoodSetpointVolts = setpointVolts;
+        hoodInputs.hoodSetpointDeg = setpointDeg;
+        hoodInputs.hoodSetpointRot = Conversions.DegreesToRotations(setpointDeg, hoodConstants.gearRatio);
     
-        hoodInputs.current = hoodCurrent.getValueAsDouble();
-        hoodInputs.temp = hoodTemp.getValueAsDouble();
-        hoodInputs.rps = hoodAngularVelocity.getValueAsDouble();
+        hoodInputs.hoodPosDeg = Conversions.RotationsToDegrees(hoodPosition.getValueAsDouble(), hoodConstants.gearRatio);
+        hoodInputs.hoodPosRot = hoodPosition.getValueAsDouble();
+
+        hoodInputs.hoodCurrent = hoodCurrent.getValueAsDouble();
+        hoodInputs.hoodTemp = hoodTemp.getValueAsDouble();
+        hoodInputs.hoodRPS = hoodAngularVelocity.getValueAsDouble();
     }
 
     // Voltage Request

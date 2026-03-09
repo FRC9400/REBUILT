@@ -32,24 +32,24 @@ public class Hood extends SubsystemBase{
             this.runOnce(() -> SignalLogger.start()),
             hoodRoutine
                     .quasistatic(Direction.kForward)
-                    .until(() -> Math.abs(hoodInputs.appliedDeg) > 90), 
+                    .until(() -> Math.abs(hoodInputs.hoodPosDeg) > 13), 
             this.runOnce(() -> hoodIO.requestVoltage(0)),
             Commands.waitSeconds(1),
             hoodRoutine
                     .quasistatic(Direction.kReverse)
-                    .until(() -> hoodInputs.appliedDeg < 5), 
+                    .until(() -> hoodInputs.hoodPosDeg < 2), 
             this.runOnce(() -> hoodIO.requestVoltage(0)),
             Commands.waitSeconds(1),
 
             hoodRoutine
                     .dynamic(Direction.kForward)
-                    .until(() -> Math.abs(hoodInputs.appliedDeg) > 90),
+                    .until(() -> Math.abs(hoodInputs.appliedDeg) > 13),
             this.runOnce(() -> hoodIO.requestVoltage(0)),
             Commands.waitSeconds(1),
 
             hoodRoutine
                     .dynamic(Direction.kReverse)
-                    .until(() -> hoodInputs.appliedDeg < 5), //Keep in mind the max height is around 0.6
+                    .until(() -> hoodInputs.appliedDeg < 4),
             this.runOnce(() -> hoodIO.requestVoltage(0)),
             Commands.waitSeconds(1),
             this.runOnce(() -> SignalLogger.stop()));
