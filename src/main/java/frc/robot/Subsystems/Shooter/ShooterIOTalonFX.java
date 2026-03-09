@@ -5,8 +5,11 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
+
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Temperature;
@@ -16,8 +19,8 @@ import frc.robot.Constants.canIDConstants;
 import frc.robot.Constants.shooterConstants;
 
 public class ShooterIOTalonFX implements ShooterIO{
-    private final TalonFX leftMotor = new TalonFX(canIDConstants.leftShooterMotor, "canivore");
-    private final TalonFX rightMotor = new TalonFX(canIDConstants.rightShooterMotor, "canivore");
+    private final TalonFX leftMotor = new TalonFX(canIDConstants.leftShooterMotor, "rio");
+    private final TalonFX rightMotor = new TalonFX(canIDConstants.rightShooterMotor, "rio");
     private TalonFXConfiguration leftMotorConfigs = new TalonFXConfiguration();
     private TalonFXConfiguration rightMotorConfigs = new TalonFXConfiguration();
 
@@ -57,6 +60,8 @@ public class ShooterIOTalonFX implements ShooterIO{
 
         leftMotor.getConfigurator().apply(leftMotorConfigs);
         rightMotor.getConfigurator().apply(rightMotorConfigs);
+
+        rightMotor.setControl(new Follower(leftMotor.getDeviceID(), MotorAlignmentValue.Opposed));
 
         BaseStatusSignal.setUpdateFrequencyForAll(
             50,
@@ -99,7 +104,6 @@ public class ShooterIOTalonFX implements ShooterIO{
         this.rightShooterSetpointMPS = velocity * ratio;
         // Control both motors with left as master velocity reference
         leftMotor.setControl(leftShootRequestVelocity.withVelocity(Conversions.MPStoRPS(velocity, shooterConstants.wheelCircumferenceMeters, 1)));
-        rightMotor.setControl(rightShootRequestVelocity.withVelocity(Conversions.MPStoRPS(velocity * ratio, shooterConstants.wheelCircumferenceMeters, 1)));
     }
 
     public void zeroVelocity(){
@@ -107,6 +111,9 @@ public class ShooterIOTalonFX implements ShooterIO{
         this.rightShooterSetpointMPS = 0;
         // Stop both motors
         leftMotor.setControl(leftShootRequestVelocity.withVelocity(0));
-        rightMotor.setControl(rightShootRequestVelocity.withVelocity(0));
+    }
+
+    public void requestVoltage(double volts){
+        leftMotor.setControl(shootRequestVoltage.withOutput(volts));
     }
 }

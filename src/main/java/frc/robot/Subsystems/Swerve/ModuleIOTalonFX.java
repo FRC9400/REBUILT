@@ -54,9 +54,9 @@ public class ModuleIOTalonFX implements ModuleIO {
       InvertedValue driveInvert,
       InvertedValue steerInvert,
       SensorDirectionValue CANcoderInvert) {
-    driveMotor = new TalonFX(driveID, "canivore");
-    steerMotor = new TalonFX(steerID, "canivore");
-    angleEncoder = new CANcoder(CANcoderID, "canivore");
+    driveMotor = new TalonFX(driveID, "Default Name");
+    steerMotor = new TalonFX(steerID, "Default Name");
+    angleEncoder = new CANcoder(CANcoderID, "Default Name");
     this.CANcoderOffset = CANcoderOffset;
     driveConfigs = new TalonFXConfiguration();
     steerConfigs = new TalonFXConfiguration();

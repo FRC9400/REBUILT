@@ -20,9 +20,9 @@ import frc.robot.Constants.intakeConstants;
 import frc.robot.Subsystems.Intake.IntakeIO.IntakeIOInputs;
 import frc.robot.Constants.canIDConstants;
 
-public class IntakeIOTalonFX {
-    private final TalonFX pivot = new TalonFX(canIDConstants.pivotMotor, "carnivore");
-    private final TalonFX intake = new TalonFX(canIDConstants.intakeMotor, "carnivore");
+public class IntakeIOTalonFX implements IntakeIO{
+    private final TalonFX pivot = new TalonFX(canIDConstants.pivotMotor, "rio");
+    private final TalonFX intake = new TalonFX(canIDConstants.intakeMotor, "rio");
 
     private final TalonFXConfiguration pivotConfigs = new TalonFXConfiguration();
     private final TalonFXConfiguration intakeConfigs = new TalonFXConfiguration();

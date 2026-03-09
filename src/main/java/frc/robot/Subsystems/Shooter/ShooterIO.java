@@ -22,4 +22,7 @@ public interface ShooterIO {
 
     public default void zeroVelocity() {
     }
+
+    public default void requestVoltage(double volts){
+    }
 }
