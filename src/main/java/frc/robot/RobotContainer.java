@@ -5,9 +5,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Autos.Autos;
 import frc.robot.Commands.TeleopSwerve;
 import frc.robot.Subsystems.Superstructure;
 import frc.robot.Subsystems.Hood.Hood;
@@ -34,6 +37,7 @@ public class RobotContainer {
   private final RollersIO s_rollers = new RollersIOTalonFX();
   private final ShooterIO s_shooter = new ShooterIOTalonFX();
   private final Superstructure superstructure = new Superstructure(s_hood, s_intake, s_rollers, s_shooter, swerve::getDistanceToHub);
+  private final Autos autos = new Autos(swerve, superstructure);
 
   public RobotContainer() {
     swerve.zeroGyro();
@@ -44,7 +48,7 @@ public class RobotContainer {
             () -> driver.getRawAxis(XboxController.Axis.kLeftY.value),
             () -> driver.getRawAxis(XboxController.Axis.kLeftX.value),
             () -> -driver.getRawAxis(XboxController.Axis.kRightX.value)));
-
+    SmartDashboard.putData("Auto Chooser", autos.getAutoChooser());
     configureBindings();
   }
 
@@ -62,4 +66,8 @@ public class RobotContainer {
   public Swerve getSwerve() {
     return swerve;
   }
+
+  public Command getAutonomousCommand() {
+    return autos.getAutoChooser().getSelected();
+}
 }
