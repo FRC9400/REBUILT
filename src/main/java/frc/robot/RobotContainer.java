@@ -60,7 +60,7 @@ public class RobotContainer {
     driver.leftBumper().onTrue(new InstantCommand(() -> superstructure.requestOuttake()));
     driver.rightBumper().onTrue(new InstantCommand(() -> superstructure.requestUnJam()));
     driver.leftTrigger().whileTrue(new SnapToHubCommand(swerve));
-    driver.rightTrigger().onTrue(new InstantCommand(() -> superstructure.requestSpinUpToShoot()));
+    driver.rightTrigger().onTrue(new InstantCommand(() -> superstructure.requestAUTOSpinUp()));
   }
 
   public Swerve getSwerve() {

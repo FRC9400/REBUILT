@@ -272,7 +272,20 @@ public class Swerve extends SubsystemBase {
         LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
 
     if (mt1 != null && mt1.tagCount != 0) {
-        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 0.7));
+        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(1.2, 1.2, 1.2));
+        poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
+    }
+
+    LimelightHelpers.SetRobotOrientation(
+    "limelight-right",
+    poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
+    0, 0, 0, 0, 0);
+
+    mt1 = 
+        LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-right");
+
+    if (mt1 != null && mt1.tagCount != 0) {
+        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(1.2, 1.2, 1.2));
         poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
     }
 
@@ -412,5 +425,4 @@ public class Swerve extends SubsystemBase {
     }
     Logger.recordOutput(key, dataArray.stream().mapToDouble(Double::doubleValue).toArray());
   }
-
 }
