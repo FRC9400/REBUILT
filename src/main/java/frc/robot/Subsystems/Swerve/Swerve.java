@@ -193,6 +193,33 @@ public class Swerve extends SubsystemBase {
     Logger.recordOutput("Odometry/PoseRaw", odometry.getPoseMeters());
     Logger.recordOutput("FeedLeft", feedLeft);
     Logger.recordOutput("Swerve/DistanceToHub", getDistanceToHub());
+
+    if (xkP.hasChanged(hashCode()) || xkD.hasChanged(hashCode()) ||
+        ykP.hasChanged(hashCode()) || ykD.hasChanged(hashCode())) {
+        try {
+            AutoBuilder.configure(
+                this::getPoseRaw,
+                this::resetPose,
+                this::getRobotRelativeSpeeds,
+                (speeds, feedforwards) -> driveRobotRelative(speeds),
+                new PPHolonomicDriveController(
+                    new PIDConstants(xkP.getAsDouble(), 0, xkD.getAsDouble()),
+                    new PIDConstants(ykP.getAsDouble(), 0, ykD.getAsDouble())
+                ),
+                config,
+                () -> {
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                },
+                this
+            );
+        } catch (Exception e) {
+            DriverStation.reportError("AutoBuilder reconfigure failed: " + e.getMessage(), e.getStackTrace());
+        }
+    }
   }
 
   public void requestDesiredState(
