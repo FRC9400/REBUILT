@@ -10,10 +10,11 @@ public class Autos {
 
     public Autos(Swerve swerve, Superstructure superstructure) {
         ExampleAuto exampleAuto = new ExampleAuto(swerve, superstructure);
+        MadelineAuto madelineAuto = new MadelineAuto(swerve, superstructure);
 
         autoChooser = new SendableChooser<>();
         autoChooser.setDefaultOption("Example Auto", exampleAuto.getCommand());
-        // autoChooser.addOption("Other Auto", otherAuto.getCommand());
+         autoChooser.addOption("Madeline Auto", madelineAuto.getCommand());
     }
 
     public SendableChooser<Command> getAutoChooser() {
