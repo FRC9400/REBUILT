@@ -20,7 +20,7 @@ public class ExampleAuto {
 
     public Command getCommand() {
         try {
-            PathPlannerPath path = PathPlannerPath.fromPathFile("ExamplePath");
+            PathPlannerPath path = PathPlannerPath.fromPathFile("Example Path");
             return Commands.sequence(
                 Commands.print("Starting ExampleAuto"),
                 AutoBuilder.followPath(path)

@@ -171,7 +171,7 @@ public class Swerve extends SubsystemBase {
             this // Reference to this subsystem to set requirements
     );
     } catch (Exception e) {
-      e.printStackTrace();
+      DriverStation.reportError(":( ", e.getStackTrace());
     }
       
   }

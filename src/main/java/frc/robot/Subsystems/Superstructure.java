@@ -143,7 +143,7 @@ public class Superstructure extends SubsystemBase {
                 s_hood.requestSetpoint(ShootingInterpolator.getHoodAngle(distance));
                 s_intake.requestLowered();
                 s_rollers.requestIdle();
-                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance));
+                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance)+0.1);
                 if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 1){
                     setState(SuperstructureStates.AUTO_SHOOT);
                 }
@@ -152,7 +152,7 @@ public class Superstructure extends SubsystemBase {
                 s_hood.requestSetpoint(ShootingInterpolator.getHoodAngle(distance));
                 s_intake.requestIntake(SHOOTRollersVelocity.getAsDouble());
                 s_rollers.requestVoltage(SHOOTRollersVelocity.getAsDouble());
-                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance));
+                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance)+0.1);
                 break;
             default:
                 break;

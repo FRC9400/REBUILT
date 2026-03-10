@@ -4,9 +4,15 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathPlannerPath;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -68,6 +74,14 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
+    /*try{
+      PathPlannerPath path = PathPlannerPath.fromPathFile("Example Path");
+      return AutoBuilder.followPath(path);
+    }
+    catch (Exception e){
+      DriverStation.reportError("Big oops", e.getStackTrace());
+      return Commands.none();
+    }*/
     return autos.getAutoChooser().getSelected();
 }
 }
