@@ -41,7 +41,7 @@ public class Superstructure extends SubsystemBase {
 
     LoggedTunableNumber hoodsetpoint = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Hood Setpoint Deg", 4);
     LoggedTunableNumber shooterVelocity = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Shooter Velocity", 17.5);
-    LoggedTunableNumber SHOOTRollersVelocity = new LoggedTunableNumber("Superstructure/SHOOT Rollers Velocity", 5);
+    LoggedTunableNumber SHOOTRollersVelocity = new LoggedTunableNumber("Superstructure/SHOOT Rollers Velocity", 6);
 
     public Superstructure(HoodIO hoodIO, IntakeIO intakeIO, RollersIO rollersIO, ShooterIO shooterIO, DoubleSupplier distanceSupplier){
         this.s_hood = new Hood(hoodIO);
@@ -129,13 +129,13 @@ public class Superstructure extends SubsystemBase {
                 s_intake.requestLowered();
                 s_rollers.requestIdle();
                 s_shooter.requestVelocity(shooterVelocity.getAsDouble());
-                if (s_shooter.atSetpoint() && s_hood.atSetpoint()){
+                if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 1){
                     setState(SuperstructureStates.SHOOT);
                 }
                 break;
             case SHOOT:
                 s_hood.requestSetpoint(hoodsetpoint.getAsDouble());
-                s_intake.requestLowered();
+                s_intake.requestIntake(SHOOTRollersVelocity.getAsDouble());
                 s_rollers.requestVoltage(SHOOTRollersVelocity.getAsDouble());
                 s_shooter.requestVelocity(shooterVelocity.getAsDouble());
                 break;
@@ -150,7 +150,7 @@ public class Superstructure extends SubsystemBase {
                 break;
             case AUTO_SHOOT:
                 s_hood.requestSetpoint(ShootingInterpolator.getHoodAngle(distance));
-                s_intake.requestLowered();
+                s_intake.requestIntake(SHOOTRollersVelocity.getAsDouble());
                 s_rollers.requestVoltage(SHOOTRollersVelocity.getAsDouble());
                 s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance));
                 break;

@@ -43,9 +43,9 @@ public class ShooterIOTalonFX implements ShooterIO{
         leftMotorConfigs.CurrentLimits.StatorCurrentLimit = shooterConstants.shooterCurrentLimit;
         leftMotorConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
         leftMotorConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-        leftMotorConfigs.Slot0.kP = 0.085019;
+        leftMotorConfigs.Slot0.kP = 0.09501899987459183;
         leftMotorConfigs.Slot0.kD = 0;
-        leftMotorConfigs.Slot0.kS = 0.1531;
+        leftMotorConfigs.Slot0.kS = 0.2533203125;
         leftMotorConfigs.Slot0.kV = 0.118;
         leftMotorConfigs.Slot0.kA = 0.0085063;
 
