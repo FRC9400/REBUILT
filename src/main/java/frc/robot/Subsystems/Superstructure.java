@@ -94,7 +94,7 @@ public class Superstructure extends SubsystemBase {
             case INTAKE:
                 s_hood.requestIdle();
                 s_intake.requestIntake(INTAKEintakeVoltage.getAsDouble());
-                s_rollers.requestVoltage(0);
+                s_rollers.requestVoltage(INTAKE2rollersVoltage.getAsDouble());
                 s_shooter.requestIdle();
                 break;
             case INTAKE_2A:
@@ -168,7 +168,7 @@ public class Superstructure extends SubsystemBase {
     }
 
     public void requestIntake(){
-        setState(SuperstructureStates.INTAKE);
+        setState(SuperstructureStates.INTAKE_2A);
     }
 
     public void requestOuttake(){

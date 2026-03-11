@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.2116794871794887,
-        "y": 5.976910256410256
+        "x": 1.3977307692307703,
+        "y": 6.953679487179487
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4492801523109398,
-        "y": 6.054665795949841
+        "x": 1.557103591722029,
+        "y": 6.746927924782891
       },
       "isLocked": false,
       "linkedName": "Blue.IntakeBoxB"
@@ -17,15 +17,31 @@
     {
       "anchor": {
         "x": 1.7814615384615395,
-        "y": 5.104794871794871
+        "y": 6.128076923076923
       },
       "prevControl": {
-        "x": 0.6450125206963164,
-        "y": 5.317078664863854
+        "x": 1.4532444593270404,
+        "y": 6.786970249662179
+      },
+      "nextControl": {
+        "x": 1.8929307391124164,
+        "y": 5.904303338160708
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.1070512820512834,
+        "y": 4.697807692307692
+      },
+      "prevControl": {
+        "x": 2.089029255031828,
+        "y": 4.947157259265627
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Blue.Mid"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -48,7 +64,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -178.7409547928247
+    "rotation": -40.51539399045534
   },
   "useDefaultConstraints": true
 }
