@@ -27,7 +27,7 @@ public class MadelineAuto {
             PathPlannerPath path2 = PathPlannerPath.fromPathFile("Blue.IntakeBoxA-B");
             PathPlannerPath path3 = PathPlannerPath.fromPathFile("Blue.IntakeBoxB-Mid");
             return Commands.sequence(
-                new AutoShootCommand(superstructure),
+              //  new AutoShootCommand(superstructure),
                 AutoBuilder.followPath(path1),
                 new ParallelDeadlineGroup(
                     AutoBuilder.followPath(path2),
