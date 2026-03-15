@@ -82,6 +82,7 @@ public class Superstructure extends SubsystemBase {
         Logger.recordOutput("Superstructure/DistanceToHub", distance);
         Logger.recordOutput("Superstructure/InterpolatedHoodAngle", ShootingInterpolator.getHoodAngle(distance));
         Logger.recordOutput("Superstructure/InterpolatedShooterVelocity", ShootingInterpolator.getShooterVelocity(distance));
+        Logger.recordOutput("Superstructure/Radial Velocity", radialVelocitySupplier.getAsDouble());
         switch(systemState){
             case IDLE:
                 s_hood.requestIdle();

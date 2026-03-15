@@ -75,7 +75,7 @@ private final Superstructure superstructure = new Superstructure(
     operator.x().onTrue(new InstantCommand(() -> superstructure.requestIntake()));
     operator.b().onTrue(new InstantCommand(() -> superstructure.requestOuttake()));
     driver.a().onTrue(new InstantCommand(() -> superstructure.requestUnJam()));
-    driver.leftTrigger().whileTrue(new SnapToHubCommand(swerve));
+    driver.leftTrigger().whileTrue(new ShootOnMoveCommand(swerve, superstructure));
     driver.rightTrigger().onTrue(new InstantCommand(() -> superstructure.requestAUTOSpinUp()));
     driver.b().onTrue(new InstantCommand(() -> superstructure.requestIdle()));
     driver.rightBumper().onTrue(new InstantCommand(() -> superstructure.requestSpinUpToShoot()));
