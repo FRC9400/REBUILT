@@ -41,7 +41,7 @@ public class Superstructure extends SubsystemBase {
 
     LoggedTunableNumber hoodsetpoint = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Hood Setpoint Deg", 4);
     LoggedTunableNumber shooterVelocity = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Shooter Velocity", 17.5);
-    LoggedTunableNumber SHOOTRollersVelocity = new LoggedTunableNumber("Superstructure/SHOOT Rollers Velocity", 6);
+    LoggedTunableNumber SHOOTRollersVelocity = new LoggedTunableNumber("Superstructure/SHOOT Rollers Velocity", 8);
 
     public Superstructure(HoodIO hoodIO, IntakeIO intakeIO, RollersIO rollersIO, ShooterIO shooterIO, DoubleSupplier distanceSupplier){
         this.s_hood = new Hood(hoodIO);
@@ -62,7 +62,8 @@ public class Superstructure extends SubsystemBase {
         SPIN_UP,
         SHOOT,
         AUTO_SPIN_UP,
-        AUTO_SHOOT,
+        AUTO_SHOOT_A,
+        AUTO_SHOOT_B,
         PIVOT_SHAKING
     }
 
@@ -93,14 +94,14 @@ public class Superstructure extends SubsystemBase {
                 break;
             case INTAKE:
                 s_hood.requestIdle();
-                s_intake.requestIntake(INTAKEintakeVoltage.getAsDouble());
-                s_rollers.requestVoltage(INTAKE2rollersVoltage.getAsDouble());
+                s_intake.requestIntake(3);
+                s_rollers.requestIdle();
                 s_shooter.requestIdle();
                 break;
             case INTAKE_2A:
                 s_hood.requestIdle();
                 s_intake.requestIntake(INTAKE2intakeVoltage.getAsDouble());
-                s_rollers.requestVoltage(INTAKE2rollersVoltage.getAsDouble());
+                s_rollers.requestIdle();
                 s_shooter.requestVoltage(INTAKE2shooterVoltage.getAsDouble());
                 break;
             case INTAKE_2B:
@@ -143,16 +144,28 @@ public class Superstructure extends SubsystemBase {
                 s_hood.requestSetpoint(ShootingInterpolator.getHoodAngle(distance));
                 s_intake.requestLowered();
                 s_rollers.requestIdle();
-                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance)+0.1);
+                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance)-0.1);
                 if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 1){
-                    setState(SuperstructureStates.AUTO_SHOOT);
+                    setState(SuperstructureStates.AUTO_SHOOT_A);
                 }
                 break;
-            case AUTO_SHOOT:
+            case AUTO_SHOOT_A:
                 s_hood.requestSetpoint(ShootingInterpolator.getHoodAngle(distance));
-                s_intake.requestIntake(SHOOTRollersVelocity.getAsDouble());
+                s_intake.requestSetpoint(SHOOTRollersVelocity.getAsDouble(), 85);
                 s_rollers.requestVoltage(SHOOTRollersVelocity.getAsDouble());
-                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance)+0.1);
+                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance)-0.1);
+                if(RobotController.getFPGATime() / 1.0E6 - stateStartTime > 0.5){
+                    setState(SuperstructureStates.AUTO_SHOOT_B);
+                }
+                break;
+            case AUTO_SHOOT_B:
+                s_hood.requestSetpoint(ShootingInterpolator.getHoodAngle(distance));
+                s_intake.requestSetpoint(SHOOTRollersVelocity.getAsDouble(), 105);
+                s_rollers.requestVoltage(SHOOTRollersVelocity.getAsDouble());
+                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance)-0.1);
+                if(RobotController.getFPGATime() / 1.0E6 - stateStartTime > 0.5){
+                    setState(SuperstructureStates.AUTO_SHOOT_A);
+                }
                 break;
             default:
                 break;
@@ -168,7 +181,7 @@ public class Superstructure extends SubsystemBase {
     }
 
     public void requestIntake(){
-        setState(SuperstructureStates.INTAKE_2A);
+        setState(SuperstructureStates.INTAKE);
     }
 
     public void requestOuttake(){

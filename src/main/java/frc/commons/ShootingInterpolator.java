@@ -19,7 +19,7 @@ public class ShootingInterpolator {
         hoodAngleMap.put(3.525, 2.3);
         hoodAngleMap.put(4.21,  2.8);*/
 
-        hoodAngleMap.put(1.72, 0.0);
+       /* hoodAngleMap.put(1.72, 0.0);
         hoodAngleMap.put(2.06,0.4);
         hoodAngleMap.put(2.2,0.6);
         hoodAngleMap.put(2.46,0.8);
@@ -27,7 +27,31 @@ public class ShootingInterpolator {
         hoodAngleMap.put(2.82,1.2);
         hoodAngleMap.put(3.03,1.4);
         hoodAngleMap.put(3.366,1.8);
-        hoodAngleMap.put(4.0,2.4);
+        hoodAngleMap.put(4.0,2.4);*/
+
+
+        hoodAngleMap.put(2.83,1.0);
+        shooterVelocityMap.put(2.83,16.2);
+        hoodAngleMap.put(1.525,0.0);
+        shooterVelocityMap.put(1.525, 13.9);
+        hoodAngleMap.put(2.013, 0.5);
+        shooterVelocityMap.put(2.013, 15.1);
+        hoodAngleMap.put(1.717,0.1);
+        shooterVelocityMap.put(1.717,14.6);
+        hoodAngleMap.put(2.197, 1.0);
+        shooterVelocityMap.put(2.197, 16.3);
+        hoodAngleMap.put(2.464, 1.8);
+        shooterVelocityMap.put(2.464, 16.0);
+        hoodAngleMap.put(2.601, 3.0);
+        shooterVelocityMap.put(2.601, 15.6);
+        hoodAngleMap.put(3.007, 2.4);
+        shooterVelocityMap.put(3.007, 16.4);
+        hoodAngleMap.put(3.502, 2.0);
+        shooterVelocityMap.put(3.502, 17.2);
+        hoodAngleMap.put(3.91, 1.6);
+        shooterVelocityMap.put(3.91, 18.3);
+
+
 
         // distance (meters) -> shooter velocity
         /*shooterVelocityMap.put(1.406, 13.8);
@@ -41,7 +65,7 @@ public class ShootingInterpolator {
         shooterVelocityMap.put(3.525, 17.6);
         shooterVelocityMap.put(4.21,  19.3);*/
 
-        shooterVelocityMap.put(1.72,13.8);
+        /*shooterVelocityMap.put(1.72,13.8);
         shooterVelocityMap.put(2.06,14.2);
         shooterVelocityMap.put(2.2,14.5);
         shooterVelocityMap.put(2.46,14.6);
@@ -49,7 +73,9 @@ public class ShootingInterpolator {
         shooterVelocityMap.put(2.82,15.2);
         shooterVelocityMap.put(3.03,15.8);
         shooterVelocityMap.put(3.366,16.4);
-        shooterVelocityMap.put(4.0,17.9);
+        shooterVelocityMap.put(4.0,17.9);*/
+
+
     }
 
     public static double getHoodAngle(double distanceMeters) {

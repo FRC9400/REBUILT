@@ -29,7 +29,9 @@ public class SnapToHubCommand extends Command {
             : fieldConstants.RED_HUB_POS.getTranslation();
 
         Translation2d toHub = hubPosition.minus(swerve.getPoseRaw().getTranslation());
-        double targetAngle = Math.atan2(toHub.getY(), toHub.getX()) + Math.PI;
+        double targetAngle = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue
+            ? Math.atan2(toHub.getY(), toHub.getX())
+            : Math.atan2(toHub.getY(), toHub.getX()) + Math.PI;
 
         double thetaFeedback = thetaController.calculate(
             swerve.getGyroPositionRadians(),

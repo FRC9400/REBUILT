@@ -21,7 +21,7 @@ public class AutoShootCommand extends Command {
 
     @Override
     public void execute() {
-        if (superstructure.getState() == SuperstructureStates.AUTO_SHOOT) {
+        if (superstructure.getState() == SuperstructureStates.AUTO_SHOOT_A || superstructure.getState() == SuperstructureStates.AUTO_SHOOT_B) {
             shootTimer += 0.02;
         }
     }

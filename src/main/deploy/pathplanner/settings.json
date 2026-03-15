@@ -3,6 +3,7 @@
   "robotLength": 0.8636,
   "holonomicMode": true,
   "pathFolders": [
+    "Depot Intake Paths",
     "New Folder"
   ],
   "autoFolders": [],

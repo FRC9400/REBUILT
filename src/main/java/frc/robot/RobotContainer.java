@@ -39,6 +39,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Intake", new IntakeCommand(superstructure));
     NamedCommands.registerCommand("AutoShoot", new AutoShootCommand(superstructure));
+    NamedCommands.registerCommand("Auto Align", new SnapToHubCommand(swerve));
     NamedCommands.registerCommand("Idle", new InstantCommand(() -> superstructure.requestIdle()));
 
     autos = new Autos();
@@ -49,13 +50,15 @@ public class RobotContainer {
 
   private void configureBindings() {
     driver.y().onTrue(new InstantCommand(() -> swerve.zeroGyro()));
-    driver.a().onTrue(new InstantCommand(() -> superstructure.requestIdle()));
-    driver.b().onTrue(new InstantCommand(() -> superstructure.requestBump()));
-    driver.x().onTrue(new InstantCommand(() -> superstructure.requestIntake()));
-    driver.leftBumper().onTrue(new InstantCommand(() -> superstructure.requestOuttake()));
-    driver.rightBumper().onTrue(new InstantCommand(() -> superstructure.requestUnJam()));
+    operator.a().onTrue(new InstantCommand(() -> superstructure.requestIdle()));
+    //driver.b().onTrue(new InstantCommand(() -> superstructure.requestBump()));
+    operator.x().onTrue(new InstantCommand(() -> superstructure.requestIntake()));
+    operator.b().onTrue(new InstantCommand(() -> superstructure.requestOuttake()));
+    driver.a().onTrue(new InstantCommand(() -> superstructure.requestUnJam()));
     driver.leftTrigger().whileTrue(new SnapToHubCommand(swerve));
     driver.rightTrigger().onTrue(new InstantCommand(() -> superstructure.requestAUTOSpinUp()));
+    driver.b().onTrue(new InstantCommand(() -> superstructure.requestIdle()));
+    driver.rightBumper().onTrue(new InstantCommand(() -> superstructure.requestSpinUpToShoot()));
   }
 
   public Swerve getSwerve() {

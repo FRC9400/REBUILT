@@ -35,11 +35,11 @@ public class TeleopSwerve extends Command {
     double rotationVal = Math.pow(MathUtil.applyDeadband(rotationSup.getAsDouble(), 0.05), 1);
     translationVal =
         DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue
-            ? translationVal
+            ? translationVal * -1
             : translationVal * -1;
     strafeVal =
         DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue
-            ? strafeVal
+            ? strafeVal * -1
             : strafeVal * -1;
     rotationVal =
         DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue
@@ -51,6 +51,6 @@ public class TeleopSwerve extends Command {
     double rot_speed = rotationVal * swerveConstants.moduleConstants.maxAngularVelocity;
 
     /* Drive */
-    s_Swerve.requestDesiredState(x_speed, y_speed, rot_speed, true, false);
+    s_Swerve.requestDesiredState(x_speed, y_speed, rot_speed, false, false);
   }
 }
