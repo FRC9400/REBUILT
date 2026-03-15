@@ -418,6 +418,10 @@ public class Swerve extends SubsystemBase {
     return getPoseRaw().getTranslation().getDistance(hubPosition);
 }
 
+  public ChassisSpeeds getFieldRelativeSpeeds() {
+    return ChassisSpeeds.fromRobotRelativeSpeeds(getRobotRelativeSpeeds(), getRotation2d());
+  }
+
   private void logModuleStates(String key, SwerveModuleState[] states) {
     List<Double> dataArray = new ArrayList<Double>();
     for (int i = 0; i < 4; i++) {

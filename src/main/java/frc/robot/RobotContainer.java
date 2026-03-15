@@ -1,6 +1,12 @@
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -10,6 +16,7 @@ import frc.robot.Autos.Autos;
 import frc.robot.Commands.AutoShootCommand;
 import frc.robot.Commands.IntakeCommand;
 import frc.robot.Commands.TeleopSwerve;
+import frc.robot.Constants.fieldConstants;
 import frc.robot.Subsystems.Superstructure;
 import frc.robot.Subsystems.Hood.HoodIOTalonFX;
 import frc.robot.Subsystems.Intake.IntakeIOTalonFX;
@@ -22,9 +29,22 @@ public class RobotContainer {
   public static final CommandXboxController driver = new CommandXboxController(0);
   public static final CommandXboxController operator = new CommandXboxController(1);
   private final Swerve swerve = new Swerve();
-  private final Superstructure superstructure = new Superstructure(
-      new HoodIOTalonFX(), new IntakeIOTalonFX(), new RollersIOTalonFX(), new ShooterIOTalonFX(),
-      swerve::getDistanceToHub);
+  private final DoubleSupplier radialVelocitySupplier = () -> {
+    ChassisSpeeds speeds = swerve.getFieldRelativeSpeeds();
+    Translation2d hubPosition = DriverStation.getAlliance().isPresent() &&
+        DriverStation.getAlliance().get() == DriverStation.Alliance.Red
+        ? fieldConstants.RED_HUB_POS.getTranslation()
+        : fieldConstants.BLUE_HUB_POS.getTranslation();
+    Translation2d toHub = hubPosition.minus(swerve.getPoseRaw().getTranslation());
+    double dist = toHub.getNorm();
+    if (dist < 0.001) return 0.0;
+    toHub = toHub.div(dist);
+    return speeds.vxMetersPerSecond * toHub.getX() + speeds.vyMetersPerSecond * toHub.getY();
+};
+
+private final Superstructure superstructure = new Superstructure(
+    new HoodIOTalonFX(), new IntakeIOTalonFX(), new RollersIOTalonFX(), new ShooterIOTalonFX(),
+    swerve::getDistanceToHub, radialVelocitySupplier);
   private final Autos autos;
 
   public RobotContainer() {
