@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.4442692307692324,
-        "y": 2.139602564102564
+        "x": 2.514038461538463,
+        "y": 3.209397435897437
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5793246516357464,
-        "y": 1.570614912896969
+        "x": 2.1720943965790998,
+        "y": 2.2647148339840246
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.42096153846153983,
-        "y": 0.6163076923076927
+        "x": 0.4442179487179503,
+        "y": 0.8488717948717954
       },
       "prevControl": {
-        "x": 1.369394152851552,
-        "y": 1.2544762391837483
+        "x": 1.209734891531177,
+        "y": 1.6401390014975843
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "New Folder",
+  "folder": "Outpost Intake Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 42.00469671239727
+    "rotation": 23.120848662424688
   },
   "useDefaultConstraints": true
 }

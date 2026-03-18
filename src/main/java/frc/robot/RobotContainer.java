@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Autos.Autos;
 import frc.robot.Commands.AutoShootCommand;
 import frc.robot.Commands.IntakeCommand;
+import frc.robot.Commands.ShootOnMoveCommand;
 import frc.robot.Commands.TeleopSwerve;
 import frc.robot.Constants.fieldConstants;
 import frc.robot.Subsystems.Superstructure;

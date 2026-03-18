@@ -34,7 +34,7 @@ public class Intake {
                 break;
             case LOWERED:
                 intakeIO.requestIntakeVoltage(0);
-                intakeIO.requestSetpoint(intakeConstants.maxDeg-40);
+                intakeIO.requestSetpoint(intakeConstants.maxDeg-30);
                 break;
             case RAISED:
                 intakeIO.requestIntakeVoltage(0);
@@ -42,7 +42,7 @@ public class Intake {
                 break;
             case INTAKE:
                 intakeIO.requestIntakeVoltage(voltageSetpoint);
-                intakeIO.requestSetpoint(intakeConstants.maxDeg-40);
+                intakeIO.requestSetpoint(intakeConstants.maxDeg-30);
                 break;
             case SETPOINT:
                 intakeIO.requestIntakeVoltage(voltageSetpoint);
@@ -78,7 +78,7 @@ public class Intake {
     }
 
     public void setState(IntakeStates nextState){
-        this.intakeState = IntakeStates.IDLE;
+        this.intakeState = nextState;
     }
 
 }

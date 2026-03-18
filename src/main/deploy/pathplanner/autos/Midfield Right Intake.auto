@@ -24,27 +24,53 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "AutoShoot"
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 6.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoShoot"
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Intake From Outpost A"
+            "pathName": "Midfield Intake Right A"
           }
         },
         {
-          "type": "wait",
+          "type": "race",
           "data": {
-            "waitTime": 2.0
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Midfield Right Intake B"
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Intake from Outpost B"
+            "pathName": "Midfield Right Intake C"
           }
         },
         {
@@ -75,7 +101,7 @@
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": null,
   "choreoAuto": false
 }

@@ -7,7 +7,7 @@ import frc.robot.Subsystems.Superstructure.SuperstructureStates;
 public class AutoShootCommand extends Command {
     private final Superstructure superstructure;
     private double shootTimer = 0;
-    private static final double SHOOT_DURATION = 3;
+    private static final double SHOOT_DURATION = 6;
 
     public AutoShootCommand(Superstructure superstructure) {
         this.superstructure = superstructure;

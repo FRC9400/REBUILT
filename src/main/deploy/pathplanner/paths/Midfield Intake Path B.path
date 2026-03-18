@@ -1,0 +1,103 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 6.7,
+        "y": 2.221
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.465683683034137,
+        "y": 2.308154251781271
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.304858974352295,
+        "y": 1.058179487172855
+      },
+      "prevControl": {
+        "x": 6.811137891160896,
+        "y": 0.8521511740350445
+      },
+      "nextControl": {
+        "x": 7.904995258630827,
+        "y": 1.308614541522694
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.653705128205129,
+        "y": 5.593179487179486
+      },
+      "prevControl": {
+        "x": 7.975325390619155,
+        "y": 5.593179487179486
+      },
+      "nextControl": {
+        "x": 4.293153846153848,
+        "y": 5.593179487179486
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.11870512820513,
+        "y": 5.593179487179486
+      },
+      "prevControl": {
+        "x": 2.869631703531791,
+        "y": 5.571675321966799
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.9921104536489029,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 1.9506903353057248,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 2.0335305719921144,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 2.700197238658782,
+      "rotationDegrees": 0.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -45.658543177563594
+  },
+  "reversed": false,
+  "folder": "Midfield Intake Paths",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}

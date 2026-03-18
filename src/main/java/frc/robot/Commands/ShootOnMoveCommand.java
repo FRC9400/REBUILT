@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Swerve;
+package frc.robot.Commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.fieldConstants;
 import frc.robot.Subsystems.Superstructure;
+import frc.robot.Subsystems.Swerve.Swerve;
 
 public class ShootOnMoveCommand extends Command {
     private final Swerve swerve;
