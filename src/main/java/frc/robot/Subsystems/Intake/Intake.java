@@ -34,15 +34,15 @@ public class Intake {
                 break;
             case LOWERED:
                 intakeIO.requestIntakeVoltage(0);
-                intakeIO.requestSetpoint(intakeConstants.maxDeg-30);
+                intakeIO.requestSetpoint(intakeConstants.maxDeg-15);
                 break;
             case RAISED:
                 intakeIO.requestIntakeVoltage(0);
-                intakeIO.requestSetpoint(intakeConstants.minDeg+20);
+                intakeIO.requestSetpoint(intakeConstants.minDeg+10);
                 break;
             case INTAKE:
                 intakeIO.requestIntakeVoltage(voltageSetpoint);
-                intakeIO.requestSetpoint(intakeConstants.maxDeg-30);
+                intakeIO.requestSetpoint(intakeConstants.maxDeg-15);
                 break;
             case SETPOINT:
                 intakeIO.requestIntakeVoltage(voltageSetpoint);

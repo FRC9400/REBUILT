@@ -11,7 +11,7 @@ import frc.robot.Constants.fieldConstants;
 
 public class SnapToHubCommand extends Command {
     private final Swerve swerve;
-    private final PIDController thetaController = new PIDController(4, 0, 0.15);
+    private final PIDController thetaController = new PIDController(5, 0, 0.15);
 
     public SnapToHubCommand(Swerve swerve) {
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
@@ -43,5 +43,8 @@ public class SnapToHubCommand extends Command {
     }
 
     @Override
-    public void end(boolean interrupted) {}
+    public void end(boolean interrupted) {
+       // for EBR
+       // swerve.requestDesiredState(0, 0, 0, interrupted, interrupted);
+    }
 }

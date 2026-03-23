@@ -7,23 +7,23 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Midfield Intake Right A"
+            "pathName": "Left Midfield Intake A"
           }
         },
         {
-          "type": "race",
+          "type": "deadline",
           "data": {
             "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left Midfield Intake B"
+                }
+              },
               {
                 "type": "named",
                 "data": {
                   "name": "Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Midfield Right Intake B"
                 }
               }
             ]
@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Midfield Right Intake C"
+            "pathName": "Left Midfield Intake C"
           }
         },
         {

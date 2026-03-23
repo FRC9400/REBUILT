@@ -6,6 +6,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -14,10 +15,12 @@ import edu.wpi.first.units.measure.Temperature;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.Constants.canIDConstants;
 import frc.robot.Constants.rollersConstants;
+import com.ctre.phoenix6.controls.Follower;
 
 public class RollersIOTalonFX implements RollersIO{
     // Motor + Configs
     private TalonFX roller = new TalonFX(canIDConstants.rollersMotor, "rio");
+    private TalonFX roller2 = new TalonFX(21, "rio");
 
     private TalonFXConfiguration rollerConfigs = new TalonFXConfiguration();
 
@@ -43,6 +46,8 @@ public class RollersIOTalonFX implements RollersIO{
 
         // Apply Configs
         roller.getConfigurator().apply(rollerConfigs);
+
+        roller2.setControl(new Follower(roller.getDeviceID(), MotorAlignmentValue.Opposed));
 
         // Freq Updates
         BaseStatusSignal.setUpdateFrequencyForAll(

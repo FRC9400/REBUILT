@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5954615384615396,
-        "y": 2.314
+        "x": 3.55,
+        "y": 5.558294871794872
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.59546153846154,
-        "y": 2.314
+        "x": 6.085,
+        "y": 5.558294871794872
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.479,
-        "y": 2.314
+        "x": 6.595538461538463,
+        "y": 5.558294871794872
       },
       "prevControl": {
-        "x": 5.7113248077281025,
-        "y": 2.314
+        "x": 5.759816176697741,
+        "y": 5.558294871794872
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.7631578947368465,
+      "waypointRelativePos": 0.6403508771929879,
       "rotationDegrees": 0.0
     }
   ],
@@ -50,7 +50,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Right Midfield Intake Paths",
+  "folder": "Left Midfield Intake Paths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

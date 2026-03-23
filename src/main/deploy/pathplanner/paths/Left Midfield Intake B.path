@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.142,
-        "y": 3.395
+        "x": 6.596,
+        "y": 5.558
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.476451252839658,
-        "y": 3.537919029391112
+        "x": 6.29656956488973,
+        "y": 5.57328601997991
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.6662752075919345,
-        "y": 2.5556109134045073
+        "x": 7.746730769230771,
+        "y": 6.965307692307692
       },
       "prevControl": {
-        "x": 6.711479875292371,
-        "y": 2.535359738627509
+        "x": 7.270556452763624,
+        "y": 7.151435789681292
       },
       "nextControl": {
-        "x": 3.329323001655721,
-        "y": 2.6008901099393142
+        "x": 8.476079400854813,
+        "y": 6.680218244112752
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.1419358974358986,
-        "y": 1.4302820512820507
+        "x": 8.014179487179488,
+        "y": 4.453615384615385
       },
       "prevControl": {
-        "x": 3.4675512820512835,
-        "y": 2.7675256410256406
+        "x": 7.774370766396609,
+        "y": 5.328178343361733
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,19 +46,15 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.9255319148936151,
-      "rotationDegrees": 0.0
-    },
-    {
-      "waypointRelativePos": 1.627659574468088,
-      "rotationDegrees": 0.0
+      "waypointRelativePos": 1.0453648915187361,
+      "rotationDegrees": -77.35
     }
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 1.8,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -67,13 +63,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 46.70394858302779
+    "rotation": -77.34744349944211
   },
   "reversed": false,
-  "folder": "Right Midfield Intake Paths",
+  "folder": "Left Midfield Intake Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 66.801
+    "rotation": 180.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

@@ -23,6 +23,7 @@ import frc.robot.Subsystems.Hood.HoodIOTalonFX;
 import frc.robot.Subsystems.Intake.IntakeIOTalonFX;
 import frc.robot.Subsystems.Rollers.RollersIOTalonFX;
 import frc.robot.Subsystems.Shooter.ShooterIOTalonFX;
+import frc.robot.Subsystems.Superstructure.SuperstructureStates;
 import frc.robot.Subsystems.Swerve.SnapToHubCommand;
 import frc.robot.Subsystems.Swerve.Swerve;
 
@@ -49,6 +50,7 @@ private final Superstructure superstructure = new Superstructure(
   private final Autos autos;
 
   public RobotContainer() {
+    superstructure.requestIdle();
     swerve.zeroGyro();
     swerve.zeroWheels();
     swerve.setDefaultCommand(
@@ -72,14 +74,15 @@ private final Superstructure superstructure = new Superstructure(
   private void configureBindings() {
     driver.y().onTrue(new InstantCommand(() -> swerve.zeroGyro()));
     operator.a().onTrue(new InstantCommand(() -> superstructure.requestIdle()));
+    operator.y().onTrue(new InstantCommand(() -> superstructure.requestBump()));
     //driver.b().onTrue(new InstantCommand(() -> superstructure.requestBump()));
     operator.x().onTrue(new InstantCommand(() -> superstructure.requestIntake()));
-    operator.b().onTrue(new InstantCommand(() -> superstructure.requestOuttake()));
+    operator.b().onTrue(new InstantCommand(() -> superstructure.requestSPITOUT()));
     driver.a().onTrue(new InstantCommand(() -> superstructure.requestUnJam()));
     driver.leftTrigger().whileTrue(new ShootOnMoveCommand(swerve, superstructure));
-    driver.rightTrigger().onTrue(new InstantCommand(() -> superstructure.requestAUTOSpinUp()));
+    driver.rightTrigger().onTrue(new InstantCommand(() -> superstructure.requestSpinUpToShoot()));
     driver.b().onTrue(new InstantCommand(() -> superstructure.requestIdle()));
-    driver.rightBumper().onTrue(new InstantCommand(() -> superstructure.requestSpinUpToShoot()));
+    //driver.rightBumper().onTrue(new InstantCommand(() -> superstructure.requestSpinUpToShoot()));
   }
 
   public Swerve getSwerve() {
@@ -88,5 +91,9 @@ private final Superstructure superstructure = new Superstructure(
 
   public Command getAutonomousCommand() {
     return autos.getAutoChooser().getSelected();
+  }
+
+  public void makeIdle(){
+    superstructure.requestIdle();
   }
 }

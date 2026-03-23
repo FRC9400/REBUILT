@@ -5,8 +5,9 @@
   "pathFolders": [
     "Depot Intake Paths",
     "Midfield Intake Paths",
-    "Right Midfield Intake Paths",
-    "Outpost Intake Paths"
+    "Left Midfield Intake Paths",
+    "Outpost Intake Paths",
+    "Right Midfield Intake Paths"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,
