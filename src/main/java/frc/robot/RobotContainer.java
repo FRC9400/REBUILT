@@ -71,18 +71,17 @@ private final Superstructure superstructure = new Superstructure(
     configureBindings();
   }
 
-  private void configureBindings() {
+  private void configureBindings() {    
+    driver.x().onTrue(new InstantCommand(() -> superstructure.requestBump()));
     driver.y().onTrue(new InstantCommand(() -> swerve.zeroGyro()));
-    operator.a().onTrue(new InstantCommand(() -> superstructure.requestIdle()));
-    operator.y().onTrue(new InstantCommand(() -> superstructure.requestBump()));
-    //driver.b().onTrue(new InstantCommand(() -> superstructure.requestBump()));
-    operator.x().onTrue(new InstantCommand(() -> superstructure.requestIntake()));
-    operator.b().onTrue(new InstantCommand(() -> superstructure.requestSPITOUT()));
     driver.a().onTrue(new InstantCommand(() -> superstructure.requestUnJam()));
+    driver.b().onTrue(new InstantCommand(() -> superstructure.requestIdle()));
+
     driver.leftTrigger().whileTrue(new ShootOnMoveCommand(swerve, superstructure));
     driver.rightTrigger().onTrue(new InstantCommand(() -> superstructure.requestSpinUpToShoot()));
-    driver.b().onTrue(new InstantCommand(() -> superstructure.requestIdle()));
-    //driver.rightBumper().onTrue(new InstantCommand(() -> superstructure.requestSpinUpToShoot()));
+    
+    driver.leftBumper().onTrue(new InstantCommand(() -> superstructure.requestIntake()));
+    driver.rightBumper().onTrue(new InstantCommand(() -> superstructure.requestSPITOUT()));
   }
 
   public Swerve getSwerve() {
