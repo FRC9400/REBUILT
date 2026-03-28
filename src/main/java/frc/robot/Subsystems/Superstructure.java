@@ -135,13 +135,13 @@ public class Superstructure extends SubsystemBase {
                 s_intake.requestLowered();
                 s_rollers.requestIdle();
                 s_shooter.requestVelocity(shooterVelocity.getAsDouble());
-                if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 2.3){
+                if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 0.2){
                     setState(SuperstructureStates.SHOOT_A);
                 }
                 break;
             case SHOOT_A:
                 s_hood.requestSetpoint(hoodsetpoint.getAsDouble());
-                s_intake.requestSetpoint(SHOOTIntakeVoltage.getAsDouble(), 55);
+                s_intake.requestSetpoint(SHOOTIntakeVoltage.getAsDouble(), 70);
                 s_rollers.requestVoltage(SHOOTRollersVoltage.getAsDouble());
                 s_shooter.requestVelocity(shooterVelocity.getAsDouble());
                 if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 0.5){
@@ -161,16 +161,16 @@ public class Superstructure extends SubsystemBase {
                 s_hood.requestSetpoint(ShootingInterpolator.getHoodAngle(distance));
                 s_intake.requestLowered();
                 s_rollers.requestIdle();
-                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance) - radialVelocitySupplier.getAsDouble() + 0.1);
+                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance) - radialVelocitySupplier.getAsDouble() + 0.17);
                 if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 0.8) {
                     setState(SuperstructureStates.AUTO_SHOOT_A);
                 }
                 break;
             case AUTO_SHOOT_A:
                 s_hood.requestSetpoint(ShootingInterpolator.getHoodAngle(distance));
-                s_intake.requestSetpoint(SHOOTRollersVoltage.getAsDouble(), 55);
+                s_intake.requestSetpoint(SHOOTRollersVoltage.getAsDouble(), 70);
                 s_rollers.requestVoltage(SHOOTRollersVoltage.getAsDouble());
-                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance) - radialVelocitySupplier.getAsDouble());
+                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance) - radialVelocitySupplier.getAsDouble() - 0.05);
                 if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 0.5) {
                     setState(SuperstructureStates.AUTO_SHOOT_B);
                 }
@@ -179,7 +179,7 @@ public class Superstructure extends SubsystemBase {
                 s_hood.requestSetpoint(ShootingInterpolator.getHoodAngle(distance));
                 s_intake.requestSetpoint(SHOOTRollersVoltage.getAsDouble(), 115);
                 s_rollers.requestVoltage(SHOOTRollersVoltage.getAsDouble());
-                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance) - radialVelocitySupplier.getAsDouble());
+                s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance) - radialVelocitySupplier.getAsDouble() - 0.05);
                 if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 0.5) {
                     setState(SuperstructureStates.AUTO_SHOOT_A);
                 }
