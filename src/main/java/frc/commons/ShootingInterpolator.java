@@ -8,50 +8,29 @@ public class ShootingInterpolator {
 
     static {
         // distance (meters) -> hood angle (degrees)
-        /*hoodAngleMap.put(1.406, 0.0);
-        hoodAngleMap.put(1.756, 0.0);
-        hoodAngleMap.put(1.888, 0.0);
-        hoodAngleMap.put(1.992, 0.0);
-        hoodAngleMap.put(2.411, 1.4);
-        hoodAngleMap.put(2.72,  1.8);
-        hoodAngleMap.put(2.96,  2.0);
-        hoodAngleMap.put(3.33,  2.15);
-        hoodAngleMap.put(3.525, 2.3);
-        hoodAngleMap.put(4.21,  2.8);*/
 
-       /* hoodAngleMap.put(1.72, 0.0);
-        hoodAngleMap.put(2.06,0.4);
-        hoodAngleMap.put(2.2,0.6);
-        hoodAngleMap.put(2.46,0.8);
-        hoodAngleMap.put(2.551,1.0);
-        hoodAngleMap.put(2.82,1.2);
-        hoodAngleMap.put(3.03,1.4);
-        hoodAngleMap.put(3.366,1.8);
-        hoodAngleMap.put(4.0,2.4);*/
+        hoodAngleMap.put(3.02, 0.0);
+        shooterVelocityMap.put(3.02,16.65);
+        hoodAngleMap.put(2.392, 0.0);
+        shooterVelocityMap.put(2.392, 14.61);
+        hoodAngleMap.put(3.75, 1.0);
+        shooterVelocityMap.put(3.75, 17.0);
+        hoodAngleMap.put(3.479, 1.0);
+        shooterVelocityMap.put(3.479, 17.0);
+        hoodAngleMap.put(1.54, 0.0);
+        shooterVelocityMap.put(1.54, 13.55);
+        hoodAngleMap.put(3.64, 0.0);
+        shooterVelocityMap.put(3.64, 17.5);
+        hoodAngleMap.put(2.29, 0.2);
+        shooterVelocityMap.put(2.29, 15.49);
+        hoodAngleMap.put(2.785, 0.0);
+        shooterVelocityMap.put(2.785, 15.0);
+        hoodAngleMap.put(4.967, 1.7);
+        shooterVelocityMap.put(4.967, 18.0);
+        hoodAngleMap.put(2.811, 0.0);
+        shooterVelocityMap.put(2.811, 14.9);
 
-
-        /*hoodAngleMap.put(2.83,1.0);
-        shooterVelocityMap.put(2.83,16.2);
-        hoodAngleMap.put(1.525,0.0);
-        shooterVelocityMap.put(1.525, 13.9);
-        hoodAngleMap.put(2.013, 0.5);
-        shooterVelocityMap.put(2.013, 15.1);
-        hoodAngleMap.put(1.717,0.1);
-        shooterVelocityMap.put(1.717,14.6);
-        hoodAngleMap.put(2.197, 1.0);
-        shooterVelocityMap.put(2.197, 16.3);
-        hoodAngleMap.put(2.464, 1.8);
-        shooterVelocityMap.put(2.464, 16.0);
-        hoodAngleMap.put(2.601, 3.0);
-        shooterVelocityMap.put(2.601, 15.6);
-        hoodAngleMap.put(3.007, 2.4);
-        shooterVelocityMap.put(3.007, 16.4);
-        hoodAngleMap.put(3.502, 2.0);
-        shooterVelocityMap.put(3.502, 17.2);
-        hoodAngleMap.put(3.91, 1.6);
-        shooterVelocityMap.put(3.91, 18.3);*/
-
-        hoodAngleMap.put(1.812, 0.0);
+        /*hoodAngleMap.put(1.812, 0.0);
         shooterVelocityMap.put(1.812,12.4);
         hoodAngleMap.put(2.07, 0.0);
         shooterVelocityMap.put(2.07, 12.8);
@@ -70,7 +49,7 @@ public class ShootingInterpolator {
         hoodAngleMap.put(3.83, 0.2);
         shooterVelocityMap.put(3.83, 16.65);
         hoodAngleMap.put(2.86, 0.0);
-        shooterVelocityMap.put(2.86, 15.3);
+        shooterVelocityMap.put(2.86, 15.3);*/
 
 
 
