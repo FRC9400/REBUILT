@@ -92,6 +92,10 @@ private final Superstructure superstructure = new Superstructure(
     return autos.getAutoChooser().getSelected();
   }
 
+  public Autos getAutos(){
+    return autos;
+  }
+
   public void makeIdle(){
     superstructure.requestIdle();
   }

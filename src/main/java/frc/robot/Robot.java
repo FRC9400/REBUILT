@@ -74,7 +74,26 @@ public class Robot extends LoggedRobot {
   @Override
   public void autonomousInit() {
     m_robotContainer.makeIdle();
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+    //NEW THING
+    // 1. Try to seed from Limelight
+    boolean seeded = m_robotContainer.getSwerve().seedGyroFromLimelight();
+
+    // 2. If no tags visible, fall back to the auto's known starting pose
+    if (!seeded) {
+        m_robotContainer.getAutos().getSelectedStartingPose().ifPresentOrElse(
+            pose -> {
+                m_robotContainer.getSwerve().resetPose(pose);
+                DriverStation.reportWarning("[Auto] Vision failed: reset to auto starting pose", false);
+            },
+            () -> {
+                DriverStation.reportWarning("[Auto] Vision failed: no starting pose, zeroing gyro", false);
+                m_robotContainer.getSwerve().zeroGyro();
+            }
+        );
+    }
+
+        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

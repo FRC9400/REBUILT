@@ -429,4 +429,28 @@ public class Swerve extends SubsystemBase {
     }
     Logger.recordOutput(key, dataArray.stream().mapToDouble(Double::doubleValue).toArray());
   }
+
+  public boolean seedGyroFromLimelight() {
+    // MT1
+    LimelightHelpers.PoseEstimate mt1Front = 
+        LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+    LimelightHelpers.PoseEstimate mt1Right = 
+        LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-right");
+
+    // Pick whichever camera sees more tags; prefer front if tied
+    LimelightHelpers.PoseEstimate best = null;
+    if (mt1Front != null && mt1Front.tagCount > 0) best = mt1Front;
+    if (mt1Right != null && mt1Right.tagCount > (best != null ? best.tagCount : 0)) best = mt1Right;
+
+    if (best == null) {
+        DriverStation.reportWarning("[Swerve] seedGyroFromLimelight: no tags visible, gyro not seeded", false);
+        return false;
+    }
+
+    // resetPose already calls setGyroStartingPosition internally
+    resetPose(best.pose);
+    Logger.recordOutput("Odometry/GyroSeededFromLimelight", true);
+    Logger.recordOutput("Odometry/SeededPose", best.pose);
+    return true;
+}
 }
