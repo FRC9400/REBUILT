@@ -289,6 +289,19 @@ public class Swerve extends SubsystemBase {
         poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
     }
 
+    LimelightHelpers.SetRobotOrientation(
+    "limelight-left",
+    poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
+    0, 0, 0, 0, 0);
+
+    mt1 = 
+        LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-left");
+
+    if (mt1 != null && mt1.tagCount != 0) {
+        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(1.2, 1.2, 1.2));
+        poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
+    }
+
     poseRaw = poseEstimator.getEstimatedPosition();
     odometry.update(getRotation2d(), getSwerveModulePositions());
   }
@@ -415,7 +428,7 @@ public class Swerve extends SubsystemBase {
     }
     
     return getPoseRaw().getTranslation().getDistance(hubPosition);
-}
+  }
 
   public ChassisSpeeds getFieldRelativeSpeeds() {
     return ChassisSpeeds.fromRobotRelativeSpeeds(getRobotRelativeSpeeds(), getRotation2d());
@@ -431,26 +444,27 @@ public class Swerve extends SubsystemBase {
   }
 
   public boolean seedGyroFromLimelight() {
-    // MT1
     LimelightHelpers.PoseEstimate mt1Front = 
         LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
     LimelightHelpers.PoseEstimate mt1Right = 
         LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-right");
+    LimelightHelpers.PoseEstimate mt1Left = 
+        LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-left");
 
-    // Pick whichever camera sees more tags; prefer front if tied
+    // Pick whichever camera sees the most tags; prefer front, then right, then left if tied
     LimelightHelpers.PoseEstimate best = null;
     if (mt1Front != null && mt1Front.tagCount > 0) best = mt1Front;
     if (mt1Right != null && mt1Right.tagCount > (best != null ? best.tagCount : 0)) best = mt1Right;
+    if (mt1Left != null && mt1Left.tagCount > (best != null ? best.tagCount : 0)) best = mt1Left;
 
     if (best == null) {
         DriverStation.reportWarning("[Swerve] seedGyroFromLimelight: no tags visible, gyro not seeded", false);
         return false;
     }
 
-    // resetPose already calls setGyroStartingPosition internally
     resetPose(best.pose);
     Logger.recordOutput("Odometry/GyroSeededFromLimelight", true);
     Logger.recordOutput("Odometry/SeededPose", best.pose);
     return true;
-}
+  }
 }
