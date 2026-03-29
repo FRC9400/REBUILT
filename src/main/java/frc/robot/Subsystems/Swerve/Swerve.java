@@ -443,7 +443,7 @@ public class Swerve extends SubsystemBase {
     Logger.recordOutput(key, dataArray.stream().mapToDouble(Double::doubleValue).toArray());
   }
 
-  public boolean seedGyroFromLimelight() {
+  public boolean seedGyroOnlyFromLimelight() {
     LimelightHelpers.PoseEstimate mt1Front = 
         LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
     LimelightHelpers.PoseEstimate mt1Right = 
@@ -451,20 +451,20 @@ public class Swerve extends SubsystemBase {
     LimelightHelpers.PoseEstimate mt1Left = 
         LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-left");
 
-    // Pick whichever camera sees the most tags; prefer front, then right, then left if tied
     LimelightHelpers.PoseEstimate best = null;
     if (mt1Front != null && mt1Front.tagCount > 0) best = mt1Front;
     if (mt1Right != null && mt1Right.tagCount > (best != null ? best.tagCount : 0)) best = mt1Right;
     if (mt1Left != null && mt1Left.tagCount > (best != null ? best.tagCount : 0)) best = mt1Left;
 
     if (best == null) {
-        DriverStation.reportWarning("[Swerve] seedGyroFromLimelight: no tags visible, gyro not seeded", false);
+        DriverStation.reportWarning("[Swerve] seedGyroOnlyFromLimelight: no tags visible", false);
         return false;
     }
 
-    resetPose(best.pose);
+    double yawDegrees = best.pose.getRotation().getDegrees();
+    setGyroStartingPosition(yawDegrees);
     Logger.recordOutput("Odometry/GyroSeededFromLimelight", true);
-    Logger.recordOutput("Odometry/SeededPose", best.pose);
+    Logger.recordOutput("Odometry/SeededYawDeg", yawDegrees);
     return true;
-  }
+}
 }
