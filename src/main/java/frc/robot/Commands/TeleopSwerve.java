@@ -3,6 +3,8 @@ package frc.robot.Commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.swerveConstants;
 import frc.robot.Subsystems.Swerve.Swerve;
@@ -13,6 +15,7 @@ public class TeleopSwerve extends Command {
   private DoubleSupplier translationSup;
   private DoubleSupplier strafeSup;
   private DoubleSupplier rotationSup;
+
 
   public TeleopSwerve(
       Swerve s_Swerve,
@@ -29,6 +32,7 @@ public class TeleopSwerve extends Command {
 
   @Override
   public void execute() {
+
     /* Get Values, Deadband*/
     double translationVal = Math.pow(MathUtil.applyDeadband(translationSup.getAsDouble(), 0.05), 3);
     double strafeVal = Math.pow(MathUtil.applyDeadband(strafeSup.getAsDouble(), 0.05), 3);

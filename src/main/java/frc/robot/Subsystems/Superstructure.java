@@ -135,7 +135,7 @@ public class Superstructure extends SubsystemBase {
                 s_intake.requestLowered();
                 s_rollers.requestIdle();
                 s_shooter.requestVelocity(shooterVelocity.getAsDouble());
-                if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 0.2){
+                if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 2){
                     setState(SuperstructureStates.SHOOT_A);
                 }
                 break;
@@ -158,7 +158,6 @@ public class Superstructure extends SubsystemBase {
                 }
                 break;
             case AUTO_SPIN_UP:
-                s_hood.requestSetpoint(ShootingInterpolator.getHoodAngle(distance));
                 s_intake.requestLowered();
                 s_rollers.requestIdle();
                 s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance) - radialVelocitySupplier.getAsDouble() + 0.17);

@@ -23,6 +23,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,6 +36,8 @@ import frc.robot.Constants.swerveConstants;
 import frc.robot.Constants.swerveConstants.kinematicsConstants;
 import frc.commons.LoggedTunableNumber;
 import frc.robot.LimelightHelpers;
+
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import org.littletonrobotics.junction.Logger;
@@ -46,6 +50,7 @@ public class Swerve extends SubsystemBase {
   LoggedTunableNumber ykD = new LoggedTunableNumber("Swerve/Y Controller kD", 0.6);
   RobotConfig config;
 
+  private final Field2d m_field = new Field2d();
   private boolean feedLeft = false;
   private final GyroIO gyroIO = new GyroIOPigeon2(canIDConstants.pigeon);
   private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
@@ -177,6 +182,9 @@ public class Swerve extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    SmartDashboard.putData("Field", m_field);
+    m_field.setRobotPose(getPoseRaw());
     gyroIO.updateInputs(gyroInputs);
     Logger.processInputs("Swerve/Gyro", gyroInputs);
     for (int i = 0; i < 4; i++) {
