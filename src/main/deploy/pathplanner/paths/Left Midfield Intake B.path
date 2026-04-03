@@ -8,36 +8,52 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.29656956488973,
-        "y": 5.57328601997991
+        "x": 6.362297629983813,
+        "y": 5.46921260084439
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.746730769230771,
-        "y": 6.965307692307692
+        "x": 6.967641025641027,
+        "y": 7.360666666666666
       },
       "prevControl": {
-        "x": 7.270556452763624,
-        "y": 7.151435789681292
+        "x": 6.240735128842955,
+        "y": 7.245842578046186
       },
       "nextControl": {
-        "x": 8.476079400854813,
-        "y": 6.680218244112752
+        "x": 7.873118562900501,
+        "y": 7.503698431080896
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.014179487179488,
-        "y": 4.453615384615385
+        "x": 7.793243589743589,
+        "y": 4.3489615384615385
       },
       "prevControl": {
-        "x": 7.774370766396609,
-        "y": 5.328178343361733
+        "x": 8.837240318334192,
+        "y": 5.003888995640117
+      },
+      "nextControl": {
+        "x": 7.060085505953917,
+        "y": 3.889031591962077
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.281576923076924,
+        "y": 5.186192307692308
+      },
+      "prevControl": {
+        "x": 6.365216318565639,
+        "y": 4.06293611296566
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,15 +62,19 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.0453648915187361,
+      "waypointRelativePos": 1.1,
       "rotationDegrees": -77.35
+    },
+    {
+      "waypointRelativePos": 1.9631578947368427,
+      "rotationDegrees": -119.99999999999999
     }
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.8,
+    "maxVelocity": 2.25,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -63,7 +83,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -77.34744349944211
+    "rotation": 60.08635400846509
   },
   "reversed": false,
   "folder": "Left Midfield Intake Paths",

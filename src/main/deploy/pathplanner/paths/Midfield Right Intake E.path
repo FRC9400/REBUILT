@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.282,
-        "y": 5.186
+        "x": 6.177,
+        "y": 2.221
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4326666666666683,
-        "y": 5.767602564102564
+        "x": 5.002474358974361,
+        "y": 3.9303461538461537
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.2582179487179497,
-        "y": 5.732717948717948
+        "x": 7.804871794871797,
+        "y": 2.221
       },
       "prevControl": {
-        "x": 3.1768461538461548,
-        "y": 5.837371794871794
+        "x": 8.188602564102567,
+        "y": 4.96525641025641
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -38,17 +43,17 @@
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
-    "unlimited": true
+    "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -35.35034989496258
+    "rotation": -81.25383773744485
   },
   "reversed": false,
-  "folder": "Left Midfield Intake Paths",
+  "folder": "Right Midfield Intake Paths",
   "idealStartingState": {
-    "velocity": 0.0,
-    "rotation": 60.086
+    "velocity": 0,
+    "rotation": 135.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

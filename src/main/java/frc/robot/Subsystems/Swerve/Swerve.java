@@ -280,7 +280,7 @@ public class Swerve extends SubsystemBase {
         LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
 
     if (mt1 != null && mt1.tagCount != 0) {
-        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(1.2, 1.2, 1.2));
+        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.4, 0.4, 0.4));
         poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
     }
 
@@ -293,7 +293,7 @@ public class Swerve extends SubsystemBase {
         LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-right");
 
     if (mt1 != null && mt1.tagCount != 0) {
-        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(1.2, 1.2, 1.2));
+        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.4, 0.4, 0.4));
         poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
     }
 
@@ -305,7 +305,7 @@ public class Swerve extends SubsystemBase {
     mt1 = 
         LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-left");
 
-    if (mt1 != null && mt1.tagCount != 0) {
+    if (mt1 != null && mt1.tagCount >= 2) {
         poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(1.2, 1.2, 1.2));
         poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
     }

@@ -14,7 +14,7 @@ import frc.robot.Subsystems.Swerve.Swerve;
 public class ShootOnMoveCommand extends Command {
     private final Swerve swerve;
     private final Superstructure superstructure;
-    private final PIDController thetaController = new PIDController(5.5, 0, 0.20);
+    private final PIDController thetaController = new PIDController(6.5, 0, 0.20);
 
     public ShootOnMoveCommand(Swerve swerve, Superstructure superstructure) {
         thetaController.enableContinuousInput(-Math.PI, Math.PI);

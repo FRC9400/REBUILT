@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.165,
-        "y": 2.628
+        "x": 6.596,
+        "y": 5.758
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.9375071024353705,
-        "y": 2.524332350476877
+        "x": 6.105626651358581,
+        "y": 5.485037621260468
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.6662752075919345,
-        "y": 2.5556109134045073
+        "x": 6.769961538461539,
+        "y": 3.988487179487179
       },
       "prevControl": {
-        "x": 6.711479875292371,
-        "y": 2.535359738627509
+        "x": 5.767318909902525,
+        "y": 4.02643606923006
       },
       "nextControl": {
-        "x": 3.329323001655721,
-        "y": 2.6008901099393142
+        "x": 7.892412410779814,
+        "y": 3.9460036831923677
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.967538461538463,
-        "y": 2.221
+        "x": 7.723474358974359,
+        "y": 4.860602564102565
       },
       "prevControl": {
-        "x": 3.3861538461538476,
-        "y": 2.6279871794871794
+        "x": 7.911457912136343,
+        "y": 4.332925717220068
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,8 +46,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.059649122807023,
-      "rotationDegrees": -29.999999999999996
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -90.0
     }
   ],
   "constraintZones": [],
@@ -55,21 +55,21 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
-    "unlimited": true
+    "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 48.63598017846986
+    "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Right Midfield Intake Paths",
+  "folder": "Left Midfield Intake Paths",
   "idealStartingState": {
-    "velocity": 0.0,
-    "rotation": -115.408
+    "velocity": 0,
+    "rotation": -139.08
   },
   "useDefaultConstraints": false
 }
