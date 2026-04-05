@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.105626651358581,
-        "y": 5.485037621260468
+        "x": 5.973484098258663,
+        "y": 5.439382638989846
       },
       "isLocked": false,
       "linkedName": null
@@ -20,24 +20,40 @@
         "y": 3.988487179487179
       },
       "prevControl": {
-        "x": 5.767318909902525,
-        "y": 4.02643606923006
+        "x": 6.0918767919440295,
+        "y": 4.400544131583493
       },
       "nextControl": {
-        "x": 7.892412410779814,
-        "y": 3.9460036831923677
+        "x": 8.07850310054686,
+        "y": 3.193315704928279
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.723474358974359,
-        "y": 4.860602564102565
+        "x": 7.897897435897436,
+        "y": 6.139705128205128
       },
       "prevControl": {
-        "x": 7.911457912136343,
-        "y": 4.332925717220068
+        "x": 8.932592517963364,
+        "y": 5.647111915895297
+      },
+      "nextControl": {
+        "x": 7.155377782850239,
+        "y": 6.493200711046212
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.769961538461539,
+        "y": 4.942
+      },
+      "prevControl": {
+        "x": 6.7826156153413715,
+        "y": 5.2393889343487725
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,6 +64,10 @@
     {
       "waypointRelativePos": 0.5,
       "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 1.6157894736842235,
+      "rotationDegrees": 90.0
     }
   ],
   "constraintZones": [],
@@ -63,7 +83,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": -98.13010235415598
   },
   "reversed": false,
   "folder": "Left Midfield Intake Paths",

@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 6.967641025641027,
-        "y": 7.360666666666666
+        "x": 7.304858974358975,
+        "y": 6.779256410256411
       },
       "prevControl": {
-        "x": 6.240735128842955,
-        "y": 7.245842578046186
+        "x": 6.577953077560903,
+        "y": 6.664432321635931
       },
       "nextControl": {
-        "x": 7.873118562900501,
-        "y": 7.503698431080896
+        "x": 8.210336511618447,
+        "y": 6.9222881746706415
       },
       "isLocked": false,
       "linkedName": null
@@ -48,12 +48,12 @@
     },
     {
       "anchor": {
-        "x": 6.281576923076924,
+        "x": 7.582,
         "y": 5.186192307692308
       },
       "prevControl": {
-        "x": 6.365216318565639,
-        "y": 4.06293611296566
+        "x": 4.804794871794872,
+        "y": 5.290846153846153
       },
       "nextControl": null,
       "isLocked": false,
@@ -68,6 +68,10 @@
     {
       "waypointRelativePos": 1.9631578947368427,
       "rotationDegrees": -119.99999999999999
+    },
+    {
+      "waypointRelativePos": 2.6157894736842144,
+      "rotationDegrees": 90.0
     }
   ],
   "constraintZones": [],
@@ -75,15 +79,15 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 2.25,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
-    "unlimited": false
+    "unlimited": true
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 60.08635400846509
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Left Midfield Intake Paths",

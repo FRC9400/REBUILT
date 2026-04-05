@@ -23,6 +23,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -46,8 +47,8 @@ public class Swerve extends SubsystemBase {
 
   LoggedTunableNumber xkP = new LoggedTunableNumber("Swerve/X Controller kP", 2.6);
   LoggedTunableNumber xkD = new LoggedTunableNumber("Swerve/X Controller kD", 0.3);
-  LoggedTunableNumber ykP = new LoggedTunableNumber("Swerve/Y Controller kP", 2.0);
-  LoggedTunableNumber ykD = new LoggedTunableNumber("Swerve/Y Controller kD", 0.6);
+  LoggedTunableNumber ykP = new LoggedTunableNumber("Swerve/Y Controller kP", 2.3);
+  LoggedTunableNumber ykD = new LoggedTunableNumber("Swerve/Y Controller kD", 0.5);
   RobotConfig config;
 
   private final Field2d m_field = new Field2d();
@@ -469,7 +470,10 @@ public class Swerve extends SubsystemBase {
         return false;
     }
 
-    double yawDegrees = best.pose.getRotation().getDegrees();
+    double yawDegrees = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue
+            ? best.pose.getRotation().getDegrees()
+            : (best.pose.getRotation().getDegrees() + 180);
+
     setGyroStartingPosition(yawDegrees);
     Logger.recordOutput("Odometry/GyroSeededFromLimelight", true);
     Logger.recordOutput("Odometry/SeededYawDeg", yawDegrees);

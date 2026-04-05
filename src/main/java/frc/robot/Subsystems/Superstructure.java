@@ -28,17 +28,17 @@ public class Superstructure extends SubsystemBase {
     private SuperstructureStates systemState = SuperstructureStates.IDLE;
 
     LoggedTunableNumber SPITOUTintakeVoltage = new LoggedTunableNumber("Superstructure/SPITOUT Intake Voltage", 7);
-    LoggedTunableNumber SPITOUTrollersVoltage = new LoggedTunableNumber("Superstructure/SPITOUT Rollers Voltage", -4);
+    LoggedTunableNumber SPITOUTrollersVoltage = new LoggedTunableNumber("Superstructure/SPITOUT Rollers Voltage", -6);
 
     LoggedTunableNumber INTAKE2intakeVoltage = new LoggedTunableNumber("Superstructure/INTAKE 2 Intake Voltage", 8);
     LoggedTunableNumber INTAKE2shooterVoltage = new LoggedTunableNumber("Superstructure/INTAKE 2 Shooter Voltage", -2);
 
-    LoggedTunableNumber UNJAMrollersVoltage = new LoggedTunableNumber("Superstructure/UNJAM Rollers Voltage", -6);
+    LoggedTunableNumber UNJAMrollersVoltage = new LoggedTunableNumber("Superstructure/UNJAM Rollers Voltage", -8);
     LoggedTunableNumber UNJAMshooterVoltage = new LoggedTunableNumber("Superstructure/UNJAM Shooter Voltage", -4);
 
     LoggedTunableNumber hoodsetpoint = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Hood Setpoint Deg", 25);
     LoggedTunableNumber shooterVelocity = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Shooter Velocity", 17.5);
-    LoggedTunableNumber SHOOTRollersVoltage = new LoggedTunableNumber("Superstructure/SHOOT Rollers Voltage", 6);
+    LoggedTunableNumber SHOOTRollersVoltage = new LoggedTunableNumber("Superstructure/SHOOT Rollers Voltage", 8);
     LoggedTunableNumber SHOOTIntakeVoltage = new LoggedTunableNumber("Superstructure/SHOOT Intake Voltage", 2);
 
     private final DoubleSupplier distanceSupplier;
@@ -162,7 +162,7 @@ public class Superstructure extends SubsystemBase {
                 s_rollers.requestIdle();
                 s_shooter.requestVelocity(ShootingInterpolator.getShooterVelocity(distance) - radialVelocitySupplier.getAsDouble() + 0.17);
                 s_hood.requestSetpoint(ShootingInterpolator.getHoodAngle(distance));
-                if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 1.4) {
+                if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 1.5) {
                     setState(SuperstructureStates.AUTO_SHOOT_A);
                 }
                 break;

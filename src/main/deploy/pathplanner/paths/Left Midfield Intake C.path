@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.282,
+        "x": 7.582,
         "y": 5.186
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4326666666666683,
+        "x": 4.732666666666669,
         "y": 5.767602564102564
       },
       "isLocked": false,
@@ -16,11 +16,11 @@
     },
     {
       "anchor": {
-        "x": 2.2582179487179497,
+        "x": 1.858,
         "y": 5.732717948717948
       },
       "prevControl": {
-        "x": 3.1768461538461548,
+        "x": 2.776628205128205,
         "y": 5.837371794871794
       },
       "nextControl": null,
@@ -28,7 +28,12 @@
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.7894736842105243,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -48,7 +53,7 @@
   "folder": "Left Midfield Intake Paths",
   "idealStartingState": {
     "velocity": 0.0,
-    "rotation": 60.086
+    "rotation": 0.0
   },
   "useDefaultConstraints": false
 }
