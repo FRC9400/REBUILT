@@ -31,22 +31,10 @@ public class RobotContainer {
   public static final CommandXboxController driver = new CommandXboxController(0);
   public static final CommandXboxController operator = new CommandXboxController(1);
   private final Swerve swerve = new Swerve();
-  private final DoubleSupplier radialVelocitySupplier = () -> {
-    ChassisSpeeds speeds = swerve.getFieldRelativeSpeeds();
-    Translation2d hubPosition = DriverStation.getAlliance().isPresent() &&
-        DriverStation.getAlliance().get() == DriverStation.Alliance.Red
-        ? fieldConstants.RED_HUB_POS.getTranslation()
-        : fieldConstants.BLUE_HUB_POS.getTranslation();
-    Translation2d toHub = hubPosition.minus(swerve.getPoseRaw().getTranslation());
-    double dist = toHub.getNorm();
-    if (dist < 0.001) return 0.0;
-    toHub = toHub.div(dist);
-    return speeds.vxMetersPerSecond * toHub.getX() + speeds.vyMetersPerSecond * toHub.getY();
-};
 
 private final Superstructure superstructure = new Superstructure(
     new HoodIOTalonFX(), new IntakeIOTalonFX(), new RollersIOTalonFX(), new ShooterIOTalonFX(),
-    swerve::getDistanceToHub, radialVelocitySupplier);
+    swerve::getDistanceToHub);
   private final Autos autos;
 
   public RobotContainer() {

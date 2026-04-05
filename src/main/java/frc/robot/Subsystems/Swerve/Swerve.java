@@ -35,6 +35,7 @@ import frc.robot.Constants.canIDConstants;
 import frc.robot.Constants.fieldConstants;
 import frc.robot.Constants.swerveConstants;
 import frc.robot.Constants.swerveConstants.kinematicsConstants;
+import frc.commons.LaunchCalculator;
 import frc.commons.LoggedTunableNumber;
 import frc.robot.LimelightHelpers;
 
@@ -202,6 +203,11 @@ public class Swerve extends SubsystemBase {
     Logger.recordOutput("FeedLeft", feedLeft);
     Logger.recordOutput("Swerve/DistanceToHub", getDistanceToHub());
 
+    LaunchCalculator.getInstance().setFieldSetpointVelocity(
+    ChassisSpeeds.fromRobotRelativeSpeeds(
+        kinematics.toChassisSpeeds(setpointModuleStates),
+        getRotation2d()));
+
   }
 
   public void requestDesiredState(
@@ -217,7 +223,7 @@ public class Swerve extends SubsystemBase {
       desiredModuleStates =
           kinematics.toSwerveModuleStates(
               ChassisSpeeds.fromFieldRelativeSpeeds(x_speed, y_speed, rot_speed, gyroPosition));
-      kinematics.desaturateWheelSpeeds(setpointModuleStates, 12);
+      kinematics.desaturateWheelSpeeds(desiredModuleStates, 12);
       for (int i = 0; i < 4; i++) {
         setpointModuleStates[i] =
             SwerveModuleState.optimize(desiredModuleStates[i], steerPositions[i]);
