@@ -116,23 +116,6 @@ public class Superstructure extends SubsystemBase {
                 s_shooter.requestIdle();
                 break;
 
-            case INTAKE_2A:
-                s_hood.requestIdle();
-                s_intake.requestIntake(INTAKE2intakeVoltage.getAsDouble());
-                s_rollers.requestIdle();
-                s_shooter.requestVoltage(INTAKE2shooterVoltage.getAsDouble());
-                break;
-
-            case INTAKE_2B:
-                s_hood.requestIdle();
-                s_intake.requestLowered();
-                s_rollers.requestIdle();
-                s_shooter.requestVoltage(INTAKE2shooterVoltage.getAsDouble());
-                if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 1) {
-                    setState(SuperstructureStates.IDLE);
-                }
-                break;
-
             case SPITOUT:
                 s_hood.requestIdle();
                 s_intake.requestIntake(-SPITOUTintakeVoltage.getAsDouble());
