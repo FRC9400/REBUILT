@@ -67,11 +67,11 @@ public class ShootOnMoveCommand extends Command {
                 + (omegaError * driveLaunchKd);
 
         // Joystick linear velocity
-        double x = MathUtil.applyDeadband(-RobotContainer.driver.getLeftY(), 0.1);
-        double y = MathUtil.applyDeadband(-RobotContainer.driver.getLeftX(), 0.1);
+        double x = MathUtil.applyDeadband(RobotContainer.driver.getLeftY(), 0.1);
+        double y = MathUtil.applyDeadband(RobotContainer.driver.getLeftX(), 0.1);
         Translation2d linearVelocity = new Translation2d(
-                x * swerveConstants.moduleConstants.maxSpeedMeterPerSecond,
-                y * swerveConstants.moduleConstants.maxSpeedMeterPerSecond);
+                x * swerveConstants.moduleConstants.maxSpeedMeterPerSecond * 0.5,
+                y * swerveConstants.moduleConstants.maxSpeedMeterPerSecond * 0.5);
 
         // Flip for red alliance
         if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red) {

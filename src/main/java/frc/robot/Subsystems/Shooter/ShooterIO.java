@@ -23,6 +23,9 @@ public interface ShooterIO {
     public default void requestVelocity(double velocity) {
     }
 
+    public default void requestMMVelocity(double velocityMPS){
+    }
+
     public default void zeroVelocity() {
     }
 

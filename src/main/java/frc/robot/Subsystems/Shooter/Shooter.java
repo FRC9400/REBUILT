@@ -20,6 +20,7 @@ public class Shooter {
         ZERO,
         VOLTAGE,
         VELOCITY,
+        MM_VELOCITY
     }
 
     public void Loop(){
@@ -39,6 +40,8 @@ public class Shooter {
             case VELOCITY:
                 shooterIO.requestVelocity(setpointVelocity);
                 break;
+            case MM_VELOCITY:
+                shooterIO.requestMMVelocity(setpointVelocity);
             default:
                 break;
         }
@@ -64,6 +67,11 @@ public class Shooter {
     public void requestVelocity(double velocity){
         setpointVelocity = velocity;
         setState(ShooterStates.VELOCITY);
+    }
+
+    public void requestMMVelocity(double velocity){
+        setpointVelocity = velocity;
+        setState(ShooterStates.MM_VELOCITY);
     }
 
     public void setState(ShooterStates nextState){
