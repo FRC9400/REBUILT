@@ -27,7 +27,7 @@ public class LaunchCalculator {
     //       rotation = direction launcher faces relative to robot front
     // nums from CAD
     public static final Transform2d robotToLauncher =
-            new Transform2d(new Translation2d(-0.0813, 0.0), Rotation2d.fromDegrees(0.0));
+            new Transform2d(new Translation2d(-0.0813, 0.0), Rotation2d.fromDegrees(180.0));
 
     private static final double phaseDelay = 0.03;  // TUNE: seconds
     private static final double loopPeriodSecs = 0.02;
