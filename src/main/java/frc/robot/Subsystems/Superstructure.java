@@ -168,7 +168,7 @@ public class Superstructure extends SubsystemBase {
                 s_rollers.requestIdle();
                 s_hood.requestSetpoint(LaunchCalculator.getHoodAngleDeg(distance));
                 s_shooter.requestVelocity(LaunchCalculator.getShooterVelocity(distance));
-                if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 1.5) {
+                if (s_shooter.atSetpoint()) {
                     setState(SuperstructureStates.AUTO_SHOOT_A);
                 }
                 break;

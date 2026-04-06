@@ -3,11 +3,14 @@ package frc.robot.Subsystems.Intake;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.measure.Angle;
@@ -23,6 +26,7 @@ import frc.robot.Constants.canIDConstants;
 public class IntakeIOTalonFX implements IntakeIO{
     private final TalonFX pivot = new TalonFX(canIDConstants.pivotMotor, "rio");
     private final TalonFX intake = new TalonFX(canIDConstants.intakeMotor, "rio");
+    private final TalonFX intake2 = new TalonFX(19, "rio");
 
     private final TalonFXConfiguration pivotConfigs = new TalonFXConfiguration();
     private final TalonFXConfiguration intakeConfigs = new TalonFXConfiguration();
@@ -56,13 +60,13 @@ public class IntakeIOTalonFX implements IntakeIO{
 
         var slot0Configs = pivotConfigs.Slot0;
         //Sys IDs set to 0 for now
-        slot0Configs.kP = 0.8;
+        slot0Configs.kP = 1.5;//0.8;
         slot0Configs.kI = 0.0;
-        slot0Configs.kD = 0.03;
-        slot0Configs.kS = 0.20835;
-        slot0Configs.kV = 0.0084435;
+        slot0Configs.kD = 0.02;//0.03;
+        slot0Configs.kS = 0.408;//0.20835;
+        slot0Configs.kV = 0.0094435;//0.0084435;
         slot0Configs.kA = 0.01;
-        slot0Configs.kG = 0.68633;
+        slot0Configs.kG = 1;
         slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
 
         var motionMagicConfigs = pivotConfigs.MotionMagic;
@@ -72,7 +76,7 @@ public class IntakeIOTalonFX implements IntakeIO{
 
         pivotMotionMagicRequest = new MotionMagicVoltage(0).withSlot(0).withEnableFOC(true);
         pivotVoltageRequest = new VoltageOut(0).withEnableFOC(true);
-        intakeVoltageRequest = new VoltageOut(0).withEnableFOC(true);
+        intakeVoltageRequest = new VoltageOut(0);
 
 
         var feedbackConfigs = pivotConfigs.Feedback;
@@ -88,6 +92,9 @@ public class IntakeIOTalonFX implements IntakeIO{
 
         pivot.getConfigurator().apply(pivotConfigs);
         intake.getConfigurator().apply(intakeConfigs);
+      //  intake2.getConfigurator().apply(intakeConfigs);
+        intake2.setControl(new Follower(intake.getDeviceID(), MotorAlignmentValue.Opposed));
+
 
         pivot.setPosition(0);
 

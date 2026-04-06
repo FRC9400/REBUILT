@@ -33,7 +33,7 @@ public class LaunchCalculator {
     private static final double loopPeriodSecs = 0.02;
 
     private static final double minDistance = 1.0;   // TUNE
-    private static final double maxDistance = 5.0;   // TUNE
+    private static final double maxDistance = 5.5;   // TUNE
 
     // TUNE: passing target on field (blue-alliance origin, meters)
     private static final double xPassTarget = 1.85;  // TUNE
@@ -63,39 +63,35 @@ public class LaunchCalculator {
 
     static {
         // TUNE: distance (m) → hood angle (deg), shooter velocity (mps), time of flight (s)
+        hoodAngleMap.put(1.68,  Rotation2d.fromDegrees(0.0));
+        hoodAngleMap.put(1.977, Rotation2d.fromDegrees(0.05));
+        hoodAngleMap.put(2.28,  Rotation2d.fromDegrees(0.1));
+        hoodAngleMap.put(2.611, Rotation2d.fromDegrees(0.18));
+        hoodAngleMap.put(3.089, Rotation2d.fromDegrees(0.25));
+        hoodAngleMap.put(3.454, Rotation2d.fromDegrees(0.4));
+        hoodAngleMap.put(3.809, Rotation2d.fromDegrees(0.65));
+        hoodAngleMap.put(4.38,  Rotation2d.fromDegrees(0.78));
+        hoodAngleMap.put(4.89,  Rotation2d.fromDegrees(0.9));
 
-        hoodAngleMap.put(1.141, Rotation2d.fromDegrees(0.0));
-        hoodAngleMap.put(2.016, Rotation2d.fromDegrees(0.0));
-        hoodAngleMap.put(2.405, Rotation2d.fromDegrees(0.0));
-        hoodAngleMap.put(2.606, Rotation2d.fromDegrees(0.0));
-        hoodAngleMap.put(2.940, Rotation2d.fromDegrees(0.0));
-        hoodAngleMap.put(3.300, Rotation2d.fromDegrees(0.0));
-        hoodAngleMap.put(3.770, Rotation2d.fromDegrees(0.0));
-        hoodAngleMap.put(4.000, Rotation2d.fromDegrees(0.0));
-        hoodAngleMap.put(4.400, Rotation2d.fromDegrees(1.6));
-        hoodAngleMap.put(4.760, Rotation2d.fromDegrees(2.0));
+        shooterVelocityMap.put(1.68,  12.7);
+        shooterVelocityMap.put(1.977, 13.4);
+        shooterVelocityMap.put(2.28,  13.8);
+        shooterVelocityMap.put(2.611, 14.8);
+        shooterVelocityMap.put(3.089, 15.2);
+        shooterVelocityMap.put(3.454, 15.8);
+        shooterVelocityMap.put(3.809, 17.0);
+        shooterVelocityMap.put(4.38,  18.6);
+        shooterVelocityMap.put(4.89,  19.6);
 
-        shooterVelocityMap.put(1.141, 12.4);
-        shooterVelocityMap.put(2.016, 13.4);
-        shooterVelocityMap.put(2.405, 14.23);
-        shooterVelocityMap.put(2.606, 14.7);
-        shooterVelocityMap.put(2.940, 15.38);
-        shooterVelocityMap.put(3.300, 15.9);
-        shooterVelocityMap.put(3.770, 16.6);
-        shooterVelocityMap.put(4.000, 17.9);
-        shooterVelocityMap.put(4.400, 20.3);
-        shooterVelocityMap.put(4.760, 24.0);
-
-        timeOfFlightMap.put(1.141, 0.0);
-        timeOfFlightMap.put(2.016, 0.0);
-        timeOfFlightMap.put(2.405, 0.0);
-        timeOfFlightMap.put(2.606, 0.0);
-        timeOfFlightMap.put(2.940, 0.0);
-        timeOfFlightMap.put(3.300, 0.0);
-        timeOfFlightMap.put(3.770, 0.0);
-        timeOfFlightMap.put(4.000, 0.0);
-        timeOfFlightMap.put(4.400, 0.0);
-        timeOfFlightMap.put(4.760, 0.0);
+        timeOfFlightMap.put(1.68,  0.92);
+        timeOfFlightMap.put(1.977, 1.0);
+        timeOfFlightMap.put(2.28,  1.06);
+        timeOfFlightMap.put(2.611, 1.19);
+        timeOfFlightMap.put(3.089, 1.16);
+        timeOfFlightMap.put(3.454, 1.21);
+        timeOfFlightMap.put(3.809, 1.28);
+        timeOfFlightMap.put(4.38,  1.46);
+        timeOfFlightMap.put(4.89,  1.39);
 
         // TUNE: passing maps
         // Hood angle is typically flat since speed scales with distance but idk
