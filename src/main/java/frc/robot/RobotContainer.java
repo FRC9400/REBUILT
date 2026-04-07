@@ -4,6 +4,7 @@ import java.util.function.DoubleSupplier;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -52,6 +53,7 @@ private final Superstructure superstructure = new Superstructure(
     NamedCommands.registerCommand("AutoShoot", new AutoShootCommand(superstructure));
     NamedCommands.registerCommand("Auto Align", new SnapToHubCommand(swerve));
     NamedCommands.registerCommand("Idle", new InstantCommand(() -> superstructure.requestIdle()));
+    NamedCommands.registerCommand("Toggle Pre Spin", Commands.runOnce(() -> superstructure.setPreSpin(!superstructure.isPreSpinEnabled())));
 
     autos = new Autos();
     SmartDashboard.putData("Auto Chooser", autos.getAutoChooser());
@@ -64,6 +66,8 @@ private final Superstructure superstructure = new Superstructure(
     driver.y().onTrue(new InstantCommand(() -> swerve.zeroGyro()));
     driver.a().onTrue(new InstantCommand(() -> superstructure.requestUnJam()));
     driver.b().onTrue(new InstantCommand(() -> superstructure.requestIdle()));
+
+    driver.start().onTrue(Commands.runOnce(() -> superstructure.setPreSpin(!superstructure.isPreSpinEnabled())));
 
     driver.leftTrigger().whileTrue(new ShootOnMoveCommand(swerve, superstructure, true));
     driver.rightTrigger().onTrue(new InstantCommand(() -> superstructure.requestSpinUpToShoot()));
