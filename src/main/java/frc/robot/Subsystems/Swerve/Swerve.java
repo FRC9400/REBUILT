@@ -278,48 +278,39 @@ public class Swerve extends SubsystemBase {
     lastGyroYaw = gyroYaw;
     poseEstimator.update(lastGyroYaw, getSwerveModulePositions());
 
-    LimelightHelpers.SetRobotOrientation(
-    "limelight",
-    poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
-    0, 0, 0, 0, 0);
+    String[] limelights = {"limelight", "limelight-right", "limelight-left"};
 
-    LimelightHelpers.PoseEstimate mt1 = 
-        LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+    for (String ll : limelights) {
+        LimelightHelpers.SetRobotOrientation(
+            ll,
+            poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
+            0, 0, 0, 0, 0);
 
-    if (mt1 != null && mt1.tagCount != 0) {
-        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.4, 0.4, 0.4));
-        poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
-    }
+        LimelightHelpers.PoseEstimate mt2 =
+            LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(ll);
 
-    LimelightHelpers.SetRobotOrientation(
-    "limelight-right",
-    poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
-    0, 0, 0, 0, 0);
+        if (mt2 == null || mt2.tagCount == 0) continue;
 
-    mt1 = 
-        LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-right");
+        if (Math.abs(gyroInputs.velocityRadPerSec) > Math.toRadians(720)) continue;
 
-    if (mt1 != null && mt1.tagCount != 0) {
-        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.4, 0.4, 0.4));
-        poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
-    }
+        double avgDist = mt2.avgTagDist;
+        if (mt2.tagCount == 1 && avgDist > 4.0) continue;
 
-    LimelightHelpers.SetRobotOrientation(
-    "limelight-left",
-    poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
-    0, 0, 0, 0, 0);
+        double xyStdDev;
+        if (mt2.tagCount >= 2) {
+            xyStdDev = 0.3 + (avgDist * avgDist * 0.05);
+        } else {
+            xyStdDev = 0.9 + (avgDist * avgDist * 0.2);
+        }
 
-    mt1 = 
-        LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-left");
-
-    if (mt1 != null && mt1.tagCount >= 2) {
-        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(1.2, 1.2, 1.2));
-        poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
+        poseEstimator.setVisionMeasurementStdDevs(
+            VecBuilder.fill(xyStdDev, xyStdDev, 9999999));
+        poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
     }
 
     poseRaw = poseEstimator.getEstimatedPosition();
     odometry.update(getRotation2d(), getSwerveModulePositions());
-  }
+}
 
   public Pose2d getPoseRaw() {
     return poseEstimator.getEstimatedPosition();
