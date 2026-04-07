@@ -17,6 +17,7 @@ import org.littletonrobotics.junction.Logger;
 public class ShootOnMoveCommand extends Command {
     private final Swerve swerve;
     private final Superstructure superstructure;
+    private final boolean passing;
 
     // TUNE: rotation PID gains for hub-lock
     private static final double driveLaunchKp = 6;
@@ -26,16 +27,17 @@ public class ShootOnMoveCommand extends Command {
     // Lower means more conservative speed limiting while shooting.
     private static final double maxPolarVelocityRadPerSec = 0.8;
 
-    public ShootOnMoveCommand(Swerve swerve, Superstructure superstructure) {
+    public ShootOnMoveCommand(Swerve swerve, Superstructure superstructure, boolean passing) {
         this.swerve = swerve;
         this.superstructure = superstructure;
+        this.passing = passing;
         addRequirements(swerve);
     }
 
     @Override
     public void initialize() {
         LaunchCalculator.getInstance().clearLaunchingParameters();
-        superstructure.requestAUTOSpinUp();
+       // superstructure.requestAUTOSpinUp();
     }
 
     @Override
@@ -52,7 +54,7 @@ public class ShootOnMoveCommand extends Command {
                 robotRelativeSpeeds,
                 fieldRelativeSpeeds,
                 hubTarget,
-                false);
+                passing);
 
         superstructure.setLookaheadDistance(parameters.distance());
 

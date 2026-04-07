@@ -12,6 +12,7 @@ import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -294,12 +295,14 @@ public class LaunchCalculator {
     // Passing target: fixed field point, mirrored vertically based on robot position
     // -------------------------------------------------------------------------
     public static Translation2d getPassingTarget(Pose2d robotPose) {
+        boolean isRed = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red;
         double fieldWidth = FieldConstants.fieldWidth;
         boolean mirror = robotPose.getY() > fieldWidth / 2.0;
-        return new Translation2d(
-                xPassTarget,
-                mirror ? fieldWidth - yPassTarget : yPassTarget);
-    }
+
+        double x = isRed ? FieldConstants.fieldLength - xPassTarget : xPassTarget;
+        double y = mirror ? fieldWidth - yPassTarget : yPassTarget;
+        return new Translation2d(x, y);
+}
 
     // -------------------------------------------------------------------------
     // Launcher velocity transform
