@@ -16,44 +16,60 @@
     },
     {
       "anchor": {
-        "x": 7.467653846153848,
-        "y": 0.8023589743589741
+        "x": 7.351371794871796,
+        "y": 0.8605000000000007
       },
       "prevControl": {
-        "x": 7.158669691073532,
-        "y": 0.6786708584336852
+        "x": 7.023785460369056,
+        "y": 0.9192975472184415
       },
       "nextControl": {
-        "x": 8.124680848697192,
-        "y": 1.065370623080903
+        "x": 8.711871794871795,
+        "y": 0.6163076923076927
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.142,
-        "y": 3.174512820512821
+        "x": 8.665358974358975,
+        "y": 2.011692307692308
       },
       "prevControl": {
-        "x": 8.339769230769232,
-        "y": 2.941948717948718
+        "x": 8.69678036698411,
+        "y": 1.2398240281905222
       },
       "nextControl": {
-        "x": 7.566464430228162,
-        "y": 3.8513062365416726
+        "x": 8.633347756410256,
+        "y": 2.79804967948718
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.165294871794873,
-        "y": 2.6279871794871794
+        "x": 8.525820512820513,
+        "y": 3.3838205128205128
       },
       "prevControl": {
-        "x": 6.397858974358975,
-        "y": 3.6861538461538466
+        "x": 8.723589743589745,
+        "y": 3.15125641025641
+      },
+      "nextControl": {
+        "x": 7.9502849430486755,
+        "y": 4.060613928849364
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.211833333333335,
+        "y": 2.581474358974359
+      },
+      "prevControl": {
+        "x": 7.049038461538463,
+        "y": 3.360564102564102
       },
       "nextControl": null,
       "isLocked": false,
@@ -62,8 +78,12 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.1,
-      "rotationDegrees": 66.801
+      "waypointRelativePos": 1.2,
+      "rotationDegrees": 124.24507691907235
+    },
+    {
+      "waypointRelativePos": 2.85,
+      "rotationDegrees": 124.25
     }
   ],
   "constraintZones": [],
@@ -85,7 +105,7 @@
   "folder": "Right Midfield Intake Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": false
 }

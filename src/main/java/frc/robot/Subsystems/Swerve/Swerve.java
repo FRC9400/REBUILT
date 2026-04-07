@@ -48,8 +48,8 @@ public class Swerve extends SubsystemBase {
 
   LoggedTunableNumber xkP = new LoggedTunableNumber("Swerve/X Controller kP", 2.6);
   LoggedTunableNumber xkD = new LoggedTunableNumber("Swerve/X Controller kD", 0.3);
-  LoggedTunableNumber ykP = new LoggedTunableNumber("Swerve/Y Controller kP", 2.3);
-  LoggedTunableNumber ykD = new LoggedTunableNumber("Swerve/Y Controller kD", 0.5);
+  LoggedTunableNumber ykP = new LoggedTunableNumber("Swerve/Y Controller kP", 2.5);
+  LoggedTunableNumber ykD = new LoggedTunableNumber("Swerve/Y Controller kD", 0.4);
   RobotConfig config;
 
   private final Field2d m_field = new Field2d();

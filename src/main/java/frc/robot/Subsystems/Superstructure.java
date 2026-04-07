@@ -39,7 +39,7 @@ public class Superstructure extends SubsystemBase {
     LoggedTunableNumber UNJAMshooterVoltage = new LoggedTunableNumber("Superstructure/UNJAM Shooter Voltage", -4);
 
     LoggedTunableNumber hoodsetpoint     = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Hood Setpoint Deg", 25);
-    LoggedTunableNumber shooterVelocity  = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Shooter Velocity", 17.5);
+    LoggedTunableNumber shooterVelocity  = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Shooter Velocity", 18);
     LoggedTunableNumber SHOOTRollersVoltage = new LoggedTunableNumber("Superstructure/SHOOT Rollers Voltage", 8);
     LoggedTunableNumber SHOOTIntakeVoltage  = new LoggedTunableNumber("Superstructure/SHOOT Intake Voltage", 2);
 
@@ -114,7 +114,7 @@ public class Superstructure extends SubsystemBase {
 
             case INTAKE:
                 s_hood.requestIdle();
-                s_intake.requestIntake(6);
+                s_intake.requestIntake(8);
                 s_rollers.requestIdle();
                 handleIdleShooter();
                 break;

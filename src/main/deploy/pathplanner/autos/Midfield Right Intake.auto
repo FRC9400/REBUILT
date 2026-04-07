@@ -43,9 +43,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "Midfield Right Intake C"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "TogglePreSpin"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Midfield Right Intake C"
+                }
+              }
+            ]
           }
         },
         {
@@ -67,16 +80,29 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 6.0
+                  "waitTime": 4.0
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Midfield Right Intake D"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "TogglePreSpin"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Midfield Right Intake D"
+                }
+              }
+            ]
           }
         },
         {

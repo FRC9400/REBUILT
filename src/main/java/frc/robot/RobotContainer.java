@@ -52,8 +52,9 @@ private final Superstructure superstructure = new Superstructure(
     NamedCommands.registerCommand("Intake", new IntakeCommand(superstructure));
     NamedCommands.registerCommand("AutoShoot", new AutoShootCommand(superstructure));
     NamedCommands.registerCommand("Auto Align", new SnapToHubCommand(swerve));
+    NamedCommands.registerCommand("ShootOnMove", new ShootOnMoveCommand(swerve,superstructure,false));
     NamedCommands.registerCommand("Idle", new InstantCommand(() -> superstructure.requestIdle()));
-    NamedCommands.registerCommand("Toggle Pre Spin", Commands.runOnce(() -> superstructure.setPreSpin(!superstructure.isPreSpinEnabled())));
+    NamedCommands.registerCommand("TogglePreSpin", Commands.runOnce(() -> superstructure.setPreSpin(!superstructure.isPreSpinEnabled())));
 
     autos = new Autos();
     SmartDashboard.putData("Auto Chooser", autos.getAutoChooser());

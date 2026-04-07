@@ -9,7 +9,7 @@ public class intakeConstants {
 
     /* Current Limits */
     public static final double pivotCurrentLimit = 70; 
-    public static final double intakeCurrentLimit = 70; 
+    public static final double intakeCurrentLimit = 140; 
 
     /* Gear Ratios */
     public static final double gearRatio = 33.333;
