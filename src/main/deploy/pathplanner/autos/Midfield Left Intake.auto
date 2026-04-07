@@ -68,13 +68,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Auto Align"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoShoot"
+                  "name": "ShootOnMove"
                 }
               },
               {

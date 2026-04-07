@@ -68,19 +68,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Auto Align"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoShoot"
+                  "name": "ShootOnMove"
                 }
               },
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 4.0
+                  "waitTime": 6.0
                 }
               }
             ]
