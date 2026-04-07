@@ -37,7 +37,11 @@ public class ShootOnMoveCommand extends Command {
     @Override
     public void initialize() {
         LaunchCalculator.getInstance().clearLaunchingParameters();
-        superstructure.requestAUTOSpinUp();
+        if (passing) {
+            superstructure.requestAUTOPass();
+        } else {
+            superstructure.requestAUTOSpinUp();
+        }
     }
 
     @Override

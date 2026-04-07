@@ -38,6 +38,7 @@ import frc.robot.Constants.swerveConstants.kinematicsConstants;
 import frc.commons.LaunchCalculator;
 import frc.commons.LoggedTunableNumber;
 import frc.robot.LimelightHelpers;
+import frc.robot.Commands.ShootOnMoveCommand;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -419,16 +420,8 @@ public void updateOdometry() {
   }
 
   public double getDistanceToHub() {
-    var alliance = DriverStation.getAlliance();
-    Translation2d hubPosition;
-    
-    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-        hubPosition = fieldConstants.RED_HUB_POS.getTranslation();
-    } else {
-        hubPosition = fieldConstants.BLUE_HUB_POS.getTranslation();
-    }
-    
-    return getPoseRaw().getTranslation().getDistance(hubPosition);
+    return getPoseRaw().getTranslation()
+            .getDistance(ShootOnMoveCommand.getHubTarget());
   }
 
   public ChassisSpeeds getFieldRelativeSpeeds() {
