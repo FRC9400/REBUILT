@@ -4,8 +4,9 @@
   "holonomicMode": true,
   "pathFolders": [
     "Depot Intake Paths",
-    "Midfield Intake Paths",
     "Left Midfield Intake Paths",
+    "Midfield Intake Paths",
+    "Tuning Paths",
     "Outpost Intake Paths",
     "Right Midfield Intake Paths"
   ],

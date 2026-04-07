@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.55,
-        "y": 5.558294871794872
+        "x": 1.5,
+        "y": 6.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.467144636840361,
-        "y": 5.563708496493868
+        "x": 2.5,
+        "y": 6.0
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.595538461538463,
-        "y": 5.558294871794872
+        "x": 3.0,
+        "y": 6.0
       },
       "prevControl": {
-        "x": 5.7508464254599945,
-        "y": 5.559404180098037
+        "x": 2.0,
+        "y": 6.0
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,17 +38,17 @@
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
-    "unlimited": true
+    "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Left Midfield Intake Paths",
+  "folder": "Tuning Paths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
