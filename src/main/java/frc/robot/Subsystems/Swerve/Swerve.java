@@ -284,9 +284,7 @@ public void updateOdometry() {
                     DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
 
     for (String ll : limelights) {
-        LimelightHelpers.PoseEstimate mt1 = isRed
-            ? LimelightHelpers.getBotPoseEstimate_wpiRed(ll)
-            : LimelightHelpers.getBotPoseEstimate_wpiBlue(ll);
+        LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(ll);
 
         if (mt1 == null || mt1.tagCount == 0) continue;
 
@@ -301,7 +299,7 @@ public void updateOdometry() {
         }
 
         poseEstimator.setVisionMeasurementStdDevs(
-            VecBuilder.fill(xyStdDev, xyStdDev, 9999999));
+            VecBuilder.fill(xyStdDev, xyStdDev, 2));
         poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
     }
 
