@@ -12,10 +12,17 @@ import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.lang.annotation.Target;
+
 import org.littletonrobotics.junction.Logger;
 
 public class LaunchCalculator {
     private static LaunchCalculator instance;
+
+
 
     public static LaunchCalculator getInstance() {
         if (instance == null) instance = new LaunchCalculator();
@@ -141,6 +148,8 @@ public class LaunchCalculator {
     private double lastHoodAngleDeg = Double.NaN;
     private Rotation2d lastDriveAngle = null;
 
+    private Field2d m_field = new Field2d();
+
     private double hoodAngleOffsetDeg = 0.0;
 
     // Setpoint velocity for auto
@@ -172,7 +181,7 @@ public class LaunchCalculator {
 
         // Phase delay: nudge estimated pose forward in time
         Pose2d phasePose = estimatedPose.exp(new Twist2d(
-                robotVelocity.vxMetersPerSecond * phaseDelay,
+                robotVelocity.vxMetersPerSecond * phaseDelay, //JOSIE CHANGE THESE TO NEGATIVE
                 robotVelocity.vyMetersPerSecond * phaseDelay,
                 robotVelocity.omegaRadiansPerSecond * phaseDelay));
 
@@ -242,19 +251,25 @@ public class LaunchCalculator {
                 passing);
 
         // Logging
+
+        SmartDashboard.putData("Lookahead shoot on the move Field", m_field);
+        m_field.setRobotPose(lookaheadRobotPose);
+        //m_field.setRobotPose(estimatedPose);
         Logger.recordOutput("LaunchCalculator/Passing", passing);
         Logger.recordOutput("LaunchCalculator/TargetPose",
                 new Pose2d(target, Rotation2d.fromDegrees(0)));
         Logger.recordOutput("LaunchCalculator/LookaheadPose", lookaheadRobotPose);
-        Logger.recordOutput("LaunchCalculator/LookaheadDistance", lookaheadDist);
-        Logger.recordOutput("LaunchCalculator/RawDistance", rawDistance);
-        Logger.recordOutput("LaunchCalculator/DriveAngleDeg", driveAngle.getDegrees());
-        Logger.recordOutput("LaunchCalculator/HoodAngleDeg", hoodAngleDeg);
-        Logger.recordOutput("LaunchCalculator/ShooterVelocity", shooterVelocity);
-        Logger.recordOutput("LaunchCalculator/TimeOfFlight", tof);
-        Logger.recordOutput("LaunchCalculator/IsValid", isValid);
-        Logger.recordOutput("LaunchCalculator/HoodAngleOffsetDeg", hoodAngleOffsetDeg);
-        Logger.recordOutput("LaunchCalculator/UsingSetpointVelocity", DriverStation.isAutonomous());
+        SmartDashboard.putNumber("LaunchCalculator/LookaheadDistance", lookaheadDist);
+        SmartDashboard.putNumber("LaunchCalculator/RawDistance", rawDistance);
+        SmartDashboard.putNumber("LaunchCalculator/DriveAngleDeg", driveAngle.getDegrees());
+        SmartDashboard.putNumber("LaunchCalculator/HoodAngleDeg", hoodAngleDeg);
+        SmartDashboard.putNumber("LaunchCalculator/ShooterVelocity", shooterVelocity);
+        SmartDashboard.putNumber("LaunchCalculator/TimeOfFlight", tof);
+         SmartDashboard.putBoolean("LaunchCalculator/IsValid", isValid);
+        SmartDashboard.putNumber("LaunchCalculator/HoodAngleOffsetDeg", hoodAngleOffsetDeg);
+       // Logger.recordOutput("LaunchCalculator/UsingSetpointVelocity", DriverStation.isAutonomous());
+        SmartDashboard.putNumber("LaunchCalculator/VelocityForLookaheadX", velocityForLookahead.vxMetersPerSecond);
+        SmartDashboard.putNumber("LaunchCalculator/VelocityForLookaheadY", velocityForLookahead.vyMetersPerSecond);
 
         return latestParameters;
     }

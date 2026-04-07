@@ -19,12 +19,12 @@ public class ShootOnMoveCommand extends Command {
     private final Superstructure superstructure;
 
     // TUNE: rotation PID gains for hub-lock
-    private static final double driveLaunchKp = 6.5;
-    private static final double driveLaunchKd = 0.20;
+    private static final double driveLaunchKp = 6;
+    private static final double driveLaunchKd = 0;
 
     // TUNE: max angular velocity (rad/s) of the lookahead pose relative to hub.
     // Lower means more conservative speed limiting while shooting.
-    private static final double maxPolarVelocityRadPerSec = 0.4;
+    private static final double maxPolarVelocityRadPerSec = 0.8;
 
     public ShootOnMoveCommand(Swerve swerve, Superstructure superstructure) {
         this.swerve = swerve;
@@ -45,7 +45,7 @@ public class ShootOnMoveCommand extends Command {
         Translation2d hubTarget = getHubTarget();
 
         ChassisSpeeds robotRelativeSpeeds = swerve.getRobotRelativeSpeeds();
-        ChassisSpeeds fieldRelativeSpeeds = swerve.getFieldRelativeSpeeds();
+        ChassisSpeeds fieldRelativeSpeeds = swerve.getFieldRelativeSpeeds().times(-1);
 
         var parameters = LaunchCalculator.getInstance().getParameters(
                 swerve.getPoseRaw(),
@@ -62,9 +62,9 @@ public class ShootOnMoveCommand extends Command {
                 .getRadians();
         double omegaError = parameters.driveVelocity()
                 - robotRelativeSpeeds.omegaRadiansPerSecond;
-        double omegaOutput = parameters.driveVelocity()
-                + (angleError * driveLaunchKp)
-                + (omegaError * driveLaunchKd);
+        double omegaOutput = /*parameters.driveVelocity()
+                +*/ MathUtil.clamp(((angleError * driveLaunchKp)
+                + (omegaError * driveLaunchKd)), -10, 10);
 
         // Joystick linear velocity
         double x = MathUtil.applyDeadband(RobotContainer.driver.getLeftY(), 0.1);
@@ -89,7 +89,7 @@ public class ShootOnMoveCommand extends Command {
                             .getAngle()
                             .minus(linearVelocity.getAngle())
                             .getRadians());
-            double lookaheadAngle = Math.PI - robotAngle - hubAngle;
+            double lookaheadAngle = Math.PI - robotAngle - hubAngle; 
             if (lookaheadAngle > 0) {
                 double maxLinearVelocity =
                         robotHubDistance * Math.sin(hubAngle) / Math.sin(lookaheadAngle) / naiveTOF;
