@@ -273,7 +273,7 @@ public class Swerve extends SubsystemBase {
     gyroIO.setPosition(0.0);
   }
 
-  public void updateOdometry() {
+public void updateOdometry() {
     var gyroYaw = new Rotation2d(gyroInputs.positionRad);
     lastGyroYaw = gyroYaw;
     poseEstimator.update(lastGyroYaw, getSwerveModulePositions());
@@ -281,23 +281,16 @@ public class Swerve extends SubsystemBase {
     String[] limelights = {"limelight", "limelight-right", "limelight-left"};
 
     for (String ll : limelights) {
-        LimelightHelpers.SetRobotOrientation(
-            ll,
-            poseEstimator.getEstimatedPosition().getRotation().getDegrees(),
-            0, 0, 0, 0, 0);
+        LimelightHelpers.PoseEstimate mt1 =
+            LimelightHelpers.getBotPoseEstimate_wpiBlue(ll);
 
-        LimelightHelpers.PoseEstimate mt2 =
-            LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(ll);
+        if (mt1 == null || mt1.tagCount == 0) continue;
 
-        if (mt2 == null || mt2.tagCount == 0) continue;
-
-        if (Math.abs(gyroInputs.velocityRadPerSec) > Math.toRadians(720)) continue;
-
-        double avgDist = mt2.avgTagDist;
-        if (mt2.tagCount == 1 && avgDist > 4.0) continue;
+        double avgDist = mt1.avgTagDist;
+        if (mt1.tagCount == 1 && avgDist > 4.0) continue;
 
         double xyStdDev;
-        if (mt2.tagCount >= 2) {
+        if (mt1.tagCount >= 2) {
             xyStdDev = 0.3 + (avgDist * avgDist * 0.05);
         } else {
             xyStdDev = 0.9 + (avgDist * avgDist * 0.2);
@@ -305,7 +298,7 @@ public class Swerve extends SubsystemBase {
 
         poseEstimator.setVisionMeasurementStdDevs(
             VecBuilder.fill(xyStdDev, xyStdDev, 9999999));
-        poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
+        poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
     }
 
     poseRaw = poseEstimator.getEstimatedPosition();
