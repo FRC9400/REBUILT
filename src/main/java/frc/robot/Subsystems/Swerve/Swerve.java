@@ -279,10 +279,14 @@ public void updateOdometry() {
     poseEstimator.update(lastGyroYaw, getSwerveModulePositions());
 
     String[] limelights = {"limelight", "limelight-right", "limelight-left"};
+    
+    boolean isRed = DriverStation.getAlliance().isPresent() && 
+                    DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
 
     for (String ll : limelights) {
-        LimelightHelpers.PoseEstimate mt1 =
-            LimelightHelpers.getBotPoseEstimate_wpiBlue(ll);
+        LimelightHelpers.PoseEstimate mt1 = isRed
+            ? LimelightHelpers.getBotPoseEstimate_wpiRed(ll)
+            : LimelightHelpers.getBotPoseEstimate_wpiBlue(ll);
 
         if (mt1 == null || mt1.tagCount == 0) continue;
 
