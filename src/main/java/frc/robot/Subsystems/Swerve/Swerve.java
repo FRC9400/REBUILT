@@ -47,9 +47,9 @@ import org.littletonrobotics.junction.Logger;
 
 public class Swerve extends SubsystemBase {
 
-  LoggedTunableNumber xkP = new LoggedTunableNumber("Swerve/X Controller kP", 2.6);
+  LoggedTunableNumber xkP = new LoggedTunableNumber("Swerve/X Controller kP", 2.8);
   LoggedTunableNumber xkD = new LoggedTunableNumber("Swerve/X Controller kD", 0.1);
-  LoggedTunableNumber ykP = new LoggedTunableNumber("Swerve/Y Controller kP", 2.5);
+  LoggedTunableNumber ykP = new LoggedTunableNumber("Swerve/Y Controller kP", 2.4);
   LoggedTunableNumber ykD = new LoggedTunableNumber("Swerve/Y Controller kD", 0.4);
   RobotConfig config;
 
