@@ -123,25 +123,6 @@
           "data": {
             "pathName": "Midfield Right Intake F"
           }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "ShootOnMove"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 6.0
-                }
-              }
-            ]
-          }
         }
       ]
     }

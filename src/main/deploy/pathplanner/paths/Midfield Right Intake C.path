@@ -3,57 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.212,
-        "y": 2.581
+        "x": 7.735102564102567,
+        "y": 2.314
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.75588085338519,
-        "y": 2.5065434706307186
+        "x": 7.414043050264366,
+        "y": 2.314
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "rightmidb_end"
     },
     {
       "anchor": {
-        "x": 6.130410256410259,
-        "y": 2.7210128205128217
+        "x": 2.6303205128205143,
+        "y": 2.314
       },
       "prevControl": {
-        "x": 6.375432220894863,
-        "y": 2.671371739540452
-      },
-      "nextControl": {
-        "x": 5.580596876861285,
-        "y": 2.832404183125122
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 3.5140641025641033,
-        "y": 2.721
-      },
-      "prevControl": {
-        "x": 4.708705038421747,
-        "y": 2.6389819951604254
-      },
-      "nextControl": {
-        "x": 3.235390797902731,
-        "y": 2.740132299726502
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.6419487179487193,
-        "y": 2.9303205128205136
-      },
-      "prevControl": {
-        "x": 2.8123264181959025,
-        "y": 2.7473684992801295
+        "x": 2.364647197165954,
+        "y": 2.314
       },
       "nextControl": null,
       "isLocked": false,
@@ -62,11 +30,11 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.15,
+      "waypointRelativePos": 0.0,
       "rotationDegrees": 0.0
     },
     {
-      "waypointRelativePos": 1.95,
+      "waypointRelativePos": 0.8,
       "rotationDegrees": 0.0
     }
   ],
@@ -82,14 +50,14 @@
     "unlimited": true
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 48.63598017846986
+    "velocity": 0.0,
+    "rotation": 40.73780815415472
   },
   "reversed": false,
   "folder": "Right Midfield Intake Paths",
   "idealStartingState": {
-    "velocity": 10.0,
-    "rotation": -115.408
+    "velocity": 0.0,
+    "rotation": 0.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
