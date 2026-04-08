@@ -432,6 +432,11 @@ public void updateOdometry() {
             .getDistance(ShootOnMoveCommand.getHubTarget());
   }
 
+  public double getDistanceForPass() {
+    return getPoseRaw().getTranslation()
+            .getDistance(LaunchCalculator.getPassingTarget(getPoseRaw()));
+  }
+
   public ChassisSpeeds getFieldRelativeSpeeds() {
     return ChassisSpeeds.fromRobotRelativeSpeeds(getRobotRelativeSpeeds(), getRotation2d());
   }

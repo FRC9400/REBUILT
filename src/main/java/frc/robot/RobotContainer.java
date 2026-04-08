@@ -35,7 +35,7 @@ public class RobotContainer {
 
 private final Superstructure superstructure = new Superstructure(
     new HoodIOTalonFX(), new IntakeIOTalonFX(), new RollersIOTalonFX(), new ShooterIOTalonFX(),
-    swerve::getDistanceToHub);
+    swerve::getDistanceToHub, swerve::getDistanceForPass);
   private final Autos autos;
 
   public RobotContainer() {
