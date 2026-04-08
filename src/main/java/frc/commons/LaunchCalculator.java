@@ -47,7 +47,7 @@ public class LaunchCalculator {
     private static final double xPassTarget = 1.85;  // TUNE
     private static final double yPassTarget = 1.65;  // TUNE
     private static final double passingMinDistance = 4.0;   // TUNE
-    private static final double passingMaxDistance = 12.0;  // TUNE
+    private static final double passingMaxDistance = 9.0;  // TUNE
 
     // -------------------------------------------------------------------------
     // Shooting lookup maps
@@ -103,23 +103,14 @@ public class LaunchCalculator {
 
         // TUNE: passing maps
         // Hood angle is typically flat since speed scales with distance but idk
-        passingHoodAngleMap.put(4.0,  Rotation2d.fromDegrees(0.0));
-        passingHoodAngleMap.put(6.0,  Rotation2d.fromDegrees(0.0));
-        passingHoodAngleMap.put(8.0,  Rotation2d.fromDegrees(0.0));
-        passingHoodAngleMap.put(10.0, Rotation2d.fromDegrees(0.0));
-        passingHoodAngleMap.put(12.0, Rotation2d.fromDegrees(0.0));
+        passingHoodAngleMap.put(6.56,  Rotation2d.fromDegrees(25.0));
+        passingHoodAngleMap.put(4.81,  Rotation2d.fromDegrees(17));
 
-        passingShooterVelocityMap.put(4.0,  0.0);
-        passingShooterVelocityMap.put(6.0,  0.0);
-        passingShooterVelocityMap.put(8.0,  0.0);
-        passingShooterVelocityMap.put(10.0, 0.0);
-        passingShooterVelocityMap.put(12.0, 0.0);
+        passingShooterVelocityMap.put(6.56,  18.0);
+        passingShooterVelocityMap.put(4.81,  14.0);
 
-        passingTimeOfFlightMap.put(4.0,  0.0);
-        passingTimeOfFlightMap.put(6.0,  0.0);
-        passingTimeOfFlightMap.put(8.0,  0.0);
-        passingTimeOfFlightMap.put(10.0, 0.0);
-        passingTimeOfFlightMap.put(12.0, 0.0);
+        passingTimeOfFlightMap.put(6.56,  1.53);
+        passingTimeOfFlightMap.put(4.81,  1.48);
     }
 
     // -------------------------------------------------------------------------

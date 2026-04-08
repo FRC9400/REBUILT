@@ -45,7 +45,7 @@ public class Superstructure extends SubsystemBase {
 
     LoggedTunableNumber minVelocity = new LoggedTunableNumber("Superstructure/MIN VELOCITY FOR SPINUP", 12.7);
 
-    // distanceSupplier is the raw fallback (swerve::getDistanceToHub)
+    // distanceSuppliers are only
     // used when LaunchCalculator lookahead is not active
     private final DoubleSupplier distanceSupplier;
     private final DoubleSupplier distanceToPassTargetSupplier;
@@ -161,7 +161,7 @@ public class Superstructure extends SubsystemBase {
 
             case SHOOT_B:
                 s_hood.requestSetpoint(hoodsetpoint.getAsDouble());
-                s_intake.requestSetpoint(SHOOTIntakeVoltage.getAsDouble(), 115);
+                s_intake.requestSetpoint(SHOOTIntakeVoltage.getAsDouble(), 105);
                 s_rollers.requestVoltage(SHOOTRollersVoltage.getAsDouble());
                 s_shooter.requestMMVelocity(shooterVelocity.getAsDouble());
                 if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 0.5) {
@@ -194,7 +194,7 @@ public class Superstructure extends SubsystemBase {
 
             case AUTO_SHOOT_B:
                 s_hood.requestSetpoint(LaunchCalculator.getHoodAngleDeg(distance));
-                s_intake.requestSetpoint(SHOOTRollersVoltage.getAsDouble(), 115);
+                s_intake.requestSetpoint(SHOOTRollersVoltage.getAsDouble(), 105);
                 s_rollers.requestVoltage(SHOOTRollersVoltage.getAsDouble());
                 s_shooter.requestMMVelocity(LaunchCalculator.getShooterVelocity(distance));
                 if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 0.5) {
@@ -227,7 +227,7 @@ public class Superstructure extends SubsystemBase {
 
             case AUTO_PASS_B:
                 s_hood.requestSetpoint(LaunchCalculator.getPassingHoodAngleDeg(passingDistance));
-                s_intake.requestSetpoint(SHOOTRollersVoltage.getAsDouble(), 115);
+                s_intake.requestSetpoint(SHOOTRollersVoltage.getAsDouble(), 105);
                 s_rollers.requestVoltage(SHOOTRollersVoltage.getAsDouble());
                 s_shooter.requestVelocity(LaunchCalculator.getPassingShooterVelocity(passingDistance));
                 if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 0.5) {

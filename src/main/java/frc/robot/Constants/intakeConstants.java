@@ -16,5 +16,5 @@ public class intakeConstants {
 
     /* Min and Max */
     public static final double minDeg = 0;
-    public static final double maxDeg = 130;
+    public static final double maxDeg = 120;
 }

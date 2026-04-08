@@ -203,6 +203,7 @@ public class Swerve extends SubsystemBase {
     Logger.recordOutput("Odometry/PoseRaw", odometry.getPoseMeters());
     Logger.recordOutput("FeedLeft", feedLeft);
     Logger.recordOutput("Swerve/DistanceToHub", getDistanceToHub());
+    Logger.recordOutput("Swerve/DistanceforPass", getDistanceForPass());
 
     LaunchCalculator.getInstance().setFieldSetpointVelocity(
     ChassisSpeeds.fromRobotRelativeSpeeds(
