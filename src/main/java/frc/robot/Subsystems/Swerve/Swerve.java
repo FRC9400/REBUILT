@@ -293,14 +293,22 @@ public void updateOdometry() {
         if (mt1.tagCount == 1 && avgDist > 4.0) continue;
 
         double xyStdDev;
-        if (mt1.tagCount >= 2) {
-            xyStdDev = 0.3 + (avgDist * avgDist * 0.05);
-        } else {
+        double rotStdDev;
+        if (mt1.tagCount >= 3) {
+            xyStdDev = 0.15 + (avgDist * avgDist * 0.05);
+            rotStdDev = 2;
+        }
+        else if (mt1.tagCount == 2){
+            xyStdDev = 0.3 + (avgDist * avgDist * 0.15);
+            rotStdDev = 4;
+        }
+        else {
             xyStdDev = 0.9 + (avgDist * avgDist * 0.2);
+            rotStdDev = 9;
         }
 
         poseEstimator.setVisionMeasurementStdDevs(
-            VecBuilder.fill(xyStdDev, xyStdDev, 2));
+            VecBuilder.fill(xyStdDev, xyStdDev, rotStdDev));
         poseEstimator.addVisionMeasurement(mt1.pose, mt1.timestampSeconds);
     }
 
