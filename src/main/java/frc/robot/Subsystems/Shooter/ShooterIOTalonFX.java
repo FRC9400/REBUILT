@@ -52,8 +52,8 @@ public class ShooterIOTalonFX implements ShooterIO{
         leftMotorConfigs.CurrentLimits.SupplyCurrentLowerTime = 1.0;
         leftMotorConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        leftMotorConfigs.Voltage.PeakForwardVoltage = 8;
-        leftMotorConfigs.Voltage.PeakReverseVoltage = -8;
+        leftMotorConfigs.Voltage.PeakForwardVoltage = 6;
+        leftMotorConfigs.Voltage.PeakReverseVoltage = -6;
         leftMotorConfigs.Slot0.kP = 0.29;
         leftMotorConfigs.Slot0.kD = 0.01;
         leftMotorConfigs.Slot0.kS = 0.2;

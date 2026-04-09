@@ -120,7 +120,7 @@ public class Superstructure extends SubsystemBase {
 
             case INTAKE:
                 s_hood.requestIdle();
-                s_intake.requestIntake(8);
+                s_intake.requestIntake(5.5);
                 s_rollers.requestIdle();
                 handleIdleShooter();
                 break;
