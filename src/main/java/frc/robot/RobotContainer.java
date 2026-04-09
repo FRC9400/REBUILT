@@ -69,7 +69,7 @@ private final Superstructure superstructure = new Superstructure(
     driver.b().onTrue(new InstantCommand(() -> superstructure.requestIdle()));
 
     //driver.pov(0).whileTrue(Commands.runOnce(() -> superstructure.setPreSpin(!superstructure.isPreSpinEnabled())));
-    //driver.start().onTrue(Commands.runOnce(() -> superstructure.setPreSpin(!superstructure.isPreSpinEnabled())));
+    driver.start().onTrue(Commands.runOnce(() -> superstructure.setPreSpin(!superstructure.isPreSpinEnabled())));
     //driver.back().whileTrue(new ShootOnMoveCommand(swerve, superstructure, true));
     
     driver.rightTrigger().whileTrue(new InstantCommand(() -> superstructure.requestSpinUpToShoot()));

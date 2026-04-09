@@ -50,9 +50,9 @@ public class TeleopSwerve extends Command {
             ? rotationVal
             : rotationVal;
 
-    double x_speed = translationVal * swerveConstants.moduleConstants.maxSpeedMeterPerSecond;
-    double y_speed = strafeVal * swerveConstants.moduleConstants.maxSpeedMeterPerSecond;
-    double rot_speed = rotationVal * swerveConstants.moduleConstants.maxAngularVelocity;
+    double x_speed = translationVal * swerveConstants.moduleConstants.maxSpeedMeterPerSecond *0.6;
+    double y_speed = strafeVal * swerveConstants.moduleConstants.maxSpeedMeterPerSecond *0.6;
+    double rot_speed = rotationVal * swerveConstants.moduleConstants.maxAngularVelocity *0.8;
 
     /* Drive */
     s_Swerve.requestDesiredState(x_speed, y_speed, rot_speed, true, false);

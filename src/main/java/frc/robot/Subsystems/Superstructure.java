@@ -29,6 +29,9 @@ public class Superstructure extends SubsystemBase {
     private Double lookaheadDistanceOverride = null;
     private boolean preSpinEnabled = false;
 
+    // Intake
+    LoggedTunableNumber INTAKEintakeVoltage  = new LoggedTunableNumber("Superstructure/INTAKE Intake Voltage", 5);
+
     // Spit out
     LoggedTunableNumber SPITOUTintakeVoltage  = new LoggedTunableNumber("Superstructure/SPITOUT Intake Voltage", 7);
     LoggedTunableNumber SPITOUTrollersVoltage = new LoggedTunableNumber("Superstructure/SPITOUT Rollers Voltage", -6);
@@ -40,7 +43,7 @@ public class Superstructure extends SubsystemBase {
     // Teleop shoot
     LoggedTunableNumber hoodSetpoint        = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Hood Setpoint Deg", 25);
     LoggedTunableNumber shooterVelocity     = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Shooter Velocity", 18);
-    LoggedTunableNumber SHOOTRollersVoltage = new LoggedTunableNumber("Superstructure/SHOOT Rollers Voltage", 8);
+    LoggedTunableNumber SHOOTRollersVoltage = new LoggedTunableNumber("Superstructure/SHOOT Rollers Voltage", 6);
     LoggedTunableNumber SHOOTIntakeVoltage  = new LoggedTunableNumber("Superstructure/SHOOT Intake Voltage", 2);
 
     // Auto shoot — separate so we can lower draw independently
@@ -122,7 +125,7 @@ public class Superstructure extends SubsystemBase {
 
             case INTAKE:
                 s_hood.requestIdle();
-                s_intake.requestIntake(5.5);
+                s_intake.requestIntake(INTAKEintakeVoltage.getAsDouble());
                 s_rollers.requestIdle();
                 handleIdleShooter();
                 break;

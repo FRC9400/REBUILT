@@ -42,7 +42,7 @@ public final class swerveConstants {
     public static final double steerStatorCurrentLimit = 50;
 
     /* Ramp Rate */
-    public static final double rampRate = 0.02;
+    public static final double rampRate = 0.3;
 
     /* Wheel Circumference */
     public static final double wheelCircumferenceMeters = Units.inchesToMeters(4) * Math.PI;
