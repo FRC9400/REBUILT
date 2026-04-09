@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.6303205128205143,
-        "y": 2.314
+        "x": 2.6892133620689664,
+        "y": 2.529849137931035
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4094102568321993,
-        "y": 2.314
+        "x": 2.441979273851892,
+        "y": 2.5669342511635955
       },
       "isLocked": false,
       "linkedName": "rightmidc_end"
     },
     {
       "anchor": {
-        "x": 6.5141410256410275,
-        "y": 2.314
+        "x": 6.461864224137932,
+        "y": 2.529849137931035
       },
       "prevControl": {
-        "x": 5.081808191337714,
-        "y": 2.314
+        "x": 5.029531389834618,
+        "y": 2.529849137931035
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.24561403508771842,
+      "waypointRelativePos": 0.37264150943396224,
       "rotationDegrees": 180.0
     },
     {
@@ -43,11 +43,11 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 6.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
-    "unlimited": true
+    "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
@@ -57,7 +57,7 @@
   "folder": "Right Midfield Intake Paths",
   "idealStartingState": {
     "velocity": 0.0,
-    "rotation": 40.73780815415472
+    "rotation": 40.73780815415473
   },
   "useDefaultConstraints": false
 }

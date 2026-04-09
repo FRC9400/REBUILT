@@ -3,12 +3,9 @@
   "robotLength": 0.8636,
   "holonomicMode": true,
   "pathFolders": [
-    "Depot Intake Paths",
     "Left Midfield Intake Paths",
-    "Midfield Intake Paths",
-    "Tuning Paths",
-    "Outpost Intake Paths",
-    "Right Midfield Intake Paths"
+    "Right Midfield Intake Paths",
+    "Tuning Paths"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,
