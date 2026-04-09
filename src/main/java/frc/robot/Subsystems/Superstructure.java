@@ -29,24 +29,29 @@ public class Superstructure extends SubsystemBase {
     private Double lookaheadDistanceOverride = null;
     private boolean preSpinEnabled = false;
 
+    // Spit out
     LoggedTunableNumber SPITOUTintakeVoltage  = new LoggedTunableNumber("Superstructure/SPITOUT Intake Voltage", 7);
     LoggedTunableNumber SPITOUTrollersVoltage = new LoggedTunableNumber("Superstructure/SPITOUT Rollers Voltage", -6);
 
-    LoggedTunableNumber INTAKE2intakeVoltage  = new LoggedTunableNumber("Superstructure/INTAKE 2 Intake Voltage", 8);
-    LoggedTunableNumber INTAKE2shooterVoltage = new LoggedTunableNumber("Superstructure/INTAKE 2 Shooter Voltage", -2);
-
+    // Unjam
     LoggedTunableNumber UNJAMrollersVoltage = new LoggedTunableNumber("Superstructure/UNJAM Rollers Voltage", -8);
     LoggedTunableNumber UNJAMshooterVoltage = new LoggedTunableNumber("Superstructure/UNJAM Shooter Voltage", -4);
 
-    LoggedTunableNumber hoodsetpoint     = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Hood Setpoint Deg", 25);
-    LoggedTunableNumber shooterVelocity  = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Shooter Velocity", 18);
+    // Teleop shoot
+    LoggedTunableNumber hoodSetpoint        = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Hood Setpoint Deg", 25);
+    LoggedTunableNumber shooterVelocity     = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Shooter Velocity", 18);
     LoggedTunableNumber SHOOTRollersVoltage = new LoggedTunableNumber("Superstructure/SHOOT Rollers Voltage", 8);
     LoggedTunableNumber SHOOTIntakeVoltage  = new LoggedTunableNumber("Superstructure/SHOOT Intake Voltage", 2);
 
+    // Auto shoot — separate so we can lower draw independently
+    LoggedTunableNumber autoSHOOTRollersVoltage = new LoggedTunableNumber("Superstructure/AUTO SHOOT Rollers Voltage", 6);
+    LoggedTunableNumber autoSHOOTIntakeVoltage  = new LoggedTunableNumber("Superstructure/AUTO SHOOT Intake Voltage", 1.5);
+
+    // Shooter velocity offset — subtract from interpolated velocity to fix overshoot
+    LoggedTunableNumber shooterVelocityOffset = new LoggedTunableNumber("Superstructure/AUTO Shooter Velocity Offset", 0.0);
+
     LoggedTunableNumber minVelocity = new LoggedTunableNumber("Superstructure/MIN VELOCITY FOR SPINUP", 12.7);
 
-    // distanceSuppliers are only
-    // used when LaunchCalculator lookahead is not active
     private final DoubleSupplier distanceSupplier;
     private final DoubleSupplier distanceToPassTargetSupplier;
 
@@ -64,8 +69,6 @@ public class Superstructure extends SubsystemBase {
         IDLE,
         BUMP,
         INTAKE,
-        INTAKE_2A,
-        INTAKE_2B,
         SPITOUT,
         UN_JAM,
         SPIN_UP,
@@ -87,21 +90,20 @@ public class Superstructure extends SubsystemBase {
         s_rollers.Loop();
         s_shooter.Loop();
 
-        // Use lookahead distance when ShootOnMoveCommand/PassOnMoveCommand is active,
-        // fall back to raw distance otherwise
         double distance = lookaheadDistanceOverride != null
                 ? lookaheadDistanceOverride
                 : distanceSupplier.getAsDouble();
 
         double passingDistance = lookaheadDistanceOverride != null
-            ? lookaheadDistanceOverride
-            : distanceToPassTargetSupplier.getAsDouble();
+                ? lookaheadDistanceOverride
+                : distanceToPassTargetSupplier.getAsDouble();
 
         Logger.recordOutput("SuperstructureState", this.systemState);
         Logger.recordOutput("Superstructure/DistanceToHub", distance);
         Logger.recordOutput("Superstructure/UsingLookahead", lookaheadDistanceOverride != null);
         Logger.recordOutput("Superstructure/InterpolatedHoodAngle", LaunchCalculator.getHoodAngleDeg(distance));
         Logger.recordOutput("Superstructure/InterpolatedShooterVelocity", LaunchCalculator.getShooterVelocity(distance));
+        Logger.recordOutput("Superstructure/ShooterVelocityOffset", shooterVelocityOffset.getAsDouble());
 
         switch (systemState) {
             case IDLE:
@@ -140,7 +142,7 @@ public class Superstructure extends SubsystemBase {
                 break;
 
             case SPIN_UP:
-                s_hood.requestSetpoint(hoodsetpoint.getAsDouble());
+                s_hood.requestSetpoint(hoodSetpoint.getAsDouble());
                 s_intake.requestLowered();
                 s_rollers.requestIdle();
                 s_shooter.requestMMVelocity(shooterVelocity.getAsDouble());
@@ -150,7 +152,7 @@ public class Superstructure extends SubsystemBase {
                 break;
 
             case SHOOT_A:
-                s_hood.requestSetpoint(hoodsetpoint.getAsDouble());
+                s_hood.requestSetpoint(hoodSetpoint.getAsDouble());
                 s_intake.requestSetpoint(SHOOTIntakeVoltage.getAsDouble(), 70);
                 s_rollers.requestVoltage(SHOOTRollersVoltage.getAsDouble());
                 s_shooter.requestMMVelocity(shooterVelocity.getAsDouble());
@@ -160,7 +162,7 @@ public class Superstructure extends SubsystemBase {
                 break;
 
             case SHOOT_B:
-                s_hood.requestSetpoint(hoodsetpoint.getAsDouble());
+                s_hood.requestSetpoint(hoodSetpoint.getAsDouble());
                 s_intake.requestSetpoint(SHOOTIntakeVoltage.getAsDouble(), 105);
                 s_rollers.requestVoltage(SHOOTRollersVoltage.getAsDouble());
                 s_shooter.requestMMVelocity(shooterVelocity.getAsDouble());
@@ -176,7 +178,7 @@ public class Superstructure extends SubsystemBase {
                 s_intake.requestLowered();
                 s_rollers.requestIdle();
                 s_hood.requestSetpoint(LaunchCalculator.getHoodAngleDeg(distance));
-                s_shooter.requestMMVelocity(LaunchCalculator.getShooterVelocity(distance));
+                s_shooter.requestMMVelocity(LaunchCalculator.getShooterVelocity(distance) - shooterVelocityOffset.getAsDouble());
                 if (s_shooter.atSetpoint()) {
                     setState(SuperstructureStates.AUTO_SHOOT_A);
                 }
@@ -184,9 +186,9 @@ public class Superstructure extends SubsystemBase {
 
             case AUTO_SHOOT_A:
                 s_hood.requestSetpoint(LaunchCalculator.getHoodAngleDeg(distance));
-                s_intake.requestSetpoint(SHOOTRollersVoltage.getAsDouble(), 70);
-                s_rollers.requestVoltage(SHOOTRollersVoltage.getAsDouble());
-                s_shooter.requestMMVelocity(LaunchCalculator.getShooterVelocity(distance));
+                s_intake.requestSetpoint(autoSHOOTIntakeVoltage.getAsDouble(), 70);
+                s_rollers.requestVoltage(autoSHOOTRollersVoltage.getAsDouble());
+                s_shooter.requestMMVelocity(LaunchCalculator.getShooterVelocity(distance) - shooterVelocityOffset.getAsDouble());
                 if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 0.5) {
                     setState(SuperstructureStates.AUTO_SHOOT_B);
                 }
@@ -194,9 +196,9 @@ public class Superstructure extends SubsystemBase {
 
             case AUTO_SHOOT_B:
                 s_hood.requestSetpoint(LaunchCalculator.getHoodAngleDeg(distance));
-                s_intake.requestSetpoint(SHOOTRollersVoltage.getAsDouble(), 105);
-                s_rollers.requestVoltage(SHOOTRollersVoltage.getAsDouble());
-                s_shooter.requestMMVelocity(LaunchCalculator.getShooterVelocity(distance));
+                s_intake.requestSetpoint(autoSHOOTIntakeVoltage.getAsDouble(), 105);
+                s_rollers.requestVoltage(autoSHOOTRollersVoltage.getAsDouble());
+                s_shooter.requestMMVelocity(LaunchCalculator.getShooterVelocity(distance) - shooterVelocityOffset.getAsDouble());
                 if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 0.5) {
                     setState(SuperstructureStates.AUTO_SHOOT_A);
                 }
@@ -217,8 +219,8 @@ public class Superstructure extends SubsystemBase {
 
             case AUTO_PASS_A:
                 s_hood.requestSetpoint(LaunchCalculator.getPassingHoodAngleDeg(passingDistance));
-                s_intake.requestSetpoint(SHOOTRollersVoltage.getAsDouble(), 70);
-                s_rollers.requestVoltage(SHOOTRollersVoltage.getAsDouble());
+                s_intake.requestSetpoint(autoSHOOTIntakeVoltage.getAsDouble(), 70);
+                s_rollers.requestVoltage(autoSHOOTRollersVoltage.getAsDouble());
                 s_shooter.requestVelocity(LaunchCalculator.getPassingShooterVelocity(passingDistance));
                 if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 0.5) {
                     setState(SuperstructureStates.AUTO_PASS_B);
@@ -227,8 +229,8 @@ public class Superstructure extends SubsystemBase {
 
             case AUTO_PASS_B:
                 s_hood.requestSetpoint(LaunchCalculator.getPassingHoodAngleDeg(passingDistance));
-                s_intake.requestSetpoint(SHOOTRollersVoltage.getAsDouble(), 105);
-                s_rollers.requestVoltage(SHOOTRollersVoltage.getAsDouble());
+                s_intake.requestSetpoint(autoSHOOTIntakeVoltage.getAsDouble(), 105);
+                s_rollers.requestVoltage(autoSHOOTRollersVoltage.getAsDouble());
                 s_shooter.requestVelocity(LaunchCalculator.getPassingShooterVelocity(passingDistance));
                 if (RobotController.getFPGATime() / 1.0E6 - stateStartTime > 0.5) {
                     setState(SuperstructureStates.AUTO_PASS_A);
@@ -276,11 +278,9 @@ public class Superstructure extends SubsystemBase {
         }
     }
 
-    // Lookahead distance override
     public void setLookaheadDistance(double meters) { this.lookaheadDistanceOverride = meters; }
     public void clearLookaheadDistance()            { this.lookaheadDistanceOverride = null; }
 
-    // State management
     public void setState(SuperstructureStates nextState) {
         systemState = nextState;
         stateStartTime = RobotController.getFPGATime() / 1E6;
@@ -291,16 +291,13 @@ public class Superstructure extends SubsystemBase {
     }
 
     private void handleIdleShooter() {
-    if (preSpinEnabled) {
-        s_shooter.requestMMVelocity(minVelocity.getAsDouble());
-    } else {
-        s_shooter.requestIdle();
-    }
-    }
-
-    public boolean isPreSpinEnabled() {
-        return preSpinEnabled;
+        if (preSpinEnabled) {
+            s_shooter.requestMMVelocity(minVelocity.getAsDouble());
+        } else {
+            s_shooter.requestIdle();
+        }
     }
 
+    public boolean isPreSpinEnabled() { return preSpinEnabled; }
     public SuperstructureStates getState() { return systemState; }
 }

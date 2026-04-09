@@ -23,7 +23,7 @@ import frc.robot.Constants.intakeConstants;
 import frc.robot.Subsystems.Intake.IntakeIO.IntakeIOInputs;
 import frc.robot.Constants.canIDConstants;
 
-public class IntakeIOTalonFX implements IntakeIO{
+public class IntakeIOTalonFX implements IntakeIO {
     private final TalonFX pivot = new TalonFX(canIDConstants.pivotMotor, "rio");
     private final TalonFX intake = new TalonFX(canIDConstants.intakeMotor, "rio");
     private final TalonFX intake2 = new TalonFX(19, "rio");
@@ -55,16 +55,17 @@ public class IntakeIOTalonFX implements IntakeIO{
         pivotMotorOutputConfigs.Inverted = intakeConstants.pivotInvert;
 
         var pivotCurrentLimitConfigs = pivotConfigs.CurrentLimits;
-        pivotCurrentLimitConfigs.StatorCurrentLimit = intakeConstants.pivotCurrentLimit;
+        pivotCurrentLimitConfigs.StatorCurrentLimit = intakeConstants.pivotStatorCurrentLimit;
         pivotCurrentLimitConfigs.StatorCurrentLimitEnable = true;
+        pivotCurrentLimitConfigs.SupplyCurrentLimit = intakeConstants.pivotCurrentLimit;
+        pivotCurrentLimitConfigs.SupplyCurrentLimitEnable = true;
 
         var slot0Configs = pivotConfigs.Slot0;
-        //Sys IDs set to 0 for now
-        slot0Configs.kP = 1.5;//0.8;
+        slot0Configs.kP = 1.5;
         slot0Configs.kI = 0.0;
-        slot0Configs.kD = 0.02;//0.03;
-        slot0Configs.kS = 0.408;//0.20835;
-        slot0Configs.kV = 0.0094435;//0.0084435;
+        slot0Configs.kD = 0.02;
+        slot0Configs.kS = 0.408;
+        slot0Configs.kV = 0.0094435;
         slot0Configs.kA = 0.01;
         slot0Configs.kG = 1;
         slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
@@ -77,7 +78,6 @@ public class IntakeIOTalonFX implements IntakeIO{
         pivotMotionMagicRequest = new MotionMagicVoltage(0).withSlot(0).withEnableFOC(true);
         pivotVoltageRequest = new VoltageOut(0).withEnableFOC(true);
         intakeVoltageRequest = new VoltageOut(0);
-
 
         var feedbackConfigs = pivotConfigs.Feedback;
         feedbackConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
@@ -92,13 +92,12 @@ public class IntakeIOTalonFX implements IntakeIO{
 
         pivot.getConfigurator().apply(pivotConfigs);
         intake.getConfigurator().apply(intakeConfigs);
-      //  intake2.getConfigurator().apply(intakeConfigs);
+        intake2.getConfigurator().apply(intakeConfigs); // was commented out, now applied so intake2 gets limits too
         intake2.setControl(new Follower(intake.getDeviceID(), MotorAlignmentValue.Opposed));
-
 
         pivot.setPosition(0);
 
-        BaseStatusSignal.setUpdateFrequencyForAll (
+        BaseStatusSignal.setUpdateFrequencyForAll(
             50,
             pivotCurrent,
             pivotPos,
@@ -110,11 +109,10 @@ public class IntakeIOTalonFX implements IntakeIO{
         );
         intake.optimizeBusUtilization();
         pivot.optimizeBusUtilization();
-        
     }
 
     public void updateInputs(IntakeIOInputs intakeInputs) {
-        BaseStatusSignal.refreshAll (
+        BaseStatusSignal.refreshAll(
             pivotCurrent,
             pivotPos,
             pivotRPS,
@@ -123,7 +121,7 @@ public class IntakeIOTalonFX implements IntakeIO{
             intakeCurrent,
             intakeRPS
         );
-        intakeInputs.pivotAppliedVolts = pivotVoltageRequest.Output; 
+        intakeInputs.pivotAppliedVolts = pivotVoltageRequest.Output;
         intakeInputs.pivotCurrent = pivotCurrent.getValueAsDouble();
         intakeInputs.pivotPosDeg = Conversions.RotationsToDegrees(pivotPos.getValueAsDouble(), intakeConstants.gearRatio);
         intakeInputs.pivotPosRot = pivotPos.getValueAsDouble();
@@ -139,7 +137,6 @@ public class IntakeIOTalonFX implements IntakeIO{
         intakeInputs.intakeRPS = intakeRPS.getValueAsDouble();
         intakeInputs.intakeSetpointVolts = this.intakeSetpointVolts;
         intakeInputs.intakeVoltage = intakeVoltage.getValueAsDouble();
-
     }
 
     public void requestPivotVoltage(double voltage) {
@@ -159,5 +156,4 @@ public class IntakeIOTalonFX implements IntakeIO{
     public void zeroPosition() {
         pivot.setPosition(0);
     }
-
 }

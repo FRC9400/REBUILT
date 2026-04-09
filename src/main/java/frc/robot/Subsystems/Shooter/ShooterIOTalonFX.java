@@ -19,7 +19,7 @@ import frc.commons.Conversions;
 import frc.robot.Constants.canIDConstants;
 import frc.robot.Constants.shooterConstants;
 
-public class ShooterIOTalonFX implements ShooterIO{
+public class ShooterIOTalonFX implements ShooterIO {
     private final TalonFX leftMotor = new TalonFX(canIDConstants.leftShooterMotor, "rio");
     private final TalonFX rightMotor = new TalonFX(canIDConstants.rightShooterMotor, "rio");
     private TalonFXConfiguration leftMotorConfigs = new TalonFXConfiguration();
@@ -41,34 +41,32 @@ public class ShooterIOTalonFX implements ShooterIO{
     private double leftShooterSetpointMPS;
 
     public ShooterIOTalonFX() {
-
         leftMotorConfigs.CurrentLimits.StatorCurrentLimit = 70;
         leftMotorConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
         leftMotorConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-        // 70A burst, drops to 40A after 1s of continuous limiting TUNE
         leftMotorConfigs.CurrentLimits.SupplyCurrentLimit = 70;
         leftMotorConfigs.CurrentLimits.SupplyCurrentLowerLimit = 40;
         leftMotorConfigs.CurrentLimits.SupplyCurrentLowerTime = 1.0;
         leftMotorConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        leftMotorConfigs.Voltage.PeakForwardVoltage = 6;
-        leftMotorConfigs.Voltage.PeakReverseVoltage = -6;
+        leftMotorConfigs.Voltage.PeakForwardVoltage = 11; // raised from 6
+        leftMotorConfigs.Voltage.PeakReverseVoltage = -11; // raised from -6
+
         leftMotorConfigs.Slot0.kP = 0.29;
         leftMotorConfigs.Slot0.kD = 0.01;
         leftMotorConfigs.Slot0.kS = 0.2;
         leftMotorConfigs.Slot0.kV = 0.115;
         leftMotorConfigs.Slot0.kA = 0;
 
-         leftMotorConfigs.MotionMagic.MotionMagicAcceleration =
-                Conversions.MPStoRPS(15, //TUNE
+        leftMotorConfigs.MotionMagic.MotionMagicAcceleration =
+                Conversions.MPStoRPS(15,
                         shooterConstants.wheelCircumferenceMeters, 1);
         leftMotorConfigs.MotionMagic.MotionMagicJerk =
-                Conversions.MPStoRPS(30, //TUNE
+                Conversions.MPStoRPS(30,
                         shooterConstants.wheelCircumferenceMeters, 1);
 
         leftMotor.getConfigurator().apply(leftMotorConfigs);
-        
         rightMotor.setControl(new Follower(leftMotor.getDeviceID(), MotorAlignmentValue.Opposed));
 
         BaseStatusSignal.setUpdateFrequencyForAll(
@@ -87,7 +85,7 @@ public class ShooterIOTalonFX implements ShooterIO{
         rightMotor.optimizeBusUtilization();
 
         leftShooterSetpointMPS = 0;
-    }   
+    }
 
     public void updateInputs(ShooterIOInputs inputs) {
         BaseStatusSignal.refreshAll(
@@ -107,18 +105,25 @@ public class ShooterIOTalonFX implements ShooterIO{
                 rightShooterCurrent.getValueAsDouble() };
         inputs.temp = new double[] { leftShooterTemp.getValueAsDouble(),
                 rightShooterTemp.getValueAsDouble() };
-        inputs.shooterVelMPS = new double[] {Conversions.RPStoMPS(leftShooterSpeedRPS.getValueAsDouble(), shooterConstants.wheelCircumferenceMeters, 1), Conversions.RPStoMPS(rightShooterSpeedRPS.getValueAsDouble(), shooterConstants.wheelCircumferenceMeters, 1)};
+        inputs.shooterVelMPS = new double[] {
+                Conversions.RPStoMPS(leftShooterSpeedRPS.getValueAsDouble(), shooterConstants.wheelCircumferenceMeters, 1),
+                Conversions.RPStoMPS(rightShooterSpeedRPS.getValueAsDouble(), shooterConstants.wheelCircumferenceMeters, 1)};
         inputs.shooterSetpointMPS = leftShooterSetpointMPS;
-        inputs.shooterVelRPS = new double[] {leftShooterSpeedRPS.getValueAsDouble(), rightShooterSpeedRPS.getValueAsDouble()};
-        inputs.shooterVoltage = new double[] {leftVoltage.getValueAsDouble(), rightVoltage.getValueAsDouble()};
+        inputs.shooterVelRPS = new double[] {
+                leftShooterSpeedRPS.getValueAsDouble(),
+                rightShooterSpeedRPS.getValueAsDouble()};
+        inputs.shooterVoltage = new double[] {
+                leftVoltage.getValueAsDouble(),
+                rightVoltage.getValueAsDouble()};
     }
 
     public void requestVelocity(double velocity) {
         this.leftShooterSetpointMPS = velocity;
-        leftMotor.setControl(leftShootRequestVelocity.withVelocity(Conversions.MPStoRPS(velocity, shooterConstants.wheelCircumferenceMeters, 1)));
+        leftMotor.setControl(leftShootRequestVelocity.withVelocity(
+                Conversions.MPStoRPS(velocity, shooterConstants.wheelCircumferenceMeters, 1)));
     }
 
-    public void zeroVelocity(){
+    public void zeroVelocity() {
         this.leftShooterSetpointMPS = 0;
         leftMotor.setControl(leftShootRequestVelocity.withVelocity(0));
     }
@@ -129,7 +134,7 @@ public class ShooterIOTalonFX implements ShooterIO{
                 Conversions.MPStoRPS(velocityMPS, shooterConstants.wheelCircumferenceMeters, 1)));
     }
 
-    public void requestVoltage(double volts){
+    public void requestVoltage(double volts) {
         leftMotor.setControl(shootRequestVoltage.withOutput(volts));
     }
 }
