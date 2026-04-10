@@ -46,7 +46,7 @@ public class LaunchCalculator {
     private static final double xPassTarget = 1.85;  // TUNE
     private static final double yPassTarget = 1.65;  // TUNE
     private static final double passingMinDistance = 4.0;   // TUNE
-    private static final double passingMaxDistance = 9.0;  // TUNE
+    private static final double passingMaxDistance = 11.0;  // TUNE
 
     // -------------------------------------------------------------------------
     // Shooting lookup maps
