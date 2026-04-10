@@ -51,8 +51,7 @@ public class ShootOnMoveCommand extends Command {
         Translation2d hubTarget = getHubTarget();
 
         ChassisSpeeds robotRelativeSpeeds = swerve.getRobotRelativeSpeeds();
-        ChassisSpeeds fieldRelativeSpeeds = swerve.getFieldRelativeSpeeds().times(-1);
-
+        ChassisSpeeds fieldRelativeSpeeds = swerve.getFieldRelativeSpeeds().times(DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red ? -1 : 1);
         var parameters = LaunchCalculator.getInstance().getParameters(
                 swerve.getPoseRaw(),
                 robotRelativeSpeeds,
