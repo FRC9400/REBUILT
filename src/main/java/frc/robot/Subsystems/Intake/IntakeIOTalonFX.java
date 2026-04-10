@@ -48,6 +48,12 @@ public class IntakeIOTalonFX implements IntakeIO {
     private final StatusSignal<Temperature> intakeTemp = intake.getDeviceTemp();
     private final StatusSignal<Voltage> intakeVoltage = intake.getMotorVoltage();
     private final StatusSignal<AngularVelocity> intakeRPS = intake.getRotorVelocity();
+    
+    private final StatusSignal<Current> intake2Current = intake2.getStatorCurrent();
+    private final StatusSignal<Temperature> intake2Temp = intake2.getDeviceTemp();
+    private final StatusSignal<Voltage> intake2Voltage = intake2.getMotorVoltage();
+    private final StatusSignal<AngularVelocity> intake2RPS = intake2.getRotorVelocity();
+
 
     public IntakeIOTalonFX() {
         var pivotMotorOutputConfigs = pivotConfigs.MotorOutput;
@@ -92,7 +98,7 @@ public class IntakeIOTalonFX implements IntakeIO {
 
         pivot.getConfigurator().apply(pivotConfigs);
         intake.getConfigurator().apply(intakeConfigs);
-        intake2.getConfigurator().apply(intakeConfigs); // was commented out, now applied so intake2 gets limits too
+       // intake2.getConfigurator().apply(intakeConfigs); // was commented out, now applied so intake2 gets limits too
         intake2.setControl(new Follower(intake.getDeviceID(), MotorAlignmentValue.Opposed));
 
         pivot.setPosition(0);
@@ -103,11 +109,18 @@ public class IntakeIOTalonFX implements IntakeIO {
             pivotPos,
             pivotRPS,
             pivotTemp,
+            pivotVoltage,
             intakeTemp,
             intakeCurrent,
-            intakeRPS
+            intakeRPS,
+            intakeVoltage,
+            intake2Temp,
+            intake2Current,
+            intake2RPS,
+            intake2Voltage
         );
         intake.optimizeBusUtilization();
+        intake2.optimizeBusUtilization();
         pivot.optimizeBusUtilization();
     }
 
@@ -117,9 +130,15 @@ public class IntakeIOTalonFX implements IntakeIO {
             pivotPos,
             pivotRPS,
             pivotTemp,
+            pivotVoltage,
             intakeTemp,
             intakeCurrent,
-            intakeRPS
+            intakeRPS,
+            intakeVoltage,
+            intake2Temp,
+            intake2Current,
+            intake2RPS,
+            intake2Voltage
         );
         intakeInputs.pivotAppliedVolts = pivotVoltageRequest.Output;
         intakeInputs.pivotCurrent = pivotCurrent.getValueAsDouble();
@@ -137,6 +156,12 @@ public class IntakeIOTalonFX implements IntakeIO {
         intakeInputs.intakeRPS = intakeRPS.getValueAsDouble();
         intakeInputs.intakeSetpointVolts = this.intakeSetpointVolts;
         intakeInputs.intakeVoltage = intakeVoltage.getValueAsDouble();
+
+        intakeInputs.intake2Current = intake2Current.getValueAsDouble();
+        intakeInputs.intake2RPS = intake2RPS.getValueAsDouble();
+        intakeInputs.intake2Temperature = intake2Temp.getValueAsDouble();
+        intakeInputs.intake2Voltage = intake2Voltage.getValueAsDouble();
+
     }
 
     public void requestPivotVoltage(double voltage) {

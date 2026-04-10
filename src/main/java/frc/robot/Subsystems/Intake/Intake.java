@@ -38,7 +38,7 @@ public class Intake {
                 break;
             case RAISED:
                 intakeIO.requestIntakeVoltage(0);
-                intakeIO.requestSetpoint(intakeConstants.minDeg+10);
+                intakeIO.requestSetpoint(intakeConstants.minDeg);
                 break;
             case INTAKE:
                 intakeIO.requestIntakeVoltage(voltageSetpoint);

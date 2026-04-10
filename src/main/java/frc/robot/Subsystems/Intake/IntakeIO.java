@@ -21,6 +21,11 @@ public interface IntakeIO {
         public double intakeRPS = 0;
         public double intakeVoltage = 0;
         public double intakeSetpointVolts = 0;
+
+        public double intake2Temperature = 0;
+        public double intake2Current = 0;
+        public double intake2RPS = 0;
+        public double intake2Voltage = 0;
     }
 
     public default void updateInputs (IntakeIOInputs inputs) {}

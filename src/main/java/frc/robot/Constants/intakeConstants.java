@@ -8,9 +8,9 @@ public class intakeConstants {
     public static final InvertedValue intakeInvert = InvertedValue.Clockwise_Positive;
 
     /* Current Limits */
-    public static final double pivotCurrentLimit = 40; // lowered from 70, pivot doesn't need much
-    public static final double pivotStatorCurrentLimit = 40; // stator limit for pivot
-    public static final double intakeCurrentLimit = 60; // lowered from 140
+    public static final double pivotCurrentLimit = 70; // lowered from 70, pivot doesn't need much
+    public static final double pivotStatorCurrentLimit = 70; // stator limit for pivot
+    public static final double intakeCurrentLimit = 140; // lowered from 140
 
     /* Gear Ratios */
     public static final double gearRatio = 33.333;

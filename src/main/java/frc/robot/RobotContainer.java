@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Autos.Autos;
@@ -68,11 +69,11 @@ private final Superstructure superstructure = new Superstructure(
     driver.a().onTrue(new InstantCommand(() -> superstructure.requestUnJam()));
     driver.b().onTrue(new InstantCommand(() -> superstructure.requestIdle()));
 
-    //driver.pov(0).whileTrue(Commands.runOnce(() -> superstructure.setPreSpin(!superstructure.isPreSpinEnabled())));
+    //driver.pov(0).onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()));
     driver.start().onTrue(Commands.runOnce(() -> superstructure.setPreSpin(!superstructure.isPreSpinEnabled())));
-    //driver.back().whileTrue(new ShootOnMoveCommand(swerve, superstructure, true));
+    driver.rightTrigger().whileTrue(new ShootOnMoveCommand(swerve, superstructure, true));
     
-    driver.rightTrigger().whileTrue(new InstantCommand(() -> superstructure.requestSpinUpToShoot()));
+    driver.back().whileTrue(new InstantCommand(() -> superstructure.requestSpinUpToShoot()));
     driver.leftTrigger().whileTrue(new ShootOnMoveCommand(swerve, superstructure, false));
     
     //driver.rightTrigger().onTrue(new InstantCommand(() -> superstructure.requestSpinUpToShoot()));
