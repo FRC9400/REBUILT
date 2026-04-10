@@ -34,8 +34,7 @@ public class LaunchCalculator {
     //       y = lateral offset (m, positive = left)
     //       rotation = direction launcher faces relative to robot front
     // nums from CAD
-    public static final Transform2d robotToLauncher =
-            new Transform2d(new Translation2d(-0.0813, 0.0), Rotation2d.fromDegrees(180.0));
+
 
     private static final double phaseDelay = 0.03;  // TUNE: seconds
     private static final double loopPeriodSecs = 0.02;
@@ -178,7 +177,7 @@ public class LaunchCalculator {
                 robotVelocity.omegaRadiansPerSecond * phaseDelay));
 
         // Launcher position on field
-        Pose2d launcherPose = phasePose.transformBy(robotToLauncher);
+        Pose2d launcherPose = phasePose.transformBy(getRobotToLauncher());
         Translation2d launcherTranslation = launcherPose.getTranslation();
 
         // Target: hub for shooting, fixed field point for passing
@@ -201,7 +200,7 @@ public class LaunchCalculator {
 
         // Drive angle from lookahead robot pose
         Pose2d lookaheadRobotPose = new Pose2d(lookaheadLauncherPos, launcherPose.getRotation())
-                .transformBy(robotToLauncher.inverse());
+                .transformBy(getRobotToLauncher().inverse());
         Rotation2d driveAngle = getDriveAngleWithLauncherOffset(lookaheadRobotPose, target);
 
         // Hood angle and shooter velocity
@@ -306,8 +305,8 @@ public class LaunchCalculator {
             ChassisSpeeds robotVelocity,
             Rotation2d robotAngle) {
         // Offset from robot center to launcher in field frame
-        double offsetX = robotToLauncher.getTranslation().getX();
-        double offsetY = robotToLauncher.getTranslation().getY();
+        double offsetX = getRobotToLauncher().getTranslation().getX();
+        double offsetY = getRobotToLauncher().getTranslation().getY();
 
         // Rotate offset to field frame
         double cosA = robotAngle.getCos();
@@ -332,13 +331,13 @@ public class LaunchCalculator {
     private static Rotation2d getDriveAngleWithLauncherOffset(
             Pose2d robotPose, Translation2d target) {
         Rotation2d fieldToHubAngle = target.minus(robotPose.getTranslation()).getAngle();
-        double lateralOffset = robotToLauncher.getTranslation().getY();
+        double lateralOffset = getRobotToLauncher().getTranslation().getY();
         double distToTarget = target.getDistance(robotPose.getTranslation());
         Rotation2d hubAngle = new Rotation2d(
                 Math.asin(MathUtil.clamp(lateralOffset / distToTarget, -1.0, 1.0)));
         return fieldToHubAngle
                 .plus(hubAngle)
-                .plus(robotToLauncher.getRotation());
+                .plus(getRobotToLauncher().getRotation());
     }
 
     // -------------------------------------------------------------------------
@@ -381,4 +380,11 @@ public class LaunchCalculator {
     public static double getPassingShooterVelocity(double distance) {
         return passingShooterVelocityMap.get(distance);
     }
+
+    public static Transform2d getRobotToLauncher() {
+    boolean isRed = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red;
+    return new Transform2d(
+            new Translation2d(-0.0813, 0.0),
+            Rotation2d.fromDegrees(isRed ? 180.0 : 0.0));
+}
 }
