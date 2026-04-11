@@ -22,6 +22,7 @@ public interface IntakeIO {
         public double intakeRPS = 0;
         public double intakeVoltage = 0;
         public double intakeSetpointVolts = 0;
+        public double intakeSetpointRPS = 0;
 
         public double intake2Temperature = 0;
         public double intake2Current = 0;
@@ -36,6 +37,8 @@ public interface IntakeIO {
     public default void requestSetpoint (double angleDegrees) {}
     
     public default void requestIntakeVoltage(double voltage) {}
+
+    public default void requestIntakeVelocity(double RPS){}
 
     public default void zeroPosition() {}
 

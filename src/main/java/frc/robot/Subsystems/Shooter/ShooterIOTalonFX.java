@@ -41,11 +41,11 @@ public class ShooterIOTalonFX implements ShooterIO {
     private double leftShooterSetpointMPS;
 
     public ShooterIOTalonFX() {
-        leftMotorConfigs.CurrentLimits.StatorCurrentLimit = 70;
+        leftMotorConfigs.CurrentLimits.StatorCurrentLimit = 90;
         leftMotorConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
         leftMotorConfigs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-        leftMotorConfigs.CurrentLimits.SupplyCurrentLimit = 70;
+        leftMotorConfigs.CurrentLimits.SupplyCurrentLimit = 60;
         leftMotorConfigs.CurrentLimits.SupplyCurrentLowerLimit = 40;
         leftMotorConfigs.CurrentLimits.SupplyCurrentLowerTime = 1.0;
         leftMotorConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;

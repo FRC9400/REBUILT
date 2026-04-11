@@ -9,6 +9,7 @@ public class Rollers {
     private final RollersIOInputsAutoLogged inputs = new RollersIOInputsAutoLogged();
     private RollersState rollersState = RollersState.IDLE;
     private double voltageSetpoint = 0;
+    private double velocitySetpoint = 0;
 
     public Rollers(RollersIO rollersIO){
         this.rollersIO = rollersIO;
@@ -16,7 +17,8 @@ public class Rollers {
 
     public enum RollersState{
         IDLE,
-        VOLTAGE
+        VOLTAGE,
+        VELOCITY
     }
 
     public void Loop(){
@@ -30,6 +32,8 @@ public class Rollers {
             case VOLTAGE:
                 rollersIO.requestVoltage(voltageSetpoint);
                 break;
+            case VELOCITY:
+                rollersIO.requestVelocity(velocitySetpoint);
             default:
                 break;
         }
@@ -42,6 +46,11 @@ public class Rollers {
     public void requestVoltage(double volts){
         voltageSetpoint = volts;
         setState(RollersState.VOLTAGE);
+    }
+
+    public void requestVelocity(double velocity){
+        velocitySetpoint = velocity;
+        setState(RollersState.VELOCITY);
     }
 
     public void setState(RollersState nextState){

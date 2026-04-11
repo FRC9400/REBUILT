@@ -4,6 +4,7 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -34,9 +35,11 @@ public class IntakeIOTalonFX implements IntakeIO {
     MotionMagicVoltage pivotMotionMagicRequest;
     VoltageOut pivotVoltageRequest;
     VoltageOut intakeVoltageRequest;
+    MotionMagicVelocityVoltage intakeMotionMagicRequest;
 
     double pivotSetpoint;
     double intakeSetpointVolts;
+    double intakeSetpointRPS;
 
     private final StatusSignal<Current> pivotStatorCurrent = pivot.getStatorCurrent();
     private final StatusSignal<Current> pivotSupplyCurrent = pivot.getSupplyCurrent();
@@ -85,6 +88,7 @@ public class IntakeIOTalonFX implements IntakeIO {
         pivotMotionMagicRequest = new MotionMagicVoltage(0).withSlot(0).withEnableFOC(true);
         pivotVoltageRequest = new VoltageOut(0).withEnableFOC(true);
         intakeVoltageRequest = new VoltageOut(0);
+        intakeMotionMagicRequest = new MotionMagicVelocityVoltage(0);
 
         var feedbackConfigs = pivotConfigs.Feedback;
         feedbackConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
@@ -96,6 +100,18 @@ public class IntakeIOTalonFX implements IntakeIO {
         var intakeCurrentLimitConfigs = intakeConfigs.CurrentLimits;
         intakeCurrentLimitConfigs.StatorCurrentLimit = intakeConstants.intakeCurrentLimit;
         intakeCurrentLimitConfigs.StatorCurrentLimitEnable = true;
+
+        intakeConfigs.Slot0.kP = 2;
+        intakeConfigs.Slot0.kI = 0;
+        intakeConfigs.Slot0.kD = 0;
+        intakeConfigs.Slot0.kS = 0;
+        intakeConfigs.Slot0.kV = 0;
+        intakeConfigs.Slot0.kA = 0;
+        intakeConfigs.Slot0.kG = 0;
+
+        var intakeMotionMagicConfigs = intakeConfigs.MotionMagic;
+        intakeMotionMagicConfigs.MotionMagicAcceleration = 120;
+        intakeMotionMagicConfigs.MotionMagicJerk = 10000;
 
         pivot.getConfigurator().apply(pivotConfigs);
         intake.getConfigurator().apply(intakeConfigs);
@@ -160,6 +176,7 @@ public class IntakeIOTalonFX implements IntakeIO {
         intakeInputs.intakeRPS = intakeRPS.getValueAsDouble();
         intakeInputs.intakeSetpointVolts = this.intakeSetpointVolts;
         intakeInputs.intakeVoltage = intakeVoltage.getValueAsDouble();
+        intakeInputs.intakeSetpointRPS = intakeSetpointRPS;
 
         intakeInputs.intake2Current = intake2Current.getValueAsDouble();
         intakeInputs.intake2RPS = intake2RPS.getValueAsDouble();
@@ -181,6 +198,12 @@ public class IntakeIOTalonFX implements IntakeIO {
         this.intakeSetpointVolts = voltage;
         intake.setControl(intakeVoltageRequest.withOutput(intakeSetpointVolts));
     }
+
+    public void requestIntakeVelocity(double RPS){
+        this.intakeSetpointRPS = RPS;
+        intake.setControl(intakeMotionMagicRequest.withVelocity(RPS));
+    }
+
 
     public void zeroPosition() {
         pivot.setPosition(0);
