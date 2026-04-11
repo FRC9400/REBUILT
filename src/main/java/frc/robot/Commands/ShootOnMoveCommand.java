@@ -106,9 +106,15 @@ public class ShootOnMoveCommand extends Command {
             }
         }
 
+        Translation2d linearVelocityforRequest = linearVelocity;
+
+        if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue) {
+            linearVelocityforRequest = linearVelocityforRequest.times(-1.0);
+        }
+
         swerve.requestDesiredState(
-                linearVelocity.getX(),
-                linearVelocity.getY(),
+                linearVelocityforRequest.getX(),
+                linearVelocityforRequest.getY(),
                 omegaOutput,
                 true,
                 false);

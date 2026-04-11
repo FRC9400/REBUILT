@@ -103,6 +103,8 @@ public class Swerve extends SubsystemBase {
 
   public Swerve() {
 
+    SmartDashboard.putData("Field", m_field);
+
     moduleIOs[0] =
         new ModuleIOTalonFX(
             canIDConstants.driveMotor[0],
@@ -186,7 +188,6 @@ public class Swerve extends SubsystemBase {
   @Override
   public void periodic() {
 
-    SmartDashboard.putData("Field", m_field);
     m_field.setRobotPose(getPoseRaw());
     gyroIO.updateInputs(gyroInputs);
     Logger.processInputs("Swerve/Gyro", gyroInputs);
@@ -225,7 +226,7 @@ public class Swerve extends SubsystemBase {
       desiredModuleStates =
           kinematics.toSwerveModuleStates(
               ChassisSpeeds.fromFieldRelativeSpeeds(x_speed, y_speed, rot_speed, gyroPosition));
-      kinematics.desaturateWheelSpeeds(desiredModuleStates, 12);
+      kinematics.desaturateWheelSpeeds(desiredModuleStates, 4.9);
       for (int i = 0; i < 4; i++) {
         setpointModuleStates[i] =
             SwerveModuleState.optimize(desiredModuleStates[i], steerPositions[i]);

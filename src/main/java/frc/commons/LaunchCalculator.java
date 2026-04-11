@@ -139,7 +139,7 @@ public class LaunchCalculator {
     private double lastHoodAngleDeg = Double.NaN;
     private Rotation2d lastDriveAngle = null;
 
-    private Field2d m_field = new Field2d();
+    //private Field2d m_field = new Field2d();
 
     private double hoodAngleOffsetDeg = 0.0;
 
@@ -243,8 +243,8 @@ public class LaunchCalculator {
 
         // Logging
 
-        SmartDashboard.putData("Lookahead shoot on the move Field", m_field);
-        m_field.setRobotPose(lookaheadRobotPose);
+        //SmartDashboard.putData("Lookahead shoot on the move Field", m_field);
+        //m_field.setRobotPose(lookaheadRobotPose);
         //m_field.setRobotPose(estimatedPose);
         Logger.recordOutput("LaunchCalculator/Passing", passing);
         Logger.recordOutput("LaunchCalculator/TargetPose",

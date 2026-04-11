@@ -52,11 +52,11 @@ public class RollersIOTalonFX implements RollersIO{
         rollerConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         rollerConfigs.MotorOutput.Inverted = rollersConstants.rollersInvert;
 
-        rollerConfigs.Slot0.kP = 2;
+        rollerConfigs.Slot0.kP = 1;
         rollerConfigs.Slot0.kI = 0;
-        rollerConfigs.Slot0.kD = 0;
+        rollerConfigs.Slot0.kD = 0.02;
         rollerConfigs.Slot0.kA = 0;
-        rollerConfigs.Slot0.kS = 0;
+        rollerConfigs.Slot0.kS = 0.5;
         rollerConfigs.Slot0.kV = 0;
         rollerConfigs.Slot0.kG = 0;
 

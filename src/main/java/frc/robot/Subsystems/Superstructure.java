@@ -32,14 +32,14 @@ public class Superstructure extends SubsystemBase {
 
     // Intake
     LoggedTunableNumber INTAKEintakeVoltage  = new LoggedTunableNumber("Superstructure/INTAKE Intake Voltage", 7);
-    LoggedTunableNumber INTAKEintakeRPS = new LoggedTunableNumber("Superstructure/INTAKE Intake RPS", 50);
+    //LoggedTunableNumber INTAKEintakeRPS = new LoggedTunableNumber("Superstructure/INTAKE Intake RPS", 50);
 
     // Spit out
     LoggedTunableNumber SPITOUTintakeVoltage  = new LoggedTunableNumber("Superstructure/SPITOUT Intake Voltage", 7);
-    LoggedTunableNumber SPITOUTintakeRPS = new LoggedTunableNumber("Superstructure/INTAKE Intake RPS", 7);
+   // LoggedTunableNumber SPITOUTintakeRPS = new LoggedTunableNumber("Superstructure/INTAKE Intake RPS", 7);
 
     LoggedTunableNumber SPITOUTrollersVoltage = new LoggedTunableNumber("Superstructure/SPITOUT Rollers Voltage", -6);
-    LoggedTunableNumber SPITOUTrollersRPS = new LoggedTunableNumber("Superstructure/SPITOUT Rollers RPS", -50);
+    //LoggedTunableNumber SPITOUTrollersRPS = new LoggedTunableNumber("Superstructure/SPITOUT Rollers RPS", -50);
 
     // Unjam
     LoggedTunableNumber UNJAMrollersVoltage = new LoggedTunableNumber("Superstructure/UNJAM Rollers Voltage", -8);
@@ -50,14 +50,14 @@ public class Superstructure extends SubsystemBase {
     LoggedTunableNumber shooterVelocity     = new LoggedTunableNumber("Superstructure/SPINUP AND SHOOT Shooter Velocity", 18);
     LoggedTunableNumber SHOOTRollersVoltage = new LoggedTunableNumber("Superstructure/SHOOT Rollers Voltage", 6);
     LoggedTunableNumber SHOOTIntakeVoltage  = new LoggedTunableNumber("Superstructure/SHOOT Intake Voltage", 2);
-    LoggedTunableNumber SHOOTRollersRPS = new LoggedTunableNumber("Superstructure/SHOOT Rollers RPS", 40);
-    LoggedTunableNumber SHOOTIntakeRPS  = new LoggedTunableNumber("Superstructure/SHOOT Intake RPS", 20);
+    //LoggedTunableNumber SHOOTRollersRPS = new LoggedTunableNumber("Superstructure/SHOOT Rollers RPS", 40);
+    //LoggedTunableNumber SHOOTIntakeRPS  = new LoggedTunableNumber("Superstructure/SHOOT Intake RPS", 20);
 
     // Auto shoot — separate so we can lower draw independently
     LoggedTunableNumber autoSHOOTRollersVoltage = new LoggedTunableNumber("Superstructure/AUTO SHOOT Rollers Voltage", 6);
     LoggedTunableNumber autoSHOOTIntakeVoltage  = new LoggedTunableNumber("Superstructure/AUTO SHOOT Intake Voltage", 1.5);
-    LoggedTunableNumber autoSHOOTRollersRPS = new LoggedTunableNumber("Superstructure/AUTO SHOOT Rollers Voltage", 40);
-    LoggedTunableNumber autoSHOOTIntakeRPS  = new LoggedTunableNumber("Superstructure/AUTO SHOOT Intake Voltage", 10);
+    //LoggedTunableNumber autoSHOOTRollersRPS = new LoggedTunableNumber("Superstructure/AUTO SHOOT Rollers Voltage", 40);
+    //LoggedTunableNumber autoSHOOTIntakeRPS  = new LoggedTunableNumber("Superstructure/AUTO SHOOT Intake Voltage", 10);
 
     // Shooter velocity offset — subtract from interpolated velocity to fix overshoot
     LoggedTunableNumber shooterVelocityOffset = new LoggedTunableNumber("Superstructure/AUTO Shooter Velocity Offset", 0.0);
