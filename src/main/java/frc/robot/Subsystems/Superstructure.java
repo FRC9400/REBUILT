@@ -66,6 +66,7 @@ public class Superstructure extends SubsystemBase {
 
     private final DoubleSupplier distanceSupplier;
     private final DoubleSupplier distanceToPassTargetSupplier;
+    
 
     public Superstructure(HoodIO hoodIO, IntakeIO intakeIO, RollersIO rollersIO, ShooterIO shooterIO,
             DoubleSupplier distanceSupplier, DoubleSupplier distanceToPassTargetSupplier) {
@@ -320,4 +321,5 @@ public class Superstructure extends SubsystemBase {
 
     public boolean isPreSpinEnabled() { return preSpinEnabled; }
     public SuperstructureStates getState() { return systemState; }
+    public void togglePivotOverride() { s_intake.togglePivotOverride(); }
 }

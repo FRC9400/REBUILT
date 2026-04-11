@@ -10,6 +10,7 @@ public class Intake {
     private IntakeStates intakeState = IntakeStates.IDLE;
     private double voltageSetpoint = 0;
     private double setpointDeg = 0;
+    private boolean pivotOverrideEnabled = false;
 
     public Intake(IntakeIO intakeIO) {
         this.intakeIO = intakeIO;
@@ -27,6 +28,8 @@ public class Intake {
         intakeIO.updateInputs(inputs);
         Logger.processInputs("Intake", inputs);
         Logger.recordOutput("Intake", this.intakeState);
+        Logger.recordOutput("Intake/PivotOverrideEnabled", pivotOverrideEnabled);
+
         switch(intakeState){
             case IDLE:
                 intakeIO.requestIntakeVoltage(0);
@@ -34,25 +37,40 @@ public class Intake {
                 break;
             case LOWERED:
                 intakeIO.requestIntakeVoltage(0);
-                intakeIO.requestSetpoint(intakeConstants.maxDeg+5);
+                requestPivotSafe(intakeConstants.maxDeg+5);
                 break;
             case RAISED:
                 intakeIO.requestIntakeVoltage(0);
-                intakeIO.requestSetpoint(intakeConstants.minDeg - 2);
+                requestPivotSafe(intakeConstants.minDeg - 2);
                 break;
             case INTAKE:
                 intakeIO.requestIntakeVoltage(voltageSetpoint);
-                intakeIO.requestSetpoint(intakeConstants.maxDeg+5); 
+                requestPivotSafe(intakeConstants.maxDeg+5); 
                 break;
             case SETPOINT:
                 intakeIO.requestIntakeVoltage(voltageSetpoint);
-                intakeIO.requestSetpoint(setpointDeg);
+                requestPivotSafe(setpointDeg);
                 break;
             default:
                 break;
         }
 
     }
+
+    /** Routes pivot requests through override check. IDLE always bypasses */
+    private void requestPivotSafe(double deg) {
+        if (pivotOverrideEnabled) {
+            intakeIO.requestPivotVoltage(0);
+        } else {
+            intakeIO.requestSetpoint(deg);
+        }
+    }
+
+    public void togglePivotOverride() {
+        pivotOverrideEnabled = !pivotOverrideEnabled;
+    }
+
+    public boolean isPivotOverrideEnabled() { return pivotOverrideEnabled; }
 
     public void requestIdle(){
         setState(IntakeStates.IDLE);
