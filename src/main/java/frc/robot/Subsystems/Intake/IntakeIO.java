@@ -6,7 +6,8 @@ public interface IntakeIO {
     @AutoLog
     public static class IntakeIOInputs {
         public double pivotAppliedVolts = 0;
-        public double pivotCurrent = 0;
+        public double pivotSupplyCurrent = 0;
+        public double pivotStatorCurrent = 0;
         public double pivotSetpointDeg = 0;
         public double pivotSetpointRot = 0;
         public double pivotPosDeg = 0;

@@ -38,7 +38,8 @@ public class IntakeIOTalonFX implements IntakeIO {
     double pivotSetpoint;
     double intakeSetpointVolts;
 
-    private final StatusSignal<Current> pivotCurrent = pivot.getStatorCurrent();
+    private final StatusSignal<Current> pivotStatorCurrent = pivot.getStatorCurrent();
+    private final StatusSignal<Current> pivotSupplyCurrent = pivot.getSupplyCurrent();
     private final StatusSignal<Temperature> pivotTemp = pivot.getDeviceTemp();
     private final StatusSignal<AngularVelocity> pivotRPS = pivot.getRotorVelocity();
     private final StatusSignal<Angle> pivotPos = pivot.getRotorPosition();
@@ -67,10 +68,10 @@ public class IntakeIOTalonFX implements IntakeIO {
         pivotCurrentLimitConfigs.SupplyCurrentLimitEnable = true;
 
         var slot0Configs = pivotConfigs.Slot0;
-        slot0Configs.kP = 1.5;
+        slot0Configs.kP = 2.0;
         slot0Configs.kI = 0.0;
-        slot0Configs.kD = 0.02;
-        slot0Configs.kS = 0.408;
+        slot0Configs.kD = 0.03;
+        slot0Configs.kS = 0.908;
         slot0Configs.kV = 0.0094435;
         slot0Configs.kA = 0.01;
         slot0Configs.kG = 1;
@@ -105,7 +106,8 @@ public class IntakeIOTalonFX implements IntakeIO {
 
         BaseStatusSignal.setUpdateFrequencyForAll(
             50,
-            pivotCurrent,
+            pivotSupplyCurrent,
+            pivotStatorCurrent,
             pivotPos,
             pivotRPS,
             pivotTemp,
@@ -126,7 +128,8 @@ public class IntakeIOTalonFX implements IntakeIO {
 
     public void updateInputs(IntakeIOInputs intakeInputs) {
         BaseStatusSignal.refreshAll(
-            pivotCurrent,
+            pivotSupplyCurrent,
+            pivotStatorCurrent,
             pivotPos,
             pivotRPS,
             pivotTemp,
@@ -141,7 +144,8 @@ public class IntakeIOTalonFX implements IntakeIO {
             intake2Voltage
         );
         intakeInputs.pivotAppliedVolts = pivotVoltageRequest.Output;
-        intakeInputs.pivotCurrent = pivotCurrent.getValueAsDouble();
+        intakeInputs.pivotSupplyCurrent = pivotSupplyCurrent.getValueAsDouble();
+        intakeInputs.pivotStatorCurrent = pivotStatorCurrent.getValueAsDouble();
         intakeInputs.pivotPosDeg = Conversions.RotationsToDegrees(pivotPos.getValueAsDouble(), intakeConstants.gearRatio);
         intakeInputs.pivotPosRot = pivotPos.getValueAsDouble();
         intakeInputs.pivotSetpointDeg = pivotSetpoint;

@@ -63,8 +63,7 @@ public class RollersIOTalonFX implements RollersIO{
 
     public void updateInputs(RollersIOInputs inputs){
         // Refresh Static Signals
-        BaseStatusSignal.setUpdateFrequencyForAll(
-            50,
+        BaseStatusSignal.refreshAll(
             rollCurrent,
             rollTemp,
             rollRPS,

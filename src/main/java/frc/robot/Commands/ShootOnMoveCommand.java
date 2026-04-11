@@ -18,6 +18,7 @@ public class ShootOnMoveCommand extends Command {
     private final Swerve swerve;
     private final Superstructure superstructure;
     private final boolean passing;
+    private final LaunchCalculator launchCalculator;
 
     // TUNE: rotation PID gains for hub-lock
     private static final double driveLaunchKp = 6;
@@ -31,12 +32,13 @@ public class ShootOnMoveCommand extends Command {
         this.swerve = swerve;
         this.superstructure = superstructure;
         this.passing = passing;
+        this.launchCalculator = LaunchCalculator.getInstance();
         addRequirements(swerve);
     }
 
     @Override
     public void initialize() {
-        LaunchCalculator.getInstance().clearLaunchingParameters();
+        launchCalculator.clearLaunchingParameters();
         if (passing) {
             superstructure.requestAUTOPass();
         } else {
@@ -46,13 +48,13 @@ public class ShootOnMoveCommand extends Command {
 
     @Override
     public void execute() {
-        LaunchCalculator.getInstance().clearLaunchingParameters();
+        launchCalculator.clearLaunchingParameters();
 
         Translation2d hubTarget = getHubTarget();
 
         ChassisSpeeds robotRelativeSpeeds = swerve.getRobotRelativeSpeeds();
         ChassisSpeeds fieldRelativeSpeeds = swerve.getFieldRelativeSpeeds().times(DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red ? -1 : 1);
-        var parameters = LaunchCalculator.getInstance().getParameters(
+        var parameters = launchCalculator.getParameters(
                 swerve.getPoseRaw(),
                 robotRelativeSpeeds,
                 fieldRelativeSpeeds,
@@ -85,7 +87,7 @@ public class ShootOnMoveCommand extends Command {
 
         // Polar velocity limiter: prevent lookahead from drifting too far angularly
         double robotHubDistance = parameters.distanceNoLookahead();
-        double naiveTOF = LaunchCalculator.getInstance().getNaiveTOF(robotHubDistance);
+        double naiveTOF = launchCalculator.getNaiveTOF(robotHubDistance);
         double hubAngle = maxPolarVelocityRadPerSec * naiveTOF;
 
         if (linearVelocity.getNorm() > 1e-6) {
