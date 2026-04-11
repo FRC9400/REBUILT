@@ -30,7 +30,7 @@ public class Superstructure extends SubsystemBase {
     private boolean preSpinEnabled = false;
 
     // Intake
-    LoggedTunableNumber INTAKEintakeVoltage  = new LoggedTunableNumber("Superstructure/INTAKE Intake Voltage", 5);
+    LoggedTunableNumber INTAKEintakeVoltage  = new LoggedTunableNumber("Superstructure/INTAKE Intake Voltage", 7);
 
     // Spit out
     LoggedTunableNumber SPITOUTintakeVoltage  = new LoggedTunableNumber("Superstructure/SPITOUT Intake Voltage", 7);
